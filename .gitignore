@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+server/node_modules/
+
+# Build outputs
+frontend/dist/
+server/dist/
+server/build/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+database.db
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Electron
+app/
+out/
+release/

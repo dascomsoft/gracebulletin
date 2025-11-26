@@ -1,0 +1,49 @@
+name: Build Windows Executable
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        npm install
+        cd frontend && npm install && cd ..
+        cd server && npm install && cd ..
+        
+    - name: Build frontend
+      run: |
+        cd frontend
+        npm run build
+        
+    - name: Prepare build directory
+      run: |
+        # Copier le build frontend dans server
+        cp -r frontend/dist server/build
+        
+    - name: Build Electron app
+      run: |
+        cd server
+        npm run dist
+      
+    - name: Upload Windows installer
+      uses: actions/upload-artifact@v4
+      with:
+        name: GestionBulletin-Windows
+        path: server/dist/*.exe
+        retention-days: 30
