@@ -1,337 +1,9 @@
 
-// const { app, BrowserWindow } = require('electron');
-// const path = require('path');
-
-// let mainWindow;
-
-// function createWindow() {
-//   mainWindow = new BrowserWindow({
-//     width: 1200,
-//     height: 800,
-//     webPreferences: {
-//       nodeIntegration: false,
-//       contextIsolation: true,
-//       preload: path.join(__dirname, 'preload.js')
-//     }
-//   });
-
-//   // Chemin CORRECT : depuis src/ vers build/
-//   mainWindow.loadFile(path.join(__dirname, '../build/index.html'));
-//   mainWindow.webContents.openDevTools(); // Pour voir les erreurs
-// }
-
-// app.whenReady().then(createWindow);
-
-// app.on('window-all-closed', () => {
-//   if (process.platform !== 'darwin') app.quit();
-// });
-
-// app.on('activate', () => {
-//   if (BrowserWindow.getAllWindows().length === 0) createWindow();
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const { app, BrowserWindow } = require('electron');
-// const path = require('path');
-
-// let mainWindow;
-
-// function createWindow() {
-//   mainWindow = new BrowserWindow({
-//     width: 1200,
-//     height: 800,
-//     webPreferences: {
-//       preload: path.join(__dirname, 'preload.js'),
-//       contextIsolation: true,
-//       nodeIntegration: false,
-//       webSecurity: false,                // 🔥 Permet de charger assets localement
-//       allowRunningInsecureContent: true  // 🔥 Evite les blocages de scripts
-//     }
-//   });
-
-//   // Chemin CORRECT : depuis src/ vers build/
-//   mainWindow.loadFile(path.join(__dirname, '../build/index.html'));
-
-//   mainWindow.webContents.openDevTools(); // Pour voir les erreurs
-// }
-
-// app.whenReady().then(createWindow);
-
-// app.on('window-all-closed', () => {
-//   if (process.platform !== 'darwin') app.quit();
-// });
-
-// app.on('activate', () => {
-//   if (BrowserWindow.getAllWindows().length === 0) createWindow();
-// });
-
-
-
-
-
-
-
-
-// const { app, BrowserWindow, protocol } = require('electron');
-// const path = require('path');
-
-// let mainWindow;
-
-// function createWindow() {
-//   // Permet à Electron de résoudre correctement les chemins relatifs
-//   protocol.interceptFileProtocol('file', (request, callback) => {
-//     let url = request.url.substr(7); // supprime "file://"
-//     callback({ path: path.normalize(url) });
-//   });
-
-//   mainWindow = new BrowserWindow({
-//     width: 1200,
-//     height: 800,
-//     webPreferences: {
-//       preload: path.join(__dirname, 'preload.js'),
-//       contextIsolation: true,
-//       nodeIntegration: false,
-//       webSecurity: false,                // permet Vite + React
-//       allowRunningInsecureContent: true
-//     }
-//   });
-
-//   mainWindow.loadFile(path.join(__dirname, '../build/index.html'));
-//   mainWindow.webContents.openDevTools();
-// }
-
-// app.whenReady().then(createWindow);
-
-// app.on('window-all-closed', () => {
-//   if (process.platform !== 'darwin') app.quit();
-// });
-
-// app.on('activate', () => {
-//   if (BrowserWindow.getAllWindows().length === 0) createWindow();
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // const { app, BrowserWindow } = require('electron');
 // const path = require('path');
 // const express = require('express');
-// const sqlite3 = require('sqlite3').verbose();
-// const bcrypt = require('bcryptjs');
-// const cors = require('cors');
-
-// let mainWindow;
-
-// function createWindow() {
-//   const serverApp = express();
-//   const port = 3000;
-
-//   // Middleware
-//   serverApp.use(cors());
-//   serverApp.use(express.json());
-
-//   // Servir le build React
-//   serverApp.use(express.static(path.join(__dirname, '../build')));
-
-//   // Base de données SQLite
-//   const dbPath = path.join(__dirname, '../database.db');
-//   const db = new sqlite3.Database(dbPath, (err) => {
-//     if (err) console.error('Erreur DB:', err);
-//     else {
-//       console.log('✅ Base de données connectée');
-//       // Créer table users
-//       db.run(`
-//         CREATE TABLE IF NOT EXISTS users (
-//           id INTEGER PRIMARY KEY AUTOINCREMENT,
-//           username TEXT UNIQUE NOT NULL,
-//           password TEXT NOT NULL,
-//           created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-//         )
-//       `);
-//     }
-//   });
-
-//   // Routes API
-//   serverApp.post('/api/signup', async (req, res) => {
-//     const { username, password } = req.body;
-    
-//     try {
-//       const hashedPassword = await bcrypt.hash(password, 10);
-//       db.run(
-//         'INSERT INTO users (username, password) VALUES (?, ?)',
-//         [username, hashedPassword],
-//         function(err) {
-//           if (err) {
-//             res.status(400).json({ message: 'Utilisateur existe déjà' });
-//           } else {
-//             res.json({ message: 'Compte créé avec succès' });
-//           }
-//         }
-//       );
-//     } catch (error) {
-//       res.status(500).json({ message: 'Erreur serveur' });
-//     }
-//   });
-
-//   serverApp.post('/api/login', (req, res) => {
-//     const { username, password } = req.body;
-    
-//     db.get(
-//       'SELECT * FROM users WHERE username = ?',
-//       [username],
-//       async (err, user) => {
-//         if (err || !user) {
-//           res.status(401).json({ message: 'Utilisateur non trouvé' });
-//         } else {
-//           const isValid = await bcrypt.compare(password, user.password);
-//           if (isValid) {
-//             res.json({ message: 'Connexion réussie', user: { id: user.id, username: user.username } });
-//           } else {
-//             res.status(401).json({ message: 'Mot de passe incorrect' });
-//           }
-//         }
-//       }
-//     );
-//   });
-
-//   serverApp.listen(port, () => {
-//     console.log(`🚀 Serveur sur http://localhost:${port}`);
-//   });
-
-//   // Fenêtre Electron
-//   mainWindow = new BrowserWindow({
-//     width: 1200,
-//     height: 800,
-//     webPreferences: {
-//       preload: path.join(__dirname, 'preload.js'),
-//       contextIsolation: true,
-//       nodeIntegration: false
-//     }
-//   });
-
-//   mainWindow.loadURL(`http://localhost:${port}`);
-//   mainWindow.webContents.openDevTools();
-// }
-
-// app.whenReady().then(createWindow);
-
-// app.on('window-all-closed', () => {
-//   if (process.platform !== 'darwin') app.quit();
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const { app, BrowserWindow } = require('electron');
-// const path = require('path');
-// const express = require('express');
-// const sqlite3 = require('sqlite3').verbose();
-// const bcrypt = require('bcryptjs');
 // const cors = require('cors');
 
 // let mainWindow;
@@ -349,89 +21,17 @@
 //   // Servir le build React
 //   serverApp.use(express.static(path.join(__dirname, '../build')));
 
-//   // Base de données SQLite
-//   const dbPath = path.join(__dirname, '../database.db');
-//   const db = new sqlite3.Database(dbPath, (err) => {
-//     if (err) {
-//       console.error('❌ Erreur DB:', err);
-//     } else {
-//       console.log('✅ Base de données connectée:', dbPath);
-//       // Créer table users
-//       db.run(`
-//         CREATE TABLE IF NOT EXISTS users (
-//           id INTEGER PRIMARY KEY AUTOINCREMENT,
-//           username TEXT UNIQUE NOT NULL,
-//           password TEXT NOT NULL,
-//           created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-//         )
-//       `, (err) => {
-//         if (err) console.error('❌ Erreur table:', err);
-//         else console.log('✅ Table users prête');
-//       });
-//     }
-//   });
-
-//   // Routes API
-//   serverApp.post('/api/signup', async (req, res) => {
-//     console.log('📝 Inscription attempt:', req.body);
-    
-//     const { username, password } = req.body;
-    
-//     try {
-//       const hashedPassword = await bcrypt.hash(password, 10);
-//       db.run(
-//         'INSERT INTO users (username, password) VALUES (?, ?)',
-//         [username, hashedPassword],
-//         function(err) {
-//           if (err) {
-//             console.error('❌ Erreur inscription:', err);
-//             res.status(400).json({ message: 'Utilisateur existe déjà' });
-//           } else {
-//             console.log('✅ Utilisateur créé:', username);
-//             res.json({ message: 'Compte créé avec succès' });
-//           }
-//         }
-//       );
-//     } catch (error) {
-//       console.error('❌ Erreur serveur:', error);
-//       res.status(500).json({ message: 'Erreur serveur' });
-//     }
-//   });
-
-//   serverApp.post('/api/login', (req, res) => {
-//     console.log('🔐 Connexion attempt:', req.body);
-    
-//     const { username, password } = req.body;
-    
-//     db.get(
-//       'SELECT * FROM users WHERE username = ?',
-//       [username],
-//       async (err, user) => {
-//         if (err || !user) {
-//           console.log('❌ Utilisateur non trouvé:', username);
-//           res.status(401).json({ message: 'Utilisateur non trouvé' });
-//         } else {
-//           const isValid = await bcrypt.compare(password, user.password);
-//           if (isValid) {
-//             console.log('✅ Connexion réussie:', username);
-//             res.json({ message: 'Connexion réussie', user: { id: user.id, username: user.username } });
-//           } else {
-//             console.log('❌ Mot de passe incorrect:', username);
-//             res.status(401).json({ message: 'Mot de passe incorrect' });
-//           }
-//         }
-//       }
-//     );
-//   });
-
-//   // Route de test
-//   serverApp.get('/api/test', (req, res) => {
-//     console.log('✅ Test API appelé');
-//     res.json({ message: 'API fonctionne!' });
+//   // Route de santé
+//   serverApp.get('/api/health', (req, res) => {
+//     res.json({ 
+//       status: 'OK', 
+//       message: 'Serveur Gestion Bulletin - Prêt',
+//       timestamp: new Date().toISOString()
+//     });
 //   });
 
 //   serverApp.listen(port, () => {
-//     console.log(`🚀 Serveur Express sur http://localhost:${port}`);
+//     console.log(`🚀 Serveur sur http://localhost:${port}`);
 //   });
 
 //   // Fenêtre Electron
@@ -439,20 +39,23 @@
 //     width: 1200,
 //     height: 800,
 //     webPreferences: {
-//       preload: path.join(__dirname, 'preload.js'),
-//       contextIsolation: true,
-//       nodeIntegration: false
+//       nodeIntegration: false,
+//       contextIsolation: true
 //     }
 //   });
 
 //   mainWindow.loadURL(`http://localhost:${port}`);
-//   mainWindow.webContents.openDevTools();
+//   mainWindow.webContents.openDevTools(); // Pour debug
 // }
 
 // app.whenReady().then(createWindow);
 
 // app.on('window-all-closed', () => {
 //   if (process.platform !== 'darwin') app.quit();
+// });
+
+// app.on('activate', () => {
+//   if (BrowserWindow.getAllWindows().length === 0) createWindow();
 // });
 
 
@@ -464,192 +67,236 @@
 
 
 
-  const { app, BrowserWindow } = require('electron');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const { app, BrowserWindow, dialog } = require('electron');
 const path = require('path');
 const express = require('express');
-const bcrypt = require('bcryptjs');
 const cors = require('cors');
-const fs = require('fs');
-const initSqlJs = require('sql.js');
 
 let mainWindow;
-let db;
+let isAppCrashed = false;
+let crashCount = 0;
+const MAX_CRASH_RETRIES = 3;
 
-function createWindow() {
-  const serverApp = express();
-  const port = 3000;
-
-  console.log('🚀 Démarrage du serveur Express...');
-
-  // Middleware
-  serverApp.use(cors());
-  serverApp.use(express.json());
-
-  // Servir le build React
-  serverApp.use(express.static(path.join(__dirname, '../build')));
-
-  // Initialiser la base de données
-  initDatabase();
-
-  // Routes API
-  serverApp.post('/api/signup', async (req, res) => {
-    console.log('📝 Inscription attempt:', req.body);
-    
-    const { username, password } = req.body;
-    
-    if (!username || !password) {
-      return res.status(400).json({ message: 'Username et password requis' });
-    }
-
-    try {
-      // Vérifier si l'utilisateur existe déjà
-      const checkStmt = db.prepare('SELECT id FROM users WHERE username = ?');
-      const existingUser = checkStmt.get([username]);
-      
-      if (existingUser) {
-        return res.status(400).json({ message: 'Utilisateur existe déjà' });
-      }
-
-      // Hasher le mot de passe
-      const hashedPassword = await bcrypt.hash(password, 10);
-      
-      // Créer l'utilisateur
-      const stmt = db.prepare('INSERT INTO users (username, password) VALUES (?, ?)');
-      stmt.run([username, hashedPassword]);
-      
-      // Sauvegarder la base de données
-      saveDatabase();
-      
-      console.log('✅ Utilisateur créé:', username);
-      res.json({ message: 'Compte créé avec succès' });
-      
-    } catch (error) {
-      console.error('❌ Erreur inscription:', error);
-      res.status(500).json({ message: 'Erreur lors de l\'inscription' });
-    }
-  });
-
-  serverApp.post('/api/login', async (req, res) => {
-    console.log('🔐 Connexion attempt:', req.body);
-    
-    const { username, password } = req.body;
-    
-    if (!username || !password) {
-      return res.status(400).json({ message: 'Username et password requis' });
-    }
-
-    try {
-      // Rechercher l'utilisateur
-      const stmt = db.prepare('SELECT * FROM users WHERE username = ?');
-      const user = stmt.get([username]);
-      
-      if (!user) {
-        console.log('❌ Utilisateur non trouvé:', username);
-        return res.status(401).json({ message: 'Utilisateur non trouvé' });
-      }
-
-      // Vérifier le mot de passe
-      const isValid = await bcrypt.compare(password, user.password);
-      if (isValid) {
-        console.log('✅ Connexion réussie:', username);
-        res.json({ 
-          message: 'Connexion réussie', 
-          user: { 
-            id: user.id, 
-            username: user.username 
-          } 
-        });
-      } else {
-        console.log('❌ Mot de passe incorrect:', username);
-        res.status(401).json({ message: 'Mot de passe incorrect' });
-      }
-    } catch (error) {
-      console.error('❌ Erreur connexion:', error);
-      res.status(500).json({ message: 'Erreur lors de la connexion' });
-    }
-  });
-
-  // Route de test
-  serverApp.get('/api/test', (req, res) => {
-    res.json({ message: 'API fonctionne!', db: 'SQL.js' });
-  });
-
-  serverApp.listen(port, () => {
-    console.log(`🚀 Serveur Express sur http://localhost:${port}`);
-  });
-
-  // Fenêtre Electron
-  mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      contextIsolation: true,
-      nodeIntegration: false
-    }
-  });
-
-  mainWindow.loadURL(`http://localhost:${port}`);
-  mainWindow.webContents.openDevTools();
-}
-
-async function initDatabase() {
-  try {
-    const SQL = await initSqlJs();
-    const dbPath = path.join(__dirname, '../database.db');
-    
-    if (fs.existsSync(dbPath)) {
-      // Charger la base existante
-      const buffer = fs.readFileSync(dbPath);
-      db = new SQL.Database(buffer);
-      console.log('✅ Base de données chargée:', dbPath);
-    } else {
-      // Créer une nouvelle base
-      db = new SQL.Database();
-      console.log('✅ Nouvelle base de données créée');
-    }
-    
-    // Créer la table users si elle n'existe pas
-    db.run(`
-      CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-    
-    console.log('✅ Table users prête');
-  } catch (error) {
-    console.error('❌ Erreur initialisation base de données:', error);
-  }
-}
-
-function saveDatabase() {
-  try {
-    if (db) {
-      const dbPath = path.join(__dirname, '../database.db');
-      const data = db.export();
-      const buffer = Buffer.from(data);
-      fs.writeFileSync(dbPath, buffer);
-      console.log('💾 Base de données sauvegardée');
-    }
-  } catch (error) {
-    console.error('❌ Erreur sauvegarde base de données:', error);
-  }
-}
-
-// Sauvegarder à la fermeture
-app.on('before-quit', () => {
-  saveDatabase();
+// ==================== GESTION D'ERREURS GLOBALE ====================
+process.on('uncaughtException', (error) => {
+  console.error('🚨 ERREUR CRITIQUE CAPTURÉE:', error);
+  // Ne pas crash - juste logger et continuer
 });
 
-app.whenReady().then(createWindow);
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('🚨 PROMISE REJETÉE:', reason);
+});
+
+// ==================== FONCTION DE CRÉATION FENÊTRE SÉCURISÉE ====================
+function createSafeWindow() {
+  try {
+    mainWindow = new BrowserWindow({
+      width: 1200,
+      height: 800,
+      minWidth: 800,
+      minHeight: 600,
+      show: false, // Cacher jusqu'au chargement complet
+      webPreferences: {
+        nodeIntegration: false,
+        contextIsolation: true,
+        webSecurity: true,
+        allowRunningInsecureContent: false
+      },
+      icon: path.join(__dirname, '../build/assets/icon.png') // Optionnel
+    });
+
+    // ==================== GESTION DES CRASH ====================
+    mainWindow.webContents.on('crashed', (event, killed) => {
+      console.log('💥 RENDERER CRASHÉ - Tentative de récupération...');
+      handleRendererCrash();
+    });
+
+    mainWindow.on('unresponsive', () => {
+      console.log('⚠️ FENÊTRE NE RÉPOND PLUS');
+      dialog.showMessageBox(mainWindow, {
+        type: 'warning',
+        title: 'Application lent',
+        message: 'L\'application ne répond pas. Voulez-vous attendre ou fermer?',
+        buttons: ['Attendre', 'Fermer']
+      }).then((result) => {
+        if (result.response === 1) {
+          mainWindow.destroy();
+          createSafeWindow();
+        }
+      });
+    });
+
+    mainWindow.on('closed', () => {
+      mainWindow = null;
+    });
+
+    // ==================== CHARGEMENT SÉCURISÉ ====================
+    mainWindow.webContents.on('did-finish-load', () => {
+      console.log('✅ APPLICATION CHARGÉE AVEC SUCCÈS');
+      mainWindow.show();
+      mainWindow.focus();
+    });
+
+    mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
+      console.log('❌ ÉCHEC CHARGEMENT:', errorDescription);
+      setTimeout(() => {
+        mainWindow.reload();
+      }, 1000);
+    });
+
+    // Charger l'application
+    mainWindow.loadURL(`http://localhost:3000`);
+    
+  } catch (error) {
+    console.error('❌ ERREUR CRÉATION FENÊTRE:', error);
+    emergencyRecovery();
+  }
+}
+
+// ==================== GESTION CRASH RENDERER ====================
+function handleRendererCrash() {
+  crashCount++;
+  
+  if (crashCount >= MAX_CRASH_RETRIES) {
+    console.log('🛑 TROP DE CRASH - Mode sécurité activé');
+    dialog.showErrorBox(
+      'Erreur Application', 
+      'L\'application rencontre des problèmes. Réouverture en mode sécurité...'
+    );
+    crashCount = 0;
+    emergencyRecovery();
+  } else {
+    console.log(`🔄 Redémarrage après crash (${crashCount}/${MAX_CRASH_RETRIES})`);
+    setTimeout(() => {
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.reload();
+      } else {
+        createSafeWindow();
+      }
+    }, 2000);
+  }
+}
+
+// ==================== MODE URGENCE ====================
+function emergencyRecovery() {
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.destroy();
+  }
+  
+  setTimeout(() => {
+    console.log('🚑 LANCEMENT MODE URGENCE');
+    createSafeWindow();
+  }, 3000);
+}
+
+// ==================== SANTÉ APPLICATION ====================
+function startHealthMonitor() {
+  setInterval(() => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      // Vérifier que la fenêtre répond
+      mainWindow.webContents.executeJavaScript('true')
+        .catch((error) => {
+          console.log('⚠️ FENÊTRE NE RÉPOND PAS AU PING');
+          handleRendererCrash();
+        });
+    }
+  }, 30000); // Toutes les 30 secondes
+}
+
+// ==================== DÉMARRAGE SÉCURISÉ ====================
+function safeAppStart() {
+  console.log('🚀 DÉMARRAGE SÉCURISÉ DE L\'APPLICATION');
+  
+  try {
+    // Démarrer le serveur Express
+    const serverApp = express();
+    const port = 3000;
+
+    serverApp.use(cors());
+    serverApp.use(express.json());
+    serverApp.use(express.static(path.join(__dirname, '../build')));
+
+    // Route santé
+    serverApp.get('/api/health', (req, res) => {
+      res.json({ 
+        status: 'OK', 
+        message: 'Gestion Bulletin - Version Stable',
+        timestamp: new Date().toISOString(),
+        version: '1.0.0'
+      });
+    });
+
+    serverApp.listen(port, () => {
+      console.log(`✅ SERVEUR EXPRESS DÉMARRÉ: http://localhost:${port}`);
+    });
+
+    // Démarrer la surveillance
+    startHealthMonitor();
+
+    // Créer la fenêtre
+    setTimeout(() => {
+      createSafeWindow();
+    }, 1000);
+
+  } catch (error) {
+    console.error('❌ ERREUR DÉMARRAGE APPLICATION:', error);
+    setTimeout(safeAppStart, 5000); // Redémarrer après 5 secondes
+  }
+}
+
+// ==================== ÉVÉNEMENTS PRINCIPAUX ====================
+app.whenReady().then(() => {
+  console.log('🎯 ELECTRON PRÊT - LANCEMENT APPLICATION');
+  safeAppStart();
+});
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+  console.log('👋 FERMETURE APPLICATION');
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });
 
 app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  console.log('🔃 RÉACTIVATION APPLICATION');
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createSafeWindow();
+  }
 });
+
+app.on('before-quit', () => {
+  console.log('💾 FERMETURE PROPRE EN COURS...');
+});
+
+// =================═ GESTION DES ERREURS ELECTRON ====================
+app.on('renderer-process-crashed', (event, webContents, killed) => {
+  console.log('💥 CRASH PROCESSUS RENDERER DÉTECTÉ');
+  handleRendererCrash();
+});
+
+app.on('child-process-gone', (event, details) => {
+  console.log('⚠️ PROCESSUS ENFANT TERMINÉ:', details);
+});
+
+console.log('🛡️ APPLICATION GESTION BULLETIN - VERSION STABLE 1.0.0');

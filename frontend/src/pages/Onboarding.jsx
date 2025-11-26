@@ -7,7 +7,7 @@ export default function Onboarding() {
   return (
     <div 
       className="flex flex-col items-center justify-center h-screen bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: `url('/image2.jpg')` }} // Remplacez "background.jpg" par le nom de votre image
+      style={{ backgroundImage: `url('/image2.jpg')` }}
     >
       <div className="bg-slate-100 shadow-2xl rounded-2xl p-10 text-center w-[90%] md:w-[500px] bg-opacity-90">
         <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
@@ -21,13 +21,13 @@ export default function Onboarding() {
 
         <div className="flex flex-col gap-4">
           <button
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate("/dashboard")}
             className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
           >
             Français
           </button>
           <button
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate("/dashboard")}  // CORRIGÉ : même route que Français
             className="px-6 py-3 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition"
           >
             English
@@ -37,7 +37,6 @@ export default function Onboarding() {
     </div>
   );
 }
-
 
 
 
