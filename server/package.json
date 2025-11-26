@@ -11,13 +11,13 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "sqlite3": "^5.1.6",
+    "sql.js": "^1.10.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5"
   },
   "devDependencies": {
-    "electron": "^22.0.0",
-    "electron-builder": "^24.0.0"
+    "electron": "^28.0.0",
+    "electron-builder": "^24.13.3"
   },
   "build": {
     "appId": "com.dascomsoft.gestionbulletin",
@@ -33,6 +33,7 @@
     ],
     "win": {
       "target": "nsis"
-    }
+    },
+    "npmRebuild": false
   }
 }
