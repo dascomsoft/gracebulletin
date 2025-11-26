@@ -19,12 +19,17 @@ jobs:
       with:
         node-version: '18'
         cache: 'npm'
+        cache-dependency-path: '**/package-lock.json'
         
-    - name: Install dependencies
+    - name: Install frontend dependencies
       run: |
+        cd frontend
         npm install
-        cd frontend && npm install && cd ..
-        cd server && npm install && cd ..
+        
+    - name: Install server dependencies
+      run: |
+        cd server
+        npm install
         
     - name: Build frontend
       run: |
@@ -33,8 +38,8 @@ jobs:
         
     - name: Prepare build directory
       run: |
-        # Copier le build frontend dans server
-        cp -r frontend/dist server/build
+        # Copier le build frontend dans server (Windows)
+        xcopy /E /I frontend\dist server\build\
         
     - name: Build Electron app
       run: |
@@ -45,5 +50,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: GestionBulletin-Windows
-        path: server/dist/*.exe
+        path: server\dist\*.exe
         retention-days: 30
