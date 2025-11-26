@@ -28,8 +28,16 @@
     "files": [
       "src/**/*",
       "build/**/*",
-      "!**/node_modules/**/*",
+      "node_modules/**/*",
+      "!node_modules/**/{test,tests,example,examples,doc,docs}/*",
       "!**/*.map"
+    ],
+    "extraResources": [
+      {
+        "from": "node_modules",
+        "to": "node_modules",
+        "filter": ["**/*"]
+      }
     ],
     "win": {
       "target": "nsis"
