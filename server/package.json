@@ -4,38 +4,35 @@
   "main": "src/main.js",
   "type": "commonjs",
   "scripts": {
-  "start": "electron",
+    "start": "electron .",
+    "dev": "cd .. && npx electron server/src/main.js",
     "build": "electron-builder build --dir",
-   "dev": "cd .. && npx electron server/src/main.js",
-    "dist": "electron-builder build",
-    "pack": "electron-builder build --dir"
+    "dist": "electron-builder build"
   },
   "dependencies": {
-    "electron": "^22.0.0",
     "express": "^4.18.2",
     "sqlite3": "^5.1.6",
     "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "electron-is-dev": "^2.0.0"
+    "cors": "^2.8.5"
   },
   "devDependencies": {
+    "electron": "^22.0.0",
     "electron-builder": "^24.0.0"
   },
   "build": {
     "appId": "com.dascomsoft.gestionbulletin",
     "productName": "Gestion Bulletin",
     "directories": {
-      "output": "../../dist"
+      "output": "dist"
     },
     "files": [
       "src/**/*",
-      "../../frontend/dist/**/*",
+      "build/**/*",
       "!**/node_modules/**/*",
       "!**/*.map"
     ],
     "win": {
-      "target": "nsis",
-      "icon": "assets/icon.ico"
+      "target": "nsis"
     }
   }
 }
