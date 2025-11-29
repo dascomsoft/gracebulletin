@@ -565,12 +565,12 @@ export default function BulletinMaternelle() {
                     </button>
 
                     <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                        <button
+                        {/* <button
                             onClick={handleReinitialiser}
                             className="px-4 py-2 border rounded text-sm hover:bg-gray-100 transition w-full sm:w-auto"
                         >
                             Réinitialiser
-                        </button>
+                        </button> */}
                         <button
                             onClick={handleApercu}
                             className="px-4 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition w-full sm:w-auto"

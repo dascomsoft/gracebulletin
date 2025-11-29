@@ -104,9 +104,9 @@ if (showPreview) {
   }
 
   const classes = [
-    'Pré-Maternelle', 'Maternelle 1', 'Maternelle 2', 
-    'Cours 1', 'Cours 2', 'Cours 3', 
-    'Cours 4', 'Cours 5', 'Cours 6'
+    'Petite section-', 'Moyenne section', 'Grande section', 
+    'SIL', 'CP', 'CE1', 
+    'CE2', 'CM1', 'CM2'
   ];
 
   const remarksOptions = [

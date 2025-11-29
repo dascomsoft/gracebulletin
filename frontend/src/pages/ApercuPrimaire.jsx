@@ -38,6 +38,94 @@ const BulletinPreview = () => {
         }
     };
 
+    // Template aligné avec le nouveau formulaire
+    const COMPETENCES_TEMPLATE_PREVIEW = [
+        {
+            key: "1A",
+            title: "1A- Communiquer en Anglais",
+            description: "Écoute - expression orale - écriture - lecture",
+            Notes: { "Savoir-être": 5, Oral: 20, Écrit: 15 },
+            evaluations: ["Savoir-être", "Oral", "Écrit"]
+        },
+        {
+            key: "1B",
+            title: "1B- Communiquer en Français",
+            description: "Compréhension orale - lecture - production écrite - grammaire - conjugaison - vocabulaire",
+            Notes: { "Savoir-être": 5, Oral: 20, Écrit: 15 },
+            evaluations: ["Savoir-être", "Oral", "Écrit"]
+        },
+        {
+            key: "1C",
+            title: "1C- Communiquer dans une Langue Nationale",
+            description: "Coutumes - traditions - mode de vie - interprétation des phénomènes",
+            Notes: { Oral: 15, Pratique: 5 },
+            evaluations: ["Oral", "Pratique"]
+        },
+        {
+            key: "2A",
+            title: "2A- Utiliser les Notions de Base en Mathématiques",
+            description: "Ensembles et logique - nombre et numération - mesure - graphiques et statistiques - géométrie",
+            Notes: { "Savoir-être": 5, Oral: 10, Pratique: 15, Écrit: 20 },
+            evaluations: ["Savoir-être", "Oral", "Pratique", "Écrit"]
+        },
+        {
+            key: "2B",
+            title: "2B- Utiliser les Notions de Base en Sciences et Technologie",
+            description: "Éducation à la santé et à l'environnement - technologie et ingénierie",
+            Notes: { "Savoir-être": 5, Oral: 10, Pratique: 15, Écrit: 20 },
+            evaluations: ["Savoir-être", "Oral", "Pratique", "Écrit"]
+        },
+        {
+            key: "3A",
+            title: "3A- Pratiquer les Valeurs Sociales",
+            description: "Histoire et géographie",
+            Notes: { "Savoir-être": 10, Oral: 6, Pratique: 2, Écrit: 2 },
+            evaluations: ["Savoir-être", "Oral", "Pratique", "Écrit"]
+        },
+        {
+            key: "3B",
+            title: "3B- Pratiquer les Valeurs Civiques",
+            description: "Éducation civique - droits de l'homme - éducation morale",
+            Notes: { "Savoir-être": 10, Oral: 6, Pratique: 2, Écrit: 2 },
+            evaluations: ["Savoir-être", "Oral", "Pratique", "Écrit"]
+        },
+        {
+            key: "4A",
+            title: "4A- Démontrer l'Autonomie, l'Esprit d'Initiative, la Créativité et l'Entreprenariat dans les Études Professionnelles",
+            description: "Travaux d'aiguille - arts ménagers - blanchisserie et nutrition alimentaire",
+            Notes: { "Savoir-être": 2, Oral: 3, Pratique: 10, Écrit: 5 },
+            evaluations: ["Savoir-être", "Oral", "Pratique", "Écrit"]
+        },
+        {
+            key: "4B",
+            title: "4B- Démontrer l'autonomie, l'esprit d'initiative, la créativité et l'entreprenariat",
+            description: "Outils agricoles - agriculture et jardinage - élevage",
+            Notes: { "Savoir-être": 2, Oral: 3, Pratique: 10, Écrit: 5 },
+            evaluations: ["Savoir-être", "Oral", "Pratique", "Écrit"]
+        },
+        {
+            key: "5",
+            title: "5- Utiliser les Concepts de Base et les Outils des Technologies de l'Information et de la Communication",
+            description: "L'ordinateur et les outils TIC - Internet et éthique de la communication",
+            Notes: { "Savoir-être": 5, Oral: 5, Pratique: 20, Écrit: 10 },
+            evaluations: ["Savoir-être", "Oral", "Pratique", "Écrit"]
+        },
+        {
+            key: "6A",
+            title: "6-A Pratiquer les Activités Physiques et Sportives",
+            description: "Mouvement - saut - sports d'équipe - gymnastique - relais - sprint",
+            Notes: { "Savoir-être": 3, Oral: 3, Pratique: 10, Écrit: 4 },
+            evaluations: ["Savoir-être", "Oral", "Pratique", "Écrit"]
+        },
+        {
+            key: "6B",
+            title: "6-B Pratiquer les Activités Artistiques",
+            description: "Arts visuels - arts du spectacle",
+            Notes: { "Savoir-être": 4, Oral: 4, Pratique: 10, Écrit: 2 },
+            evaluations: ["Savoir-être", "Oral", "Pratique", "Écrit"]
+        }
+    ];
+
     if (!location.state) {
         return (
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -140,7 +228,7 @@ const BulletinPreview = () => {
                                 <th className="border border-gray-400 p-0.5 w-20 print:w-16">Compétences</th>
                                 <th className="border border-gray-400 p-0.5 w-32 print:w-28">Description</th>
                                 <th className="border border-gray-400 p-0.5 text-center w-12 print:w-10">Éval</th>
-                                <th className="border border-gray-400 p-0.5 text-center w-8 print:w-6">SCl</th>
+                                <th className="border border-gray-400 p-0.5 text-center w-8 print:w-6">Notes</th>
                                 <th className="border border-gray-400 p-0.5 text-center w-12 print:w-10">
                                     {entetesPeriodes.h1}
                                 </th>
@@ -155,92 +243,7 @@ const BulletinPreview = () => {
                         </thead>
 
                         <tbody>
-                            {[
-                                {
-                                    key: "1A",
-                                    title: "1A- Communiquer en Anglais",
-                                    description: "Écoute - expression orale - écriture - lecture",
-                                    sclValues: { Attitude: 5, Oral: 20, Écrit: 15 },
-                                    evaluations: ["Attitude", "Oral", "Écrit"]
-                                },
-                                {
-                                    key: "1B",
-                                    title: "1B- Communiquer en Français",
-                                    description: "Compréhension orale - lecture - production écrite - grammaire - conjugaison - vocabulaire",
-                                    sclValues: { Attitude: 5, Oral: 20, Écrit: 15 },
-                                    evaluations: ["Attitude", "Oral", "Écrit"]
-                                },
-                                {
-                                    key: "1C",
-                                    title: "1C- Communiquer dans une Langue Nationale",
-                                    description: "Coutumes - traditions - mode de vie - interprétation des phénomènes",
-                                    sclValues: { Oral: 15, Pratique: 5 },
-                                    evaluations: ["Oral", "Pratique"]
-                                },
-                                {
-                                    key: "2A",
-                                    title: "2A- Utiliser les Notions de Base en Mathématiques",
-                                    description: "Ensembles et logique - nombre et numération - mesure - graphiques et statistiques - géométrie",
-                                    sclValues: { Attitude: 5, Oral: 10, Pratique: 15, Écrit: 20 },
-                                    evaluations: ["Attitude", "Oral", "Pratique", "Écrit"]
-                                },
-                                {
-                                    key: "2B",
-                                    title: "2B- Utiliser les Notions de Base en Sciences et Technologie",
-                                    description: "Éducation à la santé et à l'environnement - technologie et ingénierie",
-                                    sclValues: { Attitude: 5, Oral: 10, Pratique: 15, Écrit: 20 },
-                                    evaluations: ["Attitude", "Oral", "Pratique", "Écrit"]
-                                },
-                                {
-                                    key: "3A",
-                                    title: "3A- Pratiquer les Valeurs Sociales",
-                                    description: "Histoire et géographie",
-                                    sclValues: { Attitude: 10, Oral: 6, Pratique: 2, Écrit: 2 },
-                                    evaluations: ["Attitude", "Oral", "Pratique", "Écrit"]
-                                },
-                                {
-                                    key: "3B",
-                                    title: "3B- Pratiquer les Valeurs Civiques",
-                                    description: "Éducation civique - droits de l'homme - éducation morale",
-                                    sclValues: { Attitude: 10, Oral: 6, Pratique: 2, Écrit: 2 },
-                                    evaluations: ["Attitude", "Oral", "Pratique", "Écrit"]
-                                },
-                                {
-                                    key: "4A",
-                                    title: "4A- Démontrer l'Autonomie, l'Esprit d'Initiative, la Créativité et l'Entreprenariat dans les Études Professionnelles",
-                                    description: "Travaux d'aiguille - arts ménagers - blanchisserie et nutrition alimentaire",
-                                    sclValues: { Attitude: 2, Oral: 3, Pratique: 10, Écrit: 5 },
-                                    evaluations: ["Attitude", "Oral", "Pratique", "Écrit"]
-                                },
-                                {
-                                    key: "4B",
-                                    title: "4B- Démontrer l'autonomie, l'esprit d'initiative, la créativité et l'entreprenariat",
-                                    description: "Outils agricoles - agriculture et jardinage - élevage",
-                                    sclValues: { Attitude: 2, Oral: 3, Pratique: 10, Écrit: 5 },
-                                    evaluations: ["Attitude", "Oral", "Pratique", "Écrit"]
-                                },
-                                {
-                                    key: "5",
-                                    title: "5- Utiliser les Concepts de Base et les Outils des Technologies de l'Information et de la Communication",
-                                    description: "L'ordinateur et les outils TIC - Internet et éthique de la communication",
-                                    sclValues: { Attitude: 5, Oral: 5, Pratique: 20, Écrit: 10 },
-                                    evaluations: ["Attitude", "Oral", "Pratique", "Écrit"]
-                                },
-                                {
-                                    key: "6A",
-                                    title: "6-A Pratiquer les Activités Physiques et Sportives",
-                                    description: "Mouvement - saut - sports d'équipe - gymnastique - relais - sprint",
-                                    sclValues: { Attitude: 3, Oral: 3, Pratique: 10, Écrit: 4 },
-                                    evaluations: ["Attitude", "Oral", "Pratique", "Écrit"]
-                                },
-                                {
-                                    key: "6B",
-                                    title: "6-B Pratiquer les Activités Artistiques",
-                                    description: "Arts visuels - arts du spectacle",
-                                    sclValues: { Attitude: 4, Oral: 4, Pratique: 10, Écrit: 2 },
-                                    evaluations: ["Attitude", "Oral", "Pratique", "Écrit"]
-                                }
-                            ].map(competenceTemplate => {
+                            {COMPETENCES_TEMPLATE_PREVIEW.map(competenceTemplate => {
                                 const donneesCompetence = donnees[competenceTemplate.key];
                                 if (!donneesCompetence) return null;
 
@@ -260,7 +263,7 @@ const BulletinPreview = () => {
                                                 )}
 
                                                 <td className="border border-gray-400 p-0.5 text-center align-top">{ev}</td>
-                                                <td className="border border-gray-400 p-0.5 text-center align-top">{competenceTemplate.sclValues[ev]}</td>
+                                                <td className="border border-gray-400 p-0.5 text-center align-top">{competenceTemplate.Notes[ev]}</td>
                                                 <td className="border border-gray-400 p-0.5 text-center align-top">{donneesCompetence.evaluations[ev].m1 || "-"}</td>
                                                 <td className="border border-gray-400 p-0.5 text-center align-top">{donneesCompetence.evaluations[ev].m2 || "-"}</td>
                                                 <td className="border border-gray-400 p-0.5 text-center align-top">{donneesCompetence.evaluations[ev].m3 || "-"}</td>
@@ -476,20 +479,10 @@ const BulletinPreview = () => {
                     .print\\:h-5 {
                         height: 1.25rem;
                     }
-                
-
-
-
-
+                }
             `}</style>
         </div>
     );
 };
 
 export default BulletinPreview;
-
-
-
-
-
-

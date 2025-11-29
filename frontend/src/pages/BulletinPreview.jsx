@@ -234,13 +234,24 @@ const BulletinPreview = () => {
                                     sclValues: { Attitude: 3, Oral: 3, Practical: 10, Written: 4 },
                                     evaluations: ["Attitude", "Oral", "Practical", "Written"]
                                 },
+                                         
+       {
+        key: "6B",
+        title: "6-B Practice Physical sport",
+        description: "For physically challenged",
+        sclValues: { Attitude:8, Oral:12, Practical:0, Written:0 },
+        evaluations: ["Attitude", "Oral", "Practical", "Written"]
+    },
+
                                 {
-                                    key: "6B",
-                                    title: "6-B Practice Artistic Activities",
+                                    key: "6C",
+                                    title: "6-C Practice Artistic Activities",
                                     description: "Visual arts - performing arts",
                                     sclValues: { Attitude: 4, Oral: 4, Practical: 10, Written: 2 },
                                     evaluations: ["Attitude", "Oral", "Practical", "Written"]
-                                }
+                                },
+
+
                             ].map(skillTemplate => {
                                 const skillData = data[skillTemplate.key];
                                 if (!skillData) return null;

@@ -1229,12 +1229,12 @@ export default function BulletinNurseryForm() {
 
                     {/* Groupe de boutons de droite */}
                     <div className="flex flex-col xs:flex-row gap-3 w-full sm:w-auto order-2 sm:order-0">
-                        <button
+                        {/* <button
                             onClick={handleReset}
                             className="w-full xs:w-auto px-3 py-2 sm:px-4 sm:py-2 border rounded text-xs sm:text-sm"
                         >
                             Reset
-                        </button>
+                        </button> */}
                         <button
                             onClick={handlePreview}
                             className="w-full xs:w-auto px-3 py-2 sm:px-4 sm:py-2 bg-blue-600 text-white rounded text-xs sm:text-sm"

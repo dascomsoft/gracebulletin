@@ -32,61 +32,76 @@ const SKILLS_TEMPLATE = [
         key: "2A",
         title: "2A- Use basic Notions in Mathematics",
         description: "Sets and logic - number and numeration - measurement - graphs and statistics - geometry",
-        sclValues: { Attitude: 5, Oral: 10, Practical: 15, Written: 20 },
+        sclValues: { Attitude: 2, Oral: 10, Practical:3, Written:15 },
         evaluations: ["Attitude", "Oral", "Practical", "Written"]
     },
     {
         key: "2B",
         title: "2B- Use basic Notions in science and technology",
         description: "Health and environmental education - technology and engineering",
-        sclValues: { Attitude: 5, Oral: 10, Practical: 15, Written: 20 },
+        sclValues: { Attitude: 5, Oral:5, Practical:5, Written:15 },
         evaluations: ["Attitude", "Oral", "Practical", "Written"]
     },
     {
         key: "3A",
         title: "3A- Practise Social Value",
         description: "History and geography",
-        sclValues: { Attitude: 10, Oral: 6, Practical: 2, Written: 2 },
+        sclValues: { Attitude:10, Oral: 6, Practical:2, Written: 2 },
         evaluations: ["Attitude", "Oral", "Practical", "Written"]
     },
     {
         key: "3B",
         title: "3B- Practise Citizenship values",
         description: "Civics - human right - moral education",
-        sclValues: { Attitude: 10, Oral: 6, Practical: 2, Written: 2 },
+        sclValues: { Attitude: 10, Oral:10, Practical:5, Written: 5 },
         evaluations: ["Attitude", "Oral", "Practical", "Written"]
     },
     {
         key: "4A",
         title: "4A- Demonstrate Autonomy, Spirit of Initiative Creativity and Entrepreneurship in Vocational Studies",
         description: "Needles work - house craft - laundry and food nutrition",
-        sclValues: { Attitude: 2, Oral: 3, Practical: 10, Written: 5 },
+        sclValues: { Attitude:3, Oral:2, Practical:6, Written: 4 },
         evaluations: ["Attitude", "Oral", "Practical", "Written"]
     },
     {
         key: "4B",
         title: "4B- Demonstrate autonomy, Spirit of Initiative Creativity and entrepreneurship",
         description: "Agricultural tool - farming and gardening - livestock farming",
-        sclValues: { Attitude: 2, Oral: 3, Practical: 10, Written: 5 },
+        sclValues: { Attitude:3, Oral: 2, Practical: 6, Written: 4 },
         evaluations: ["Attitude", "Oral", "Practical", "Written"]
     },
     {
         key: "5",
         title: "5- Use Basic Concepts and Tools of Information and Communication Technologies",
         description: "The computer and ICT tools - Internet and communication ethics",
-        sclValues: { Attitude: 5, Oral: 5, Practical: 20, Written: 10 },
+        sclValues: { Attitude: 3, Oral:3, Practical: 10, Written:4 },
         evaluations: ["Attitude", "Oral", "Practical", "Written"]
     },
     {
         key: "6A",
         title: "6-A Practise Physical and Sports Activities",
         description: "Movement - jumping - team sports - gymnastics - relay - sprint",
-        sclValues: { Attitude: 3, Oral: 3, Practical: 10, Written: 4 },
+        sclValues: { Attitude: 3, Oral:3, Practical: 10, Written: 4 },
         evaluations: ["Attitude", "Oral", "Practical", "Written"]
     },
-    {
+
+
+
+
+       {
         key: "6B",
-        title: "6-B Practice Artistic Activities",
+        title: "6-B Practice Physical sport",
+        description: "For physically challenged",
+        sclValues: { Attitude:8, Oral:12, Practical:0, Written:0 },
+        evaluations: ["Attitude", "Oral", "Practical", "Written"]
+    },
+
+
+
+
+    {
+        key: "6C",
+        title: "6-C Practice Artistic Activities",
         description: "Visual arts - performing arts",
         sclValues: { Attitude: 4, Oral: 4, Practical: 10, Written: 2 },
         evaluations: ["Attitude", "Oral", "Practical", "Written"]
@@ -719,12 +734,12 @@ export default function BulletinForm() {
 
                     {/* Groupe de boutons de droite */}
                     <div className="flex flex-col xs:flex-row gap-3 w-full sm:w-auto order-2 sm:order-none">
-                        <button
+                        {/* <button
                             onClick={handleReset}
                             className="w-full xs:w-auto px-3 py-2 sm:px-4 sm:py-2 border rounded text-xs sm:text-sm"
                         >
                             Reset
-                        </button>
+                        </button> */}
                         <button
                             onClick={handlePreview}
                             className="w-full xs:w-auto px-3 py-2 sm:px-4 sm:py-2 bg-blue-600 text-white rounded text-xs sm:text-sm"
