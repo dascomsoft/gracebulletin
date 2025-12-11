@@ -13,32 +13,39 @@ const DECISIONS = ["Admis", "Echoue"];
 const CLASS_OPTIONS = ["Petite Section", "Moyenne Section", "Grande Section"];
 
 const DOMAINES_TEMPLATE = [
-     {
-        key: "langues",
-        title: "Domaine 1 : LANGUES ET COMMUNICATIONS",
-        activities: "-Graphisme , -English , -Langues nationales , -Expression gestuelle"
-    },
-       {
-        key: "sciences",
-        title: "Domaine 2 : EVEIL SCIENTIFIQUE ET TECHNOLOGIQUE",
-        activities: "- Initiation aux Mthematiques , - Education Sensorielle et perceptive , -Technologie de l'information et de la communication , - Sciences et technologies"
-    },
-     {
-        key: "vie",
-        title: "Domaine 3 : VIE COURANTE",
-        activities: "-Education à la santé(Nutrition et à environnement)"
+    {
+        title: "COMMUNIQUER EN FRANCAIS"
     },
     {
-        key: "art",
-        title: "Dmaine 4 : CREATION ARTISTIQUE",
-        activities: "-Activités manuelles , -Creation artistique"
+        title: "COMMUNIQUER EN ANGLAIS"
     },
     {
-        key: "motricite",
-        title: "Domaine 5 : MOTRICITE GENERALE",
-        activities: "-Motrice generale"
+        title: "PRATIQUER UNE LANGUE NATIONALE"
     },
-   
+    {
+        title: "MATHEMATIQUES"
+    },
+    {
+        title: "SCIENCE ET TECHNOLOGIE"
+    },
+    {
+        title: "VALEURS SOCIALES"
+    },
+    {
+        title: "VALEURS CITOYENNES"
+    },
+    {
+        title: "DEMONTRER L'AUTONOMIE"
+    },
+    {
+        title: "TIC"
+    },
+    {
+        title: "ACTIVITES SPORTIVE"
+    },
+    {
+        title: "ACTIVITES ARTISTIQUES"
+    }
 ];
 
 export default function BulletinMaternelle() {
@@ -102,8 +109,8 @@ export default function BulletinMaternelle() {
             return savedData.donnees;
         } else {
             const racine = {};
-            DOMAINES_TEMPLATE.forEach(domaine => {
-                racine[domaine.key] = {
+            DOMAINES_TEMPLATE.forEach((domaine, index) => {
+                racine[`domaine${index}`] = {
                     periode1: "",
                     periode2: "",
                     periode3: "",
@@ -138,21 +145,23 @@ export default function BulletinMaternelle() {
     const changerEntete = (k, v) => setEntetesPeriodes(p => ({ ...p, [k]: v }));
     const changerMeta = (k, v) => setMeta(m => ({ ...m, [k]: v }));
 
-    const changerEvaluation = (cleDomaine, periode, valeur) => {
+    const changerEvaluation = (index, periode, valeur) => {
+        const cle = `domaine${index}`;
         setDonnees(prev => ({
             ...prev,
-            [cleDomaine]: {
-                ...prev[cleDomaine],
+            [cle]: {
+                ...prev[cle],
                 [periode]: valeur
             }
         }));
     };
 
-    const changerExpression = (cleDomaine, valeur) => {
+    const changerExpression = (index, valeur) => {
+        const cle = `domaine${index}`;
         setDonnees(prev => ({
             ...prev,
-            [cleDomaine]: {
-                ...prev[cleDomaine],
+            [cle]: {
+                ...prev[cle],
                 expression: valeur
             }
         }));
@@ -235,8 +244,7 @@ export default function BulletinMaternelle() {
 
             {/* En-tête */}
             <div className="w-full max-w-6xl mb-2 print:mb-1 border-b border-gray-300 pb-2 print:pb-1">
-                <div className="flex flex-col items-center text-gray-600 text-xs print:text-xs md:flex-row md:justify-between md:items-start "
-                >
+                <div className="flex flex-col items-center text-gray-600 text-xs print:text-xs md:flex-row md:justify-between md:items-start">
                     {/* Bloc gauche */}
                     <div className="text-left mb-2 md:mb-0 md:w-1/3">
                         <div className="font-bold text-[11px] sm:text-xs md:text-sm">RÉPUBLIQUE DU CAMEROUN</div>
@@ -393,7 +401,6 @@ export default function BulletinMaternelle() {
                         <thead>
                             <tr className="bg-gray-100">
                                 <th className="border p-2 w-48">Domaines</th>
-                                <th className="border p-2 w-96">Activités</th>
                                 <th className="border p-2 text-center w-24">
                                     <select className="text-xs" value={entetesPeriodes.h1} onChange={(e) => changerEntete("h1", e.target.value)}>
                                         {PERIODE_OPTIONS.map(m => <option key={m}>{m}</option>)}
@@ -414,23 +421,21 @@ export default function BulletinMaternelle() {
                         </thead>
 
                         <tbody>
-                            {DOMAINES_TEMPLATE.map(domaine => {
-                                const state = donnees[domaine.key];
+                            {DOMAINES_TEMPLATE.map((domaine, index) => {
+                                const cle = `domaine${index}`;
+                                const state = donnees[cle];
                                 return (
-                                    <tr key={domaine.key} className="bg-white">
+                                    <tr key={index} className="bg-white">
                                         <td className="border p-2 font-semibold">
                                             <div className="text-sm">{domaine.title}</div>
-                                        </td>
-                                        <td className="border p-2">
-                                            <div className="text-xs text-gray-600">{domaine.activities}</div>
                                         </td>
 
                                         {/* Évaluations pour chaque période */}
                                         <td className="border p-1 text-center">
                                             <select
                                                 className="w-full text-xs p-1"
-                                                value={state.periode1 || ""}
-                                                onChange={(e) => changerEvaluation(domaine.key, "periode1", e.target.value)}
+                                                value={state?.periode1 || ""}
+                                                onChange={(e) => changerEvaluation(index, "periode1", e.target.value)}
                                             >
                                                 <option value="">-</option>
                                                 {APPRECIATIONS.map(a => <option key={a} value={a}>{a}</option>)}
@@ -440,8 +445,8 @@ export default function BulletinMaternelle() {
                                         <td className="border p-1 text-center">
                                             <select
                                                 className="w-full text-xs p-1"
-                                                value={state.periode2 || ""}
-                                                onChange={(e) => changerEvaluation(domaine.key, "periode2", e.target.value)}
+                                                value={state?.periode2 || ""}
+                                                onChange={(e) => changerEvaluation(index, "periode2", e.target.value)}
                                             >
                                                 <option value="">-</option>
                                                 {APPRECIATIONS.map(a => <option key={a} value={a}>{a}</option>)}
@@ -451,8 +456,8 @@ export default function BulletinMaternelle() {
                                         <td className="border p-1 text-center">
                                             <select
                                                 className="w-full text-xs p-1"
-                                                value={state.periode3 || ""}
-                                                onChange={(e) => changerEvaluation(domaine.key, "periode3", e.target.value)}
+                                                value={state?.periode3 || ""}
+                                                onChange={(e) => changerEvaluation(index, "periode3", e.target.value)}
                                             >
                                                 <option value="">-</option>
                                                 {APPRECIATIONS.map(a => <option key={a} value={a}>{a}</option>)}
@@ -462,8 +467,8 @@ export default function BulletinMaternelle() {
                                         <td className="border p-1 text-center">
                                             <select
                                                 className="w-full text-xs p-1"
-                                                value={state.expression || ""}
-                                                onChange={(e) => changerExpression(domaine.key, e.target.value)}
+                                                value={state?.expression || ""}
+                                                onChange={(e) => changerExpression(index, e.target.value)}
                                             >
                                                 <option value="">-</option>
                                                 {APPRECIATIONS.map(a => <option key={a} value={a}>{a}</option>)}
@@ -543,7 +548,7 @@ export default function BulletinMaternelle() {
                 </div>
 
                 {/* Information de Contact */}
-                  <div className="text-center text-[8px] mt-9 print:text-[7px] bg-blue-50 border border-blue-200 rounded p-0.5  print:mt-9 mb-2 print:mb-0 print:mx-4">
+                <div className="text-center text-[8px] mt-9 print:text-[7px] bg-blue-50 border border-blue-200 rounded p-0.5 print:mt-9 mb-2 print:mb-0 print:mx-4">
                     <div className="receipt-footer">
                         <div>
                             <p>Téléphone: (+237) 696-308-503 / WhatsApp: 651989899</p>
@@ -565,12 +570,6 @@ export default function BulletinMaternelle() {
                     </button>
 
                     <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                        {/* <button
-                            onClick={handleReinitialiser}
-                            className="px-4 py-2 border rounded text-sm hover:bg-gray-100 transition w-full sm:w-auto"
-                        >
-                            Réinitialiser
-                        </button> */}
                         <button
                             onClick={handleApercu}
                             className="px-4 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition w-full sm:w-auto"

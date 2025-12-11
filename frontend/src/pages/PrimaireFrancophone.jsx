@@ -11,84 +11,91 @@ const COMPETENCES_TEMPLATE = [
         key: "1A",
         title: "1A- Communiquer en Anglais",
         description: "Écoute - expression orale - écriture - lecture",
-        Notes: { "Savoir-être": 5, Oral: 20, Écrit: 15 },
+        Notes: { "Savoir-être": 3, Oral: 12, Écrit: 15 },
         evaluations: ["Savoir-être", "Oral", "Écrit"]
     },
     {
         key: "1B",
         title: "1B- Communiquer en Français",
         description: "Compréhension orale - lecture - production écrite - grammaire - conjugaison - vocabulaire",
-        Notes: { "Savoir-être": 5, Oral: 20, Écrit: 15 },
+        Notes: { "Savoir-être":3, Oral:12, Écrit: 15 },
         evaluations: ["Savoir-être", "Oral", "Écrit"]
     },
     {
         key: "1C",
-        title: "1C- Communiquer dans une Langue Nationale",
+        title: "1C- Pratiguer une Langue Nationale",
         description: "Coutumes - traditions - mode de vie - interprétation des phénomènes",
-        Notes: { Oral: 15, Pratique: 5 },
-        evaluations: ["Oral", "Pratique"]
+        Notes: {"Savoir-être":2, Oral:10, Pratique:2 ,Écrit:6},
+        evaluations: ["Savoir-être","Oral", "Pratique", "Écrit"]
     },
     {
         key: "2A",
         title: "2A- Utiliser les Notions de Base en Mathématiques",
         description: "Ensembles et logique - nombre et numération - mesure - graphiques et statistiques - géométrie",
-        Notes: { "Savoir-être": 5, Oral: 10, Pratique: 15, Écrit: 20 },
-        evaluations: ["Savoir-être", "Oral", "Pratique", "Écrit"]
+        Notes: { "Savoir-être": 4, Oral: 8, Écrit: 28 },
+        evaluations: ["Savoir-être", "Oral", "Écrit"]
     },
     {
         key: "2B",
         title: "2B- Utiliser les Notions de Base en Sciences et Technologie",
         description: "Éducation à la santé et à l'environnement - technologie et ingénierie",
-        Notes: { "Savoir-être": 5, Oral: 10, Pratique: 15, Écrit: 20 },
+        Notes: { "Savoir-être": 7, Oral:6, Pratique:20, Écrit:7 },
         evaluations: ["Savoir-être", "Oral", "Pratique", "Écrit"]
     },
     {
         key: "3A",
         title: "3A- Pratiquer les Valeurs Sociales",
         description: "Histoire et géographie",
-        Notes: { "Savoir-être": 10, Oral: 6, Pratique: 2, Écrit: 2 },
+        Notes: { "Savoir-être": 4, Oral: 3, Pratique: 5, Écrit: 8 },
         evaluations: ["Savoir-être", "Oral", "Pratique", "Écrit"]
     },
     {
         key: "3B",
-        title: "3B- Pratiquer les Valeurs Civiques",
+        title: "3B- Pratiquer les Valeurs Citoyennes",
         description: "Éducation civique - droits de l'homme - éducation morale",
-        Notes: { "Savoir-être": 10, Oral: 6, Pratique: 2, Écrit: 2 },
+        Notes: { "Savoir-être":3, Oral: 3, Pratique:5, Écrit: 9 },
         evaluations: ["Savoir-être", "Oral", "Pratique", "Écrit"]
     },
     {
         key: "4A",
         title: "4A- Démontrer l'Autonomie, l'Esprit d'Initiative, la Créativité et l'Entreprenariat dans les Études Professionnelles",
         description: "Travaux d'aiguille - arts ménagers - blanchisserie et nutrition alimentaire",
-        Notes: { "Savoir-être": 2, Oral: 3, Pratique: 10, Écrit: 5 },
+        Notes: { "Savoir-être": 2, Oral: 5, Pratique: 11, Écrit: 2 },
         evaluations: ["Savoir-être", "Oral", "Pratique", "Écrit"]
     },
     {
         key: "4B",
-        title: "4B- Démontrer l'autonomie, l'esprit d'initiative, la créativité et l'entreprenariat",
+        title: "4B- Démontrer l'autonomie, l'esprit d'initiative, de créativité et d'entreprenariat",
         description: "Outils agricoles - agriculture et jardinage - élevage",
-        Notes: { "Savoir-être": 2, Oral: 3, Pratique: 10, Écrit: 5 },
+        Notes: { "Savoir-être": 2, Oral: 5, Pratique: 11, Écrit: 2 },
         evaluations: ["Savoir-être", "Oral", "Pratique", "Écrit"]
     },
     {
         key: "5",
         title: "5- Utiliser les Concepts de Base et les Outils des Technologies de l'Information et de la Communication",
         description: "L'ordinateur et les outils TIC - Internet et éthique de la communication",
-        Notes: { "Savoir-être": 5, Oral: 5, Pratique: 20, Écrit: 10 },
+        Notes: { "Savoir-être": 6, Oral: 4, Pratique: 20, Écrit: 10 },
         evaluations: ["Savoir-être", "Oral", "Pratique", "Écrit"]
     },
     {
         key: "6A",
-        title: "6-A Pratiquer les Activités Physiques et Sportives",
+        title: "6-A Pratiquer les Activités Physiques et Sportives pour les apprenants aptent",
         description: "Mouvement - saut - sports d'équipe - gymnastique - relais - sprint",
-        Notes: { "Savoir-être": 3, Oral: 3, Pratique: 10, Écrit: 4 },
+        Notes: { "Savoir-être": 4, Oral: 2, Pratique: 12, Écrit: 2 },
         evaluations: ["Savoir-être", "Oral", "Pratique", "Écrit"]
     },
-    {
+        {
         key: "6B",
-        title: "6-B Pratiquer les Activités Artistiques",
+        title: "6-B Pratiquer les Activités Physiques et Sportives pour les apprenants inaptent",
+        description: "Mouvement - saut - sports d'équipe - gymnastique - relais - sprint",
+        Notes: { "Savoir-être": 2, Oral: 3,  Écrit: 15 },
+        evaluations: ["Savoir-être", "Oral",  "Écrit"]
+    },
+    {
+        key: "6C",
+        title: "6-C Pratiquer les Activités Artistiques",
         description: "Arts visuels - arts du spectacle",
-        Notes: { "Savoir-être": 4, Oral: 4, Pratique: 10, Écrit: 2 },
+        Notes: { "Savoir-être": 2, Oral: 2, Pratique: 12, Écrit: 4 },
         evaluations: ["Savoir-être", "Oral", "Pratique", "Écrit"]
     }
 ];

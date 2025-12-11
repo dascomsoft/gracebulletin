@@ -32,14 +32,14 @@ const SKILLS_TEMPLATE = [
         key: "2A",
         title: "2A- Use basic Notions in Mathematics",
         description: "Sets and logic - number and numeration - measurement - graphs and statistics - geometry",
-        sclValues: { Attitude: 2, Oral: 10, Practical:3, Written:15 },
+        sclValues: { Attitude: 5, Oral: 10, Practical:15, Written:30 },
         evaluations: ["Attitude", "Oral", "Practical", "Written"]
     },
     {
         key: "2B",
         title: "2B- Use basic Notions in science and technology",
         description: "Health and environmental education - technology and engineering",
-        sclValues: { Attitude: 5, Oral:5, Practical:5, Written:15 },
+        sclValues: { Attitude: 5, Oral:10, Practical:15, Written:20 },
         evaluations: ["Attitude", "Oral", "Practical", "Written"]
     },
     {
