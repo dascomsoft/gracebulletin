@@ -4,58 +4,70 @@
 
 
 
-// import React from 'react'
-// import Onboarding from "./pages/Onboarding";
+
+
+
+// import React from 'react';
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import Login from './pages/Login';
-// import Signup from './pages/Signup';
+// import Onboarding from "./pages/Onboarding";
 // import Dashboard from './pages/Dashboard';
 // import AnglophoneSection from './pages/AnglophoneSection';
 // import FrancophoneSection from './pages/FrancophoneSection';
 // import BulletinForm from './pages/BulletinForm';
 // import BulletinPreview from './pages/BulletinPreview';
-// import PrimaireFrancophone from './pages/PrimaireFrancophone'
-// import ApercuPrimaire from './pages/ApercuPrimaire'
-// import BulletinMaternelle from './pages/BulletinMaternelle'
+// import PrimaireFrancophone from './pages/PrimaireFrancophone';
+// import ApercuPrimaire from './pages/ApercuPrimaire';
+// import BulletinMaternelle from './pages/BulletinMaternelle';
 // import PreviewMaternelle from './pages/PreviewMaternelle';
 // import BulletinNurseryForm from './pages/BulletinNurseryForm';
 // import BulletinNurseryPreview from './pages/BulletinNurseryPreview';
 // import AnnualReport from './pages/AnnualReport';
 // import BulletinAnnuel from './pages/BulletinAnnuel';
+// import ReportPreview from './pages/ReportPreview';
+// import PrintBulletin from './pages/PrintBulletin';
+
+// // NOUVELLES PAGES
+// import ClassList from './pages/ClassList';
+// import StudentList from './pages/StudentList';
+// import StudentDashboard from './pages/StudentDashboard';
+// import StudentBulletins from './pages/StudentBulletins';
 
 // function App() {
-
 //   return (
-    
-//    <Router>
+//     <Router>
 //       <Routes>
 //         <Route path="/" element={<Onboarding />} />
-//         <Route path="/login" element={<Login />} />
-//         <Route path="/signup" element={<Signup />} />
 //         <Route path="/dashboard" element={<Dashboard />} />
 //         <Route path="/anglophone" element={<AnglophoneSection />} />
 //         <Route path="/francophone" element={<FrancophoneSection />} />
         
-//         {/* Routes pour les bulletins */}
-//         <Route path="/bulletin-anglophone" element={<BulletinForm />} />
-//         <Route path="/primaire-francophone" element={<PrimaireFrancophone />} />
+//         {/* HIÉRARCHIE DES CLASSES ET ÉLÈVES */}
+//         <Route path="/:section/:cycle/classes" element={<ClassList />} />
+//         <Route path="/class/:classId/students" element={<StudentList />} />
+//         <Route path="/student/:studentId/dashboard" element={<StudentDashboard />} />
+//         <Route path="/student/:studentId/bulletins" element={<StudentBulletins />} />
+        
+//         {/* BULLETINS */}
+//         {/* <Route path="/bulletin-anglophone" element={<BulletinForm />} /> */}
+//         <Route path="/bulletin-form/:studentId" element={<BulletinForm />} />
 //         <Route path="/preview" element={<BulletinPreview />} />
+//         <Route path="/primaire-francophone" element={<PrimaireFrancophone />} />
 //         <Route path="/apercu-primaire" element={<ApercuPrimaire />} />
 //         <Route path="/bulletin-maternelle" element={<BulletinMaternelle />} />
 //         <Route path="/preview-maternelle" element={<PreviewMaternelle />} />
 //         <Route path="/nursery" element={<BulletinNurseryForm />} />
 //         <Route path="/nursery-preview" element={<BulletinNurseryPreview />} />
-        
-//         {/* Nouvelles routes pour AnnualReport et BulletinAnnuel */}
 //         <Route path="/annual-report" element={<AnnualReport />} />
 //         <Route path="/bulletin-annuel" element={<BulletinAnnuel />} />
+//         <Route path="/report-preview" element={<ReportPreview />} />
+//         <Route path="/print-bulletin" element={<PrintBulletin />} />
 
 //       </Routes>
 //     </Router>
-//   )
+//   );
 // }
 
-// export default App
+// export default App;
 
 
 
@@ -72,59 +84,160 @@
 
 
 
-
-
-
-
-
-
-
-
-import React from 'react'
-import Onboarding from "./pages/Onboarding";
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Onboarding from "./pages/Onboarding";
 import Dashboard from './pages/Dashboard';
 import AnglophoneSection from './pages/AnglophoneSection';
 import FrancophoneSection from './pages/FrancophoneSection';
 import BulletinForm from './pages/BulletinForm';
 import BulletinPreview from './pages/BulletinPreview';
-import PrimaireFrancophone from './pages/PrimaireFrancophone'
-import ApercuPrimaire from './pages/ApercuPrimaire'
-import BulletinMaternelle from './pages/BulletinMaternelle'
+import PrimaireFrancophone from './pages/PrimaireFrancophone';
+import ApercuPrimaire from './pages/ApercuPrimaire';
+import BulletinMaternelle from './pages/BulletinMaternelle';
 import PreviewMaternelle from './pages/PreviewMaternelle';
 import BulletinNurseryForm from './pages/BulletinNurseryForm';
 import BulletinNurseryPreview from './pages/BulletinNurseryPreview';
 import AnnualReport from './pages/AnnualReport';
 import BulletinAnnuel from './pages/BulletinAnnuel';
+import ReportPreview from './pages/ReportPreview';
+import PrintBulletin from './pages/PrintBulletin';
+import PrintAnnual from './pages/PrintAnnual';
+import PrintAnnuel from './pages/PrintAnnuel';
+import StudentsListGeneral from './pages/StudentsListGeneral';
+
+
+// NOUVELLES PAGES
+import ClassList from './pages/ClassList';
+import StudentList from './pages/StudentList';
+import StudentDashboard from './pages/StudentDashboard';
+import StudentBulletins from './pages/StudentBulletins';
+// import ViewBulletin from './pages/ViewBulletin';
 
 function App() {
-
   return (
-    
-   <Router>
+    <Router>
       <Routes>
         <Route path="/" element={<Onboarding />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/anglophone" element={<AnglophoneSection />} />
         <Route path="/francophone" element={<FrancophoneSection />} />
         
-        {/* Routes pour les bulletins */}
+        {/* HIÉRARCHIE DES CLASSES ET ÉLÈVES */}
+        <Route path="/:section/:cycle/classes" element={<ClassList />} />
+        <Route path="/class/:classId/students" element={<StudentList />} />
+        <Route path="/student/:studentId/dashboard" element={<StudentDashboard />} />
+        <Route path="/student/:studentId/bulletins" element={<StudentBulletins />} />
+        
+        {/* BULLETINS TRIMESTRIELS PAR SECTION */}
+        {/* Anglophone */}
+        <Route path="/bulletin/anglophone/:studentId" element={<BulletinForm />} />
+        <Route path="/bulletin/anglophone/term1/:studentId" element={<BulletinForm />} />
+        <Route path="/bulletin/anglophone/term2/:studentId" element={<BulletinForm />} />
+        <Route path="/bulletin/anglophone/term3/:studentId" element={<BulletinForm />} />
+        
+        {/* Francophone Primaire */}
+        <Route path="/bulletin/francophone/:studentId" element={<PrimaireFrancophone />} />
+        <Route path="/bulletin/francophone/trimestre1/:studentId" element={<PrimaireFrancophone />} />
+        <Route path="/bulletin/francophone/trimestre2/:studentId" element={<PrimaireFrancophone />} />
+        <Route path="/bulletin/francophone/trimestre3/:studentId" element={<PrimaireFrancophone />} />
+        
+        {/* Maternelle */}
+        <Route path="/bulletin/maternelle/:studentId" element={<BulletinMaternelle />} />
+        <Route path="/bulletin/maternelle/trimestre1/:studentId" element={<BulletinMaternelle />} />
+        <Route path="/bulletin/maternelle/trimestre2/:studentId" element={<BulletinMaternelle />} />
+        <Route path="/bulletin/maternelle/trimestre3/:studentId" element={<BulletinMaternelle />} />
+        
+        {/* Nursery */}
+        <Route path="/bulletin/nursery/:studentId" element={<BulletinNurseryForm />} />
+        <Route path="/bulletin/nursery/term1/:studentId" element={<BulletinNurseryForm />} />
+        <Route path="/bulletin/nursery/term2/:studentId" element={<BulletinNurseryForm />} />
+        <Route path="/bulletin/nursery/term3/:studentId" element={<BulletinNurseryForm />} />
+        
+        {/* BULLETINS ANNUELS PAR SECTION */}
+        <Route path="/bulletin/annual/anglophone/:studentId" element={<AnnualReport />} />
+        <Route path="/bulletin/annual/francophone/:studentId" element={<BulletinAnnuel />} />
+        
+        {/* ANCIENNES ROUTES POUR COMPATIBILITÉ */}
+        <Route path="/bulletin-form/:studentId" element={<BulletinForm />} />
         <Route path="/bulletin-anglophone" element={<BulletinForm />} />
         <Route path="/primaire-francophone" element={<PrimaireFrancophone />} />
-        <Route path="/preview" element={<BulletinPreview />} />
-        <Route path="/apercu-primaire" element={<ApercuPrimaire />} />
         <Route path="/bulletin-maternelle" element={<BulletinMaternelle />} />
-        <Route path="/preview-maternelle" element={<PreviewMaternelle />} />
         <Route path="/nursery" element={<BulletinNurseryForm />} />
-        <Route path="/nursery-preview" element={<BulletinNurseryPreview />} />
-        
-        {/* Nouvelles routes pour AnnualReport et BulletinAnnuel */}
         <Route path="/annual-report" element={<AnnualReport />} />
         <Route path="/bulletin-annuel" element={<BulletinAnnuel />} />
 
+
+        {/*PRINTING ROUTES */}
+
+         <Route path="/print-bulletin-francophone" element={<PrintBulletin />} />
+         <Route path="/print-bulletin-maternelle" element={<PrintBulletin />} />
+         <Route path="/print-bulletin-nursery" element={<PrintBulletin />} />
+        <Route path="/print-annual" element={<PrintAnnual />} />
+        <Route path="/print-annuel" element={<PrintAnnuel />} />
+        {/* PRÉVISUALISATION ET IMPRESSION */}
+        <Route path="/preview" element={<BulletinPreview />} />
+        <Route path="/apercu-primaire" element={<ApercuPrimaire />} />
+        <Route path="/preview-maternelle" element={<PreviewMaternelle />} />
+        <Route path="/nursery-preview" element={<BulletinNurseryPreview />} />
+        <Route path="/report-preview" element={<ReportPreview />} />
+        <Route path="/print-bulletin" element={<PrintBulletin />} />
+        
+        {/* VISUALISATION BULLETIN general des eleves*/}
+         <Route path="/students-list-general" element={<StudentsListGeneral />} />
+
+        
+        {/* ROUTE 404 */}
+        <Route path="*" element={
+          <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="text-center">
+              <h1 className="text-4xl font-bold text-gray-800 mb-4">404</h1>
+              <p className="text-gray-600 mb-6">Page non trouvée</p>
+              <a 
+                href="/dashboard" 
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Retour au tableau de bord
+              </a>
+            </div>
+          </div>
+        } />
       </Routes>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

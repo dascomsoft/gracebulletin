@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -165,14 +166,14 @@ const BulletinNurseryPreview = () => {
                     <table className="w-full text-[10px] border-collapse print:text-[9px] border border-gray-400">
                         <thead>
                             <tr className="bg-gray-200">
-                                <th className="border border-gray-400 p-1 text-center w-8">EVALUATION</th>
+                                <th className="border border-gray-400 p-1 text-center w-20 print:w-16">EVALUATION</th> {/* CHANGÉ: de w-8 à w-20 */}
                                 <th className="border border-gray-400 p-1 text-center">{monthHeaders.m1}</th>
                                 <th className="border border-gray-400 p-1 text-center">{monthHeaders.m2}</th>
                                 <th className="border border-gray-400 p-1 text-center">{monthHeaders.m3}</th>
                                 <th className="border border-gray-400 p-1 text-center w-20" rowSpan="2">APPRECIATION</th>
                             </tr>
                             <tr className="bg-gray-200">
-                                <th className="border border-gray-400 p-1 font-semibold">SUBJECTS</th>
+                                <th className="border border-gray-400 p-1 font-semibold w-80 print:w-64">SUBJECTS</th> {/* CHANGÉ: ajouté w-80 */}
                                 <th className="border border-gray-400 p-1 text-center">Remarks</th>
                                 <th className="border border-gray-400 p-1 text-center">Remarks</th>
                                 <th className="border border-gray-400 p-1 text-center">Remarks</th>
@@ -182,7 +183,11 @@ const BulletinNurseryPreview = () => {
                         <tbody>
                             {SUBJECTS.map((subject, index) => (
                                 <tr key={subject} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                                    <td className="border border-gray-400 p-1 font-medium">{subject}</td>
+                                    <td className="border border-gray-400 p-1 font-medium w-80 print:w-64 min-w-[300px] print:min-w-[200px]"> {/* CHANGÉ: ajouté largeurs */}
+                                        <div className="text-[11px] print:text-[10px] leading-tight">
+                                            {subject}
+                                        </div>
+                                    </td>
                                     <td className="border border-gray-400 p-1 text-center">{subjectsData[subject]?.remarks1 || "-"}</td>
                                     <td className="border border-gray-400 p-1 text-center">{subjectsData[subject]?.remarks2 || "-"}</td>
                                     <td className="border border-gray-400 p-1 text-center">{subjectsData[subject]?.remarks3 || "-"}</td>
@@ -263,7 +268,7 @@ const BulletinNurseryPreview = () => {
                 </div>
 
                 {/* Contact Information */}
-                   <div className="text-center text-[8px] mt-2 print:text-[7px] bg-blue-50 border border-blue-200 rounded p-0.5  print:mt-2 mb-2 print:mb-0 print:mx-4">
+                   <div className="text-center text-[8px] mt-11 print:text-[7px] bg-blue-50 border border-blue-200 rounded p-0.5  print:mt-11 mb-2 print:mb-0 print:mx-4">
                     <div className="receipt-footer">
                         <div>
                             <p>Téléphone: (+237) 696-308-503 / WhatsApp: 651989899</p>
@@ -329,13 +334,43 @@ const BulletinNurseryPreview = () => {
                     table {
                         page-break-inside: avoid;
                         font-size: 8px;
+                        width: 100%;
                     }
                     th, td {
-                        padding: 2px;
+                        padding: 3px 4px;
                         line-height: 1.1;
+                        vertical-align: middle;
+                    }
+                    /* Largeur des colonnes pour impression */
+                    th:nth-child(1), td:nth-child(1) {
+                        width: 40% !important;
+                        min-width: 200px !important;
+                    }
+                    th:nth-child(2), td:nth-child(2),
+                    th:nth-child(3), td:nth-child(3),
+                    th:nth-child(4), td:nth-child(4) {
+                        width: 12% !important;
+                        min-width: 60px !important;
+                    }
+                    th:nth-child(5), td:nth-child(5) {
+                        width: 24% !important;
+                        min-width: 80px !important;
                     }
                     * {
                         box-sizing: border-box;
+                    }
+                    /* Ajustement du texte pour impression */
+                    .text-\\[11px\\] {
+                        font-size: 10px !important;
+                    }
+                    .text-\\[10px\\] {
+                        font-size: 9px !important;
+                    }
+                    .w-80 {
+                        width: 65% !important;
+                    }
+                    .min-w-\\[300px\\] {
+                        min-width: 200px !important;
                     }
                 }
             `}</style>
@@ -344,12 +379,6 @@ const BulletinNurseryPreview = () => {
 };
 
 export default BulletinNurseryPreview;
-
-
-
-
-
-
 
 
 

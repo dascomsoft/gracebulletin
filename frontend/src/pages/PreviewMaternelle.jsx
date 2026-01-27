@@ -1,6 +1,3 @@
-
-
-
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import jsPDF from "jspdf";
@@ -50,7 +47,13 @@ const PreviewMaternelle = () => {
       pdf.setFontSize(12);
       pdf.text("BULLETIN SCOLAIRE", pageWidth / 2 + marginLeft, yPos, { align: "center" });
 
+      // Ajout de l'année scolaire sous le titre
       yPos += 5;
+      pdf.setFontSize(9);
+      pdf.setFont("helvetica", "normal");
+      pdf.text(`Année Scolaire: ${meta.anneeScolaire || "................................."}`, pageWidth / 2 + marginLeft, yPos, { align: "center" });
+
+      yPos += 8;
       pdf.setDrawColor(0);
       pdf.setLineWidth(0.1);
       pdf.line(marginLeft, yPos, pageWidth + marginLeft, yPos);
@@ -65,14 +68,24 @@ const PreviewMaternelle = () => {
       }
 
       const infoX = photoEleve ? marginLeft + 25 : marginLeft;
+      
+      // Première ligne : Nom + Matricule
       pdf.text(`Nom: ${meta.nomEleve || "................................."}`, infoX, yPos);
       pdf.text(`N° Matricule: ${meta.matricule || "................................."}`, infoX + 70, yPos);
+      
+      // Deuxième ligne : Sexe + Classe
       yPos += 5;
       pdf.text(`Sexe: ${meta.sexe || "................................."}`, infoX, yPos);
       pdf.text(`Classe: ${meta.classe || "................................."}`, infoX + 70, yPos);
+      
+      // Troisième ligne : Trimestre + Enseignant
       yPos += 5;
       pdf.text(`Trimestre: ${meta.trimestre || "................................."}`, infoX, yPos);
       pdf.text(`Enseignant: ${meta.enseignant || "................................."}`, infoX + 70, yPos);
+      
+      // Quatrième ligne : Année Scolaire
+      yPos += 5;
+      pdf.text(`Année Scolaire: ${meta.anneeScolaire || "................................."}`, infoX, yPos);
 
       yPos += 8;
       pdf.line(marginLeft, yPos, pageWidth + marginLeft, yPos);
@@ -173,7 +186,7 @@ const PreviewMaternelle = () => {
 
       pdf.text("Arrêté d'ouverture: N° 61/JL/23/A/MINEDUB/SG/DSEPB/SDRA/DR 05 JANVIER 2025", pageWidth / 2 + marginLeft, yPos, { align: "center" });
 
-      const fileName = `Bulletin_${meta.nomEleve?.replace(/\s+/g, '_') || 'Eleve'}_${meta.trimestre?.replace(/\s+/g, '_') || 'Trimestre'}_${new Date().toISOString().slice(0, 10)}.pdf`;
+      const fileName = `Bulletin_${meta.nomEleve?.replace(/\s+/g, '_') || 'Eleve'}_${meta.trimestre?.replace(/\s+/g, '_') || 'Trimestre'}_${meta.anneeScolaire?.replace(/\//g, '-') || 'Annee'}.pdf`;
       pdf.save(fileName);
 
     } catch (error) {
@@ -294,6 +307,10 @@ const PreviewMaternelle = () => {
               <div className="text-[13px] sm:text-[16px] md:text-xl font-bold print:text-[13px]">
                 BULLETIN SCOLAIRE
               </div>
+              {/* Ajout de l'année scolaire sous le titre */}
+              <div className="text-[10px] sm:text-[11px] md:text-sm font-medium print:text-[9px] text-gray-700 mt-1">
+                Année Scolaire: {meta.anneeScolaire || "................................."}
+              </div>
             </div>
 
             {/* Bloc droite */}
@@ -332,7 +349,8 @@ const PreviewMaternelle = () => {
             <div><strong>Sexe:</strong> {meta.sexe || "................................."}</div>
             <div><strong>Classe:</strong> {meta.classe || "................................."}</div>
             <div><strong>Trimestre:</strong> {meta.trimestre || "................................."}</div>
-            <div><strong>Enseignant:</strong> {meta.enseignant || "................................."}</div>
+            <div><strong>Année Scolaire:</strong> {meta.anneeScolaire || "................................."}</div>
+            <div className="md:col-span-2"><strong>Enseignant:</strong> {meta.enseignant || "................................."}</div>
           </div>
         </div>
 
@@ -389,7 +407,7 @@ const PreviewMaternelle = () => {
           </div>
 
           {/* Résumé */}
-          <div className="border-2 border-gray-400  mt-20 rounded p-3 print:p-2 text-[10px] print:text-[8px]">
+          <div className="border-2 border-gray-400 mt-20 rounded p-3 print:p-2 text-[10px] print:text-[8px]">
             <div className="font-bold text-center mb-2 print:mb-1">Résumé du Travail</div>
             <div className="space-y-2 print:space-y-1">
               <div className="grid grid-cols-2 gap-3 print:gap-2">
