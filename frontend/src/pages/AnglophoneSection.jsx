@@ -33,12 +33,12 @@ export default function AnglophoneSection() {
             Primary Classes
           </button>
 
-          <button
+          {/* <button
             onClick={() => navigate("/annual-report")}
             className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 text-white py-3 rounded-xl font-semibold shadow-md hover:scale-105 transition-transform"
           >
             ANNUAL REPORT CARD
-          </button>
+          </button> */}
         </div>
 
         <hr className="my-8 border-gray-300" />
