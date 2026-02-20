@@ -1,3 +1,91 @@
+# name: Build Windows Executable
+
+# on:
+#   push:
+#     branches: [ main, master ]
+#   pull_request:
+#     branches: [ main, master ]
+#   workflow_dispatch:
+
+# jobs:
+#   build-windows:
+#     runs-on: windows-2022  # Changé de windows-latest à windows-2022
+    
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v4
+      
+#     - name: Setup Node.js
+#       uses: actions/setup-node@v4
+#       with:
+#         node-version: '20'
+        
+#     - name: Install Visual Studio 2022
+#       uses: ilammy/msvc-dev-cmd@v1
+#       with:
+#         arch: x64
+        
+#     - name: Install frontend dependencies
+#       working-directory: ./frontend
+#       run: npm install
+      
+#     - name: Build frontend
+#       working-directory: ./frontend
+#       run: npm run build
+      
+#     - name: Install server dependencies
+#       working-directory: ./server
+#       run: npm install
+        
+#     - name: Rebuild native modules
+#       working-directory: ./server
+#       run: |
+#         npm install -g electron-rebuild
+#         electron-rebuild -f -v 28.3.3
+        
+#     - name: Build Electron app
+#       working-directory: ./server
+#       run: npm run dist
+#       env:
+#         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+#     - name: Upload Windows installer
+#       uses: actions/upload-artifact@v4
+#       with:
+#         name: GestionBulletin-Windows
+#         path: server\dist\*.exe
+#         retention-days: 30
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 name: Build Windows Executable
 
 on:
@@ -9,7 +97,7 @@ on:
 
 jobs:
   build-windows:
-    runs-on: windows-2022  # Changé de windows-latest à windows-2022
+    runs-on: windows-latest
     
     steps:
     - name: Checkout code
@@ -19,11 +107,10 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-        
-    - name: Install Visual Studio 2022
-      uses: ilammy/msvc-dev-cmd@v1
-      with:
-        arch: x64
+        cache: 'npm'
+        cache-dependency-path: |
+          frontend/package-lock.json
+          server/package-lock.json
         
     - name: Install frontend dependencies
       working-directory: ./frontend
@@ -32,16 +119,12 @@ jobs:
     - name: Build frontend
       working-directory: ./frontend
       run: npm run build
-      
+      env:
+        NODE_OPTIONS: "--max_old_space_size=4096"
+        
     - name: Install server dependencies
       working-directory: ./server
       run: npm install
-        
-    - name: Rebuild native modules
-      working-directory: ./server
-      run: |
-        npm install -g electron-rebuild
-        electron-rebuild -f -v 28.3.3
         
     - name: Build Electron app
       working-directory: ./server
