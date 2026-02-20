@@ -19,7 +19,19 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-        # Pas de cache pour éviter les problèmes
+        cache: 'npm'
+        cache-dependency-path: |
+          frontend/package-lock.json
+          server/package-lock.json
+    
+    - name: Install Visual Studio Build Tools
+      uses: microsoft/setup-msbuild@v1.1
+      with:
+        vs-version: '2022'
+        
+    - name: Install Windows SDK
+      run: |
+        choco install windows-sdk-10-1
         
     - name: Install frontend dependencies
       working-directory: ./frontend
