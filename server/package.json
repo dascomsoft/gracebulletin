@@ -2,12 +2,12 @@
   "name": "server",
   "version": "1.0.0",
   "main": "src/main.js",
-  "type": "commonjs",
   "scripts": {
     "start": "electron .",
-    "dev": "cd .. && npx electron server/src/main.js",
+    "dev": "electron .",
     "build": "electron-builder build --dir",
-    "dist": "electron-builder build"
+    "dist": "electron-builder build",
+    "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -27,22 +27,32 @@
     },
     "files": [
       "src/**/*",
-      "build/**/*",
-      "node_modules/**/*",
-      "!node_modules/**/{test,tests,example,examples,doc,docs}/*",
-      "!**/*.map"
+      "!src/**/*.map",
+      "node_modules/**/*"
     ],
     "extraResources": [
       {
-        "from": "node_modules",
-        "to": "node_modules",
-        "filter": [
-          "**/*"
-        ]
+        "from": "../frontend/dist",
+        "to": "frontend/dist",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "../frontend/public",
+        "to": "frontend/public",
+        "filter": ["**/*"]
       }
     ],
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "../frontend/public/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Gestion Bulletin"
     },
     "npmRebuild": false
   }

@@ -1,3 +1,104 @@
+# name: Build Windows Executable
+
+# on:
+#   push:
+#     branches: [ main, master ]
+#   pull_request:
+#     branches: [ main, master ]
+
+# jobs:
+#   build-windows:
+#     runs-on: windows-latest
+    
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v4
+      
+#     - name: Setup Node.js
+#       uses: actions/setup-node@v4
+#       with:
+#         node-version: '18'
+#         cache: 'npm'
+#         cache-dependency-path: '**/package-lock.json'
+        
+#     - name: Install frontend dependencies
+#       run: |
+#         cd frontend
+#         npm install
+        
+#     - name: Install server dependencies
+#       run: |
+#         cd server
+#         npm install
+        
+#     - name: Build frontend
+#       run: |
+#         cd frontend
+#         npm run build
+        
+#     - name: Prepare build directory
+#       run: |
+#         # Copier le build frontend dans server (Windows)
+#         xcopy /E /I frontend\dist server\build\
+        
+#     - name: Build Electron app
+#       run: |
+#         cd server
+#         npm run dist
+      
+#     - name: Upload Windows installer
+#       uses: actions/upload-artifact@v4
+#       with:
+#         name: GestionBulletin-Windows
+#         path: server\dist\*.exe
+#         retention-days: 30
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 name: Build Windows Executable
 
 on:
@@ -5,6 +106,7 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
   build-windows:
@@ -17,35 +119,29 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '20'
         cache: 'npm'
-        cache-dependency-path: '**/package-lock.json'
         
     - name: Install frontend dependencies
-      run: |
-        cd frontend
-        npm install
+      working-directory: ./frontend
+      run: npm install
+      
+    - name: Build frontend
+      working-directory: ./frontend
+      run: npm run build
+      env:
+        NODE_OPTIONS: "--max_old_space_size=4096"
         
     - name: Install server dependencies
-      run: |
-        cd server
-        npm install
-        
-    - name: Build frontend
-      run: |
-        cd frontend
-        npm run build
-        
-    - name: Prepare build directory
-      run: |
-        # Copier le build frontend dans server (Windows)
-        xcopy /E /I frontend\dist server\build\
+      working-directory: ./server
+      run: npm install
         
     - name: Build Electron app
-      run: |
-        cd server
-        npm run dist
-      
+      working-directory: ./server
+      run: npm run dist
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
     - name: Upload Windows installer
       uses: actions/upload-artifact@v4
       with:
