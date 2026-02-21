@@ -1216,46 +1216,155 @@ export default function PrimaireFrancophone() {
     }
   };
 
-  const loadStudentBulletins = async (id) => {
-    try {
-      const url = `${API_BASE_URL}/api/student/${id}/bulletins`;
-      console.log(`📡 Requête bulletins: ${url}`);
+
+
+
+
+
+
+
+
+
+  // const loadStudentBulletins = async (id) => {
+  //   try {
+  //     const url = `${API_BASE_URL}/api/student/${id}/bulletins`;
+  //     console.log(`📡 Requête bulletins: ${url}`);
       
-      const response = await fetch(url);
-      if (response.ok) {
+  //     const response = await fetch(url);
+  //     if (response.ok) {
+  //       const bulletins = await response.json();
+  //       console.log(`✅ ${bulletins.length} bulletins trouvés`);
+        
+  //       const currentTrimesterBulletin = bulletins.find(b => 
+  //         b.bulletin_type === 'francophone' && 
+  //         (b.trimester === currentTrimester || 
+  //          (currentTrimester === 'Trimestre 1' && b.trimester === 'Term 1') ||
+  //          (currentTrimester === 'Trimestre 2' && b.trimester === 'Term 2') ||
+  //          (currentTrimester === 'Trimestre 3' && b.trimester === 'Term 3'))
+  //       );
+        
+  //       if (currentTrimesterBulletin) {
+  //         console.log('✅ Bulletin existant trouvé:', currentTrimesterBulletin);
+  //         setBulletinId(currentTrimesterBulletin.id);
+  //         setIsEditing(true);
+          
+  //         const savedData = JSON.parse(currentTrimesterBulletin.data_json);
+  //         if (savedData.periodHeaders) setPeriodHeaders(savedData.periodHeaders);
+  //         if (savedData.meta) setMeta(prev => ({ ...prev, ...savedData.meta }));
+  //         if (savedData.data) setData(savedData.data);
+  //         if (savedData.periodInfo) setPeriodInfo(savedData.periodInfo);
+  //         if (savedData.summary) setSummary(savedData.summary);
+  //         if (savedData.studentPhoto) setStudentPhoto(savedData.studentPhoto);
+  //       } else {
+  //         console.log(`ℹ️ Aucun bulletin francophone existant pour ${currentTrimester}`);
+  //       }
+  //     } else {
+  //       console.error(`❌ Erreur chargement bulletins: ${response.status}`);
+  //     }
+  //   } catch (error) {
+  //     console.error('❌ Erreur chargement bulletins:', error);
+  //   }
+  // };
+
+
+
+
+
+
+
+
+
+const loadStudentBulletins = async (studentId) => {
+    try {
+        console.log(`📡 Requête bulletins: http://localhost:3000/api/student/${studentId}/bulletins`);
+        const response = await fetch(`http://localhost:3000/api/student/${studentId}/bulletins`);
+        
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+        
         const bulletins = await response.json();
         console.log(`✅ ${bulletins.length} bulletins trouvés`);
         
-        const currentTrimesterBulletin = bulletins.find(b => 
-          b.bulletin_type === 'francophone' && 
-          (b.trimester === currentTrimester || 
-           (currentTrimester === 'Trimestre 1' && b.trimester === 'Term 1') ||
-           (currentTrimester === 'Trimestre 2' && b.trimester === 'Term 2') ||
-           (currentTrimester === 'Trimestre 3' && b.trimester === 'Term 3'))
-        );
+        // Récupère le trimestre depuis location.state
+        const currentTrimester = location.state?.trimestre || 'Trimestre 1';
+        console.log('📌 Recherche bulletin pour le trimestre:', currentTrimester);
         
-        if (currentTrimesterBulletin) {
-          console.log('✅ Bulletin existant trouvé:', currentTrimesterBulletin);
-          setBulletinId(currentTrimesterBulletin.id);
-          setIsEditing(true);
-          
-          const savedData = JSON.parse(currentTrimesterBulletin.data_json);
-          if (savedData.periodHeaders) setPeriodHeaders(savedData.periodHeaders);
-          if (savedData.meta) setMeta(prev => ({ ...prev, ...savedData.meta }));
-          if (savedData.data) setData(savedData.data);
-          if (savedData.periodInfo) setPeriodInfo(savedData.periodInfo);
-          if (savedData.summary) setSummary(savedData.summary);
-          if (savedData.studentPhoto) setStudentPhoto(savedData.studentPhoto);
+        if (bulletins.length > 0) {
+            const currentBulletin = bulletins.find(b => 
+                b.trimester === currentTrimester
+            );
+            
+            if (currentBulletin) {
+                console.log('✅ Bulletin existant trouvé:', currentBulletin);
+                
+                let bulletinData = currentBulletin.data_json;
+                
+                if (typeof bulletinData === 'string') {
+                    try {
+                        bulletinData = JSON.parse(bulletinData);
+                        console.log('📦 data_json parsé (était une chaîne)');
+                    } catch (e) {
+                        console.warn('⚠️ Erreur parsing JSON:', e);
+                        bulletinData = {};
+                    }
+                } else {
+                    console.log('📦 data_json déjà parsé (était un objet)');
+                }
+                
+                // Mettre à jour tous les états avec les données chargées
+                if (bulletinData.periodHeaders) {
+                    setPeriodHeaders(bulletinData.periodHeaders);
+                }
+                
+                if (bulletinData.meta) {
+                    setMeta(prev => ({ ...prev, ...bulletinData.meta }));
+                }
+                
+                if (bulletinData.data) {
+                    setData(bulletinData.data);
+                }
+                
+                if (bulletinData.periodInfo) {
+                    setPeriodInfo(bulletinData.periodInfo);
+                }
+                
+                if (bulletinData.summary) {
+                    setSummary(bulletinData.summary);
+                }
+                
+                if (bulletinData.studentPhoto) {
+                    setStudentPhoto(bulletinData.studentPhoto);
+                }
+                
+                setBulletinId(currentBulletin.id);
+                console.log('✅ Bulletin chargé avec succès, ID:', currentBulletin.id);
+            } else {
+                console.log('ℹ️ Aucun bulletin pour ce trimestre');
+            }
         } else {
-          console.log(`ℹ️ Aucun bulletin francophone existant pour ${currentTrimester}`);
+            console.log('ℹ️ Aucun bulletin existant');
         }
-      } else {
-        console.error(`❌ Erreur chargement bulletins: ${response.status}`);
-      }
     } catch (error) {
-      console.error('❌ Erreur chargement bulletins:', error);
+        console.error('❌ Erreur chargement bulletins:', error);
     }
-  };
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const loadSavedData = () => {
     try {

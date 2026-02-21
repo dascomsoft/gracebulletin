@@ -3,14 +3,8 @@
   "version": "1.0.0",
   "description": "Application de gestion de bulletins scolaires",
   "main": "src/main.js",
-  "author": {
-    "name": "DascomSoft",
-    "email": "contact@dascomsoft.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dascom/gracebulletin.git"
-  },
+  "author": "DascomSoft",
+  "license": "MIT",
   "scripts": {
     "start": "electron .",
     "dev": "electron .",
@@ -19,10 +13,10 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
+    "better-sqlite3": "^11.10.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
-    "multer": "^2.0.2",
-    "better-sqlite3": "^11.10.0"
+    "multer": "^2.0.2"
   },
   "devDependencies": {
     "electron": "^28.0.0",
@@ -43,12 +37,16 @@
       {
         "from": "../frontend/dist",
         "to": "frontend/dist",
-        "filter": ["**/*"]
+        "filter": [
+          "**/*"
+        ]
       },
       {
         "from": "../frontend/public",
         "to": "frontend/public",
-        "filter": ["**/*"]
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "win": {
@@ -63,9 +61,6 @@
       "createStartMenuShortcut": true,
       "shortcutName": "Gestion Bulletin"
     },
-    "publish": {
-      "provider": "github",
-      "releaseType": "release"
-    }
+    "publish": null
   }
 }

@@ -630,43 +630,120 @@ export default function AnnualReport() {
     }
   };
 
-  const loadStudentBulletins = async (id) => {
-    try {
-      const url = `${API_BASE_URL}/api/student/${id}/bulletins`;
-      console.log(`📡 Request bulletins: ${url}`);
+
+
+
+
+
+
+
+  // const loadStudentBulletins = async (id) => {
+  //   try {
+  //     const url = `${API_BASE_URL}/api/student/${id}/bulletins`;
+  //     console.log(`📡 Request bulletins: ${url}`);
       
-      const response = await fetch(url);
-      if (response.ok) {
-        const bulletins = await response.json();
-        console.log(`✅ ${bulletins.length} bulletins found`);
+  //     const response = await fetch(url);
+  //     if (response.ok) {
+  //       const bulletins = await response.json();
+  //       console.log(`✅ ${bulletins.length} bulletins found`);
         
-        // Rechercher un bulletin annuel existant
-        const annualBulletin = bulletins.find(b => 
-          b.bulletin_type === 'annual' || 
-          b.bulletin_type === 'annuel' ||
-          b.bulletin_type?.includes('annual') ||
-          b.bulletin_type?.includes('annuel')
-        );
+  //       // Rechercher un bulletin annuel existant
+  //       const annualBulletin = bulletins.find(b => 
+  //         b.bulletin_type === 'annual' || 
+  //         b.bulletin_type === 'annuel' ||
+  //         b.bulletin_type?.includes('annual') ||
+  //         b.bulletin_type?.includes('annuel')
+  //       );
         
-        if (annualBulletin) {
-          console.log('✅ Existing annual bulletin found:', annualBulletin);
-          setBulletinId(annualBulletin.id);
-          setIsEditing(true);
+  //       if (annualBulletin) {
+  //         console.log('✅ Existing annual bulletin found:', annualBulletin);
+  //         setBulletinId(annualBulletin.id);
+  //         setIsEditing(true);
           
-          const savedData = JSON.parse(annualBulletin.data_json);
-          if (savedData.meta) setMeta(prev => ({ ...prev, ...savedData.meta }));
-          if (savedData.data) setData(savedData.data);
-          if (savedData.summary) setSummary(savedData.summary);
-        } else {
-          console.log('ℹ️ No existing annual bulletin found');
+  //         const savedData = JSON.parse(annualBulletin.data_json);
+  //         if (savedData.meta) setMeta(prev => ({ ...prev, ...savedData.meta }));
+  //         if (savedData.data) setData(savedData.data);
+  //         if (savedData.summary) setSummary(savedData.summary);
+  //       } else {
+  //         console.log('ℹ️ No existing annual bulletin found');
+  //       }
+  //     } else {
+  //       console.error(`❌ Error loading bulletins: ${response.status}`);
+  //     }
+  //   } catch (error) {
+  //     console.error('❌ Error loading bulletins:', error);
+  //   }
+  // };
+
+const loadStudentBulletins = async (studentId) => {
+    try {
+        console.log(`📡 Requête bulletins: http://localhost:3000/api/student/${studentId}/bulletins`);
+        const response = await fetch(`http://localhost:3000/api/student/${studentId}/bulletins`);
+        
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
         }
-      } else {
-        console.error(`❌ Error loading bulletins: ${response.status}`);
-      }
+        
+        const bulletins = await response.json();
+        console.log(`✅ ${bulletins.length} bulletins trouvés`);
+        
+        if (bulletins.length > 0) {
+            // Chercher un bulletin annuel (peut être 'annual' ou 'annuel')
+            const annualBulletin = bulletins.find(b => 
+                b.bulletin_type === 'annual' || 
+                b.bulletin_type === 'annuel'
+            );
+            
+            if (annualBulletin) {
+                console.log('✅ Bulletin annuel existant trouvé:', annualBulletin);
+                
+                // Traiter data_json intelligemment
+                let bulletinData = annualBulletin.data_json;
+                
+                // Si c'est une chaîne, on parse
+                if (typeof bulletinData === 'string') {
+                    try {
+                        bulletinData = JSON.parse(bulletinData);
+                        console.log('📦 data_json parsé (était une chaîne)');
+                    } catch (e) {
+                        console.warn('⚠️ Erreur parsing JSON:', e);
+                        bulletinData = {};
+                    }
+                } else {
+                    console.log('📦 data_json déjà parsé (était un objet)');
+                }
+                
+                // Mettre à jour tous les états avec les données chargées
+                if (bulletinData.meta) {
+                    setMeta(prev => ({ ...prev, ...bulletinData.meta }));
+                }
+                
+                if (bulletinData.data) {
+                    setData(bulletinData.data);
+                }
+                
+                if (bulletinData.summary) {
+                    setSummary(bulletinData.summary);
+                }
+                
+                setBulletinId(annualBulletin.id);
+                console.log('✅ Bulletin annuel chargé avec succès, ID:', annualBulletin.id);
+            } else {
+                console.log('ℹ️ Aucun bulletin annuel existant');
+            }
+        } else {
+            console.log('ℹ️ Aucun bulletin existant');
+        }
     } catch (error) {
-      console.error('❌ Error loading bulletins:', error);
+        console.error('❌ Erreur chargement bulletins:', error);
     }
-  };
+};
+
+
+
+
+
+
 
   const [meta, setMeta] = useState({
     studentName: "",
