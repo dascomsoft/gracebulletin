@@ -37,16 +37,12 @@
       {
         "from": "../frontend/dist",
         "to": "frontend/dist",
-        "filter": [
-          "**/*"
-        ]
+        "filter": ["**/*"]
       },
       {
         "from": "../frontend/public",
         "to": "frontend/public",
-        "filter": [
-          "**/*"
-        ]
+        "filter": ["**/*"]
       }
     ],
     "win": {
