@@ -69,12 +69,46 @@ console.log(`📁 Public path: ${FRONTEND_PUBLIC_PATH}`);
 console.log(`🗄️  DB path: ${DB_PATH}`);
 console.log(`📁 index.html existe? ${fs.existsSync(path.join(FRONTEND_DIST_PATH, 'index.html'))}`);
 
+
+// // ============ CRÉATION DES DOSSIERS NÉCESSAIRES ============
+// const tempDir = path.join(FRONTEND_PUBLIC_PATH, 'temp');
+// if (!fs.existsSync(tempDir)) {
+//     fs.mkdirSync(tempDir, { recursive: true });
+//     console.log('📁 Dossier temp créé');
+// }
+
+
+
 // ============ CRÉATION DES DOSSIERS NÉCESSAIRES ============
-const tempDir = path.join(FRONTEND_PUBLIC_PATH, 'temp');
+// Utiliser le dossier AppData pour les fichiers temporaires (accessible en écriture)
+const userDataPath = app.getPath('userData');
+const tempDir = path.join(userDataPath, 'temp');
+
 if (!fs.existsSync(tempDir)) {
     fs.mkdirSync(tempDir, { recursive: true });
-    console.log('📁 Dossier temp créé');
+    console.log('📁 Dossier temp créé dans:', tempDir);
 }
+
+// Pour les photos, on garde le dossier dans public mais on vérifie les permissions
+try {
+    const ecoleDetailsDir = path.join(FRONTEND_PUBLIC_PATH, 'ecole details');
+    if (!fs.existsSync(ecoleDetailsDir)) {
+        fs.mkdirSync(ecoleDetailsDir, { recursive: true });
+        console.log('📁 Dossier ecole details créé');
+    }
+} catch (error) {
+    console.error('❌ Impossible de créer ecole details:', error.message);
+    // Fallback : utiliser le dossier userData
+    const fallbackEcoleDetails = path.join(userDataPath, 'ecole details');
+    if (!fs.existsSync(fallbackEcoleDetails)) {
+        fs.mkdirSync(fallbackEcoleDetails, { recursive: true });
+        console.log('📁 Dossier ecole details créé dans userData');
+    }
+}
+
+
+
+
 
 const ecoleDetailsDir = path.join(FRONTEND_PUBLIC_PATH, 'ecole details');
 if (!fs.existsSync(ecoleDetailsDir)) {
