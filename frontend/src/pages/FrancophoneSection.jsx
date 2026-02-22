@@ -31,13 +31,6 @@ export default function FrancophoneSection() {
           >
             Classes Primaires
           </button>
-
-          {/* <button
-            onClick={() => navigate("/bulletin-annuel")}
-            className="w-full bg-gradient-to-r from-red-500 to-pink-600 text-white py-3 rounded-xl font-semibold shadow-md hover:scale-105 transition-transform"
-          >
-            BULLETIN ANNUEL
-          </button> */}
         </div>
 
         <hr className="my-8 border-gray-300" />
