@@ -481,52 +481,6 @@ const StudentDashboard = () => {
                                                 <td className="p-3">
                                                     <div className="flex gap-2">
                                                         <button
-                                                            onClick={() => {
-                                                                const trimestre = bulletin.trimester || 'annuel';
-                                                                const bulletinType = getBulletinType(student);
-                                                                
-                                                                if (trimestre === 'annuel') {
-                                                                    const section = student.section?.toLowerCase() || '';
-                                                                    if (section.includes('anglophone')) {
-                                                                        navigate(`/bulletin/annual/anglophone/${studentId}`, {
-                                                                            state: {
-                                                                                bulletinId: bulletin.id,
-                                                                                studentId: student.id,
-                                                                                studentName: student.full_name,
-                                                                                className: student.class_name,
-                                                                                section: student.section
-                                                                            }
-                                                                        });
-                                                                    } else {
-                                                                        navigate(`/bulletin/annual/francophone/${studentId}`, {
-                                                                            state: {
-                                                                                bulletinId: bulletin.id,
-                                                                                studentId: student.id,
-                                                                                studentName: student.full_name,
-                                                                                className: student.class_name,
-                                                                                section: student.section
-                                                                            }
-                                                                        });
-                                                                    }
-                                                                } else {
-                                                                    navigate(`/bulletin/${bulletinType}/${studentId}`, {
-                                                                        state: {
-                                                                            bulletinId: bulletin.id,
-                                                                            studentId: student.id,
-                                                                            studentName: student.full_name,
-                                                                            className: student.class_name,
-                                                                            trimestre: trimestre,
-                                                                            section: student.section
-                                                                        }
-                                                                    });
-                                                                }
-                                                            }}
-                                                            className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                                                            disabled={isDeleting}
-                                                        >
-                                                            {isDeleting ? '...' : '✏️ Modifier'}
-                                                        </button>
-                                                        <button
                                                             onClick={() => handleDeleteBulletin(bulletin.id, bulletinName)}
                                                             className="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
                                                             disabled={isDeleting}

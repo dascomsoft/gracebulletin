@@ -633,62 +633,6 @@ export default function BulletinAnnuel() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-  // const loadStudentBulletins = async (id) => {
-  //   try {
-  //     const url = `${API_BASE_URL}/api/student/${id}/bulletins`;
-  //     console.log(`📡 Requête bulletins: ${url}`);
-      
-  //     const response = await fetch(url);
-  //     if (response.ok) {
-  //       const bulletins = await response.json();
-  //       console.log(`✅ ${bulletins.length} bulletins trouvés`);
-        
-  //       // Rechercher un bulletin annuel existant
-  //       const annualBulletin = bulletins.find(b => 
-  //         b.bulletin_type === 'annuel' || 
-  //         b.bulletin_type === 'annual' ||
-  //         b.bulletin_type?.includes('annuel') ||
-  //         b.bulletin_type?.includes('annual')
-  //       );
-        
-  //       if (annualBulletin) {
-  //         console.log('✅ Bulletin annuel existant trouvé:', annualBulletin);
-  //         setBulletinId(annualBulletin.id);
-  //         setIsEditing(true);
-          
-  //         const savedData = JSON.parse(annualBulletin.data_json);
-  //         if (savedData.meta) setMeta(prev => ({ ...prev, ...savedData.meta }));
-  //         if (savedData.data) setData(savedData.data);
-  //         if (savedData.summary) setSummary(savedData.summary);
-  //       } else {
-  //         console.log('ℹ️ Aucun bulletin annuel existant trouvé');
-  //       }
-  //     } else {
-  //       console.error(`❌ Erreur chargement bulletins: ${response.status}`);
-  //     }
-  //   } catch (error) {
-  //     console.error('❌ Erreur chargement bulletins:', error);
-  //   }
-  // };
-
-
-
-
-
-
-
-
-
 const loadStudentBulletins = async (studentId) => {
     try {
         console.log(`📡 Requête bulletins: http://localhost:3000/api/student/${studentId}/bulletins`);
@@ -752,19 +696,6 @@ const loadStudentBulletins = async (studentId) => {
         console.error('❌ Erreur chargement bulletins:', error);
     }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   function getCurrentAcademicYear() {
     const now = new Date();
@@ -989,7 +920,7 @@ const loadStudentBulletins = async (studentId) => {
     
     localStorage.setItem('printAnnuelData', JSON.stringify(printData));
     
-    const printUrl = `${window.location.origin}/print-annuel`;
+    const printUrl = `${window.location.origin}/#/print-annuel`;
     console.log('🖨️ Ouverture:', printUrl);
     window.open(printUrl, '_blank');
   };

@@ -632,49 +632,6 @@ export default function AnnualReport() {
 
 
 
-
-
-
-
-
-  // const loadStudentBulletins = async (id) => {
-  //   try {
-  //     const url = `${API_BASE_URL}/api/student/${id}/bulletins`;
-  //     console.log(`📡 Request bulletins: ${url}`);
-      
-  //     const response = await fetch(url);
-  //     if (response.ok) {
-  //       const bulletins = await response.json();
-  //       console.log(`✅ ${bulletins.length} bulletins found`);
-        
-  //       // Rechercher un bulletin annuel existant
-  //       const annualBulletin = bulletins.find(b => 
-  //         b.bulletin_type === 'annual' || 
-  //         b.bulletin_type === 'annuel' ||
-  //         b.bulletin_type?.includes('annual') ||
-  //         b.bulletin_type?.includes('annuel')
-  //       );
-        
-  //       if (annualBulletin) {
-  //         console.log('✅ Existing annual bulletin found:', annualBulletin);
-  //         setBulletinId(annualBulletin.id);
-  //         setIsEditing(true);
-          
-  //         const savedData = JSON.parse(annualBulletin.data_json);
-  //         if (savedData.meta) setMeta(prev => ({ ...prev, ...savedData.meta }));
-  //         if (savedData.data) setData(savedData.data);
-  //         if (savedData.summary) setSummary(savedData.summary);
-  //       } else {
-  //         console.log('ℹ️ No existing annual bulletin found');
-  //       }
-  //     } else {
-  //       console.error(`❌ Error loading bulletins: ${response.status}`);
-  //     }
-  //   } catch (error) {
-  //     console.error('❌ Error loading bulletins:', error);
-  //   }
-  // };
-
 const loadStudentBulletins = async (studentId) => {
     try {
         console.log(`📡 Requête bulletins: http://localhost:3000/api/student/${studentId}/bulletins`);
@@ -968,7 +925,7 @@ const loadStudentBulletins = async (studentId) => {
     
     localStorage.setItem('printAnnualData', JSON.stringify(printData));
     
-    const printUrl = `${window.location.origin}/print-annual`;
+    const printUrl = `${window.location.origin}/#/print-annual`;
     console.log('🖨️ Opening:', printUrl);
     window.open(printUrl, '_blank');
   };

@@ -23,128 +23,136 @@ const PrintAnnuel = () => {
     const { meta, data: termData, summary, totalResult, annualAverage } = printData;
 
     return (
-        <div className="print-container" style={{
+        <div className="print-container p-4 sm:p-6 max-w-4xl mx-auto bg-white text-gray-800" style={{
             fontFamily: 'Arial, sans-serif',
-            fontSize: '10px',
-            lineHeight: '1.1',
-            padding: '0.5cm',
-            maxWidth: '21cm',
-            margin: '0 auto'
         }}>
-            {/* Header en français */}
-            <div style={{ textAlign: 'center', borderBottom: '1px solid #000', paddingBottom: '5px', marginBottom: '10px' }}>
-                <div style={{ fontSize: '9px', fontWeight: 'bold' }}>RÉPUBLIQUE DU CAMEROUN</div>
-                <div style={{ fontSize: '8px' }}>Paix-Travail-Patrie</div>
-                <div style={{ fontSize: '9px' }}>Ministère de l'Éducation de base</div>
-                <div style={{ fontSize: '9px' }}>Délégation Régionale du Centre</div>
-                <div style={{ fontSize: '9px' }}>Délégation Départementale du Mfoundi</div>
-                
-                <div style={{ fontSize: '10px', fontWeight: 'bold', marginTop: '5px' }}>
-                    GROUPE SCOLAIRE BILINGUE LA GRÂCE DE DIEU
+            {/* En-tête horizontal exactement comme demandé */}
+            <div className="flex flex-col items-center text-gray-600 text-xs print:text-xs md:flex-row md:justify-between md:items-start border-b pb-4 mb-4">
+                {/* Left Block */}
+                <div className="text-left mb-2 md:mb-0 md:w-1/3">
+                    <div className="font-bold text-[11px] sm:text-xs md:text-sm">RÉPUBLIQUE DU CAMEROUN</div>
+                    <div className="text-[9px] sm:text-[10px] md:text-xs">Paix-Travail-Patrie</div>
+                    <div className="text-[10px] sm:text-xs md:text-sm">Ministère de l'Éducation de base</div>
+                    <div className="text-[10px] sm:text-xs md:text-sm">Délégation Régionale du Centre</div>
+                    <div className="text-[10px] sm:text-xs md:text-sm">Délégation Départementale du Mfoundi</div>
                 </div>
-                <div style={{ fontSize: '11px', fontWeight: 'bold' }}>
-                    BULLETIN SCOLAIRE (ANNUEL)
+
+                {/* Center Block */}
+                <div className="text-center md:flex-1 md:mx-2">
+                    <div className="font-extrabold text-sm sm:text-base md:text-lg print:text-xs">
+                        GROUPE SCOLAIRE BILINGUE LA GRÂCE DE DIEU
+                    </div>
+                    <div className="text-[13px] sm:text-[16px] md:text-xl font-bold print:text-sm">
+                        BULLETIN SCOLAIRE (ANNUEL)
+                    </div>
                 </div>
-                
-                <div style={{ fontSize: '9px', fontWeight: 'bold', marginTop: '5px' }}>REPUBLIC OF CAMEROON</div>
-                <div style={{ fontSize: '8px' }}>Peace-Work-Fatherland</div>
-                <div style={{ fontSize: '9px' }}>Ministry of Basic Education</div>
-                <div style={{ fontSize: '9px' }}>Centre Regional Delegation</div>
-                <div style={{ fontSize: '9px' }}>Divisional Delegation of Mfoundi Division</div>
+
+                {/* Right Block */}
+                <div className="text-right mt-2 md:mt-0 md:w-1/3">
+                    <div className="font-bold text-[11px] sm:text-xs md:text-sm">REPUBLIC OF CAMEROON</div>
+                    <div className="text-[9px] sm:text-[10px] md:text-xs">Peace-Work-Fatherland</div>
+                    <div className="text-[10px] sm:text-xs md:text-sm">Ministry of Basic Education</div>
+                    <div className="text-[10px] sm:text-xs md:text-sm">Centre Regional Delegation</div>
+                    <div className="text-[10px] sm:text-xs md:text-sm">Divisional Delegation of Mfoundi Division</div>
+                </div>
             </div>
 
-            {/* Student Info en français */}
-            <div style={{ marginBottom: '10px', fontSize: '9px' }}>
-                <div><strong>Nom:</strong> {meta.studentName || "-"}</div>
-                <div><strong>Classe:</strong> {meta.className || "-"}</div>
-                <div><strong>Année Scolaire:</strong> {meta.schoolYear || "-"}</div>
-                <div><strong>Sexe:</strong> {meta.sex || "-"}</div>
+            {/* Student Info */}
+            <div className="mb-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                    <div><span className="font-semibold">Nom:</span> {meta.studentName || "-"}</div>
+                    <div><span className="font-semibold">Année Scolaire:</span> {meta.schoolYear || "-"}</div>
+                    <div><span className="font-semibold">Classe:</span> {meta.className || "-"}</div>
+                    <div><span className="font-semibold">Sexe:</span> {meta.sex || "-"}</div>
+                </div>
             </div>
 
-            {/* Results Table en français */}
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '8px', marginBottom: '10px' }}>
+            {/* Results Table */}
+            <table className="w-full border-collapse border border-gray-800 text-xs mb-4">
                 <thead>
-                    <tr style={{ backgroundColor: '#f0f0f0' }}>
-                        <th style={{ border: '1px solid #000', padding: '3px' }}>Trimestres</th>
-                        <th style={{ border: '1px solid #000', padding: '3px' }}>Résultats</th>
-                        <th style={{ border: '1px solid #000', padding: '3px' }}>Position</th>
-                        <th style={{ border: '1px solid #000', padding: '3px' }}>Remarques</th>
+                    <tr className="bg-gray-100">
+                        <th className="border border-gray-800 p-2 text-left">Trimestres</th>
+                        <th className="border border-gray-800 p-2 text-left">Résultats</th>
+                        <th className="border border-gray-800 p-2 text-left">Position</th>
+                        <th className="border border-gray-800 p-2 text-left">Remarques</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style={{ border: '1px solid #000', padding: '3px', textAlign: 'center' }}>1er Trimestre</td>
-                        <td style={{ border: '1px solid #000', padding: '3px', textAlign: 'center' }}>{termData.term1.result || "-"}</td>
-                        <td style={{ border: '1px solid #000', padding: '3px', textAlign: 'center' }}>{termData.term1.position || "-"}</td>
-                        <td style={{ border: '1px solid #000', padding: '3px', textAlign: 'center' }} rowSpan="3">{summary.remarks || "-"}</td>
+                        <td className="border border-gray-800 p-2">1er Trimestre</td>
+                        <td className="border border-gray-800 p-2">{termData.term1?.result || "-"}</td>
+                        <td className="border border-gray-800 p-2">{termData.term1?.position || "-"}</td>
+                        <td className="border border-gray-800 p-2" rowSpan="3">{summary.remarks || "-"}</td>
                     </tr>
                     <tr>
-                        <td style={{ border: '1px solid #000', padding: '3px', textAlign: 'center' }}>2ème Trimestre</td>
-                        <td style={{ border: '1px solid #000', padding: '3px', textAlign: 'center' }}>{termData.term2.result || "-"}</td>
-                        <td style={{ border: '1px solid #000', padding: '3px', textAlign: 'center' }}>{termData.term2.position || "-"}</td>
+                        <td className="border border-gray-800 p-2">2ème Trimestre</td>
+                        <td className="border border-gray-800 p-2">{termData.term2?.result || "-"}</td>
+                        <td className="border border-gray-800 p-2">{termData.term2?.position || "-"}</td>
                     </tr>
                     <tr>
-                        <td style={{ border: '1px solid #000', padding: '3px', textAlign: 'center' }}>3ème Trimestre</td>
-                        <td style={{ border: '1px solid #000', padding: '3px', textAlign: 'center' }}>{termData.term3.result || "-"}</td>
-                        <td style={{ border: '1px solid #000', padding: '3px', textAlign: 'center' }}>{termData.term3.position || "-"}</td>
+                        <td className="border border-gray-800 p-2">3ème Trimestre</td>
+                        <td className="border border-gray-800 p-2">{termData.term3?.result || "-"}</td>
+                        <td className="border border-gray-800 p-2">{termData.term3?.position || "-"}</td>
                     </tr>
                     <tr>
-                        <td style={{ border: '1px solid #000', padding: '3px', fontWeight: 'bold' }}>TOTAL</td>
-                        <td style={{ border: '1px solid #000', padding: '3px', textAlign: 'center', fontWeight: 'bold' }}>{totalResult || "0.00"}</td>
-                        <td style={{ border: '1px solid #000', padding: '3px' }}></td>
-                        <td style={{ border: '1px solid #000', padding: '3px' }}></td>
+                        <td className="border border-gray-800 p-2 font-bold">TOTAL</td>
+                        <td className="border border-gray-800 p-2 font-bold">{totalResult || "0.00"}</td>
+                        <td className="border border-gray-800 p-2"></td>
+                        <td className="border border-gray-800 p-2"></td>
                     </tr>
                 </tbody>
             </table>
 
-            {/* Summary Section en français */}
-            <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
-                <div style={{ flex: 1 }}>
-                    <div style={{ marginBottom: '5px' }}>
-                        <strong>Moyenne Annuelle:</strong> {annualAverage || "0.00"}
-                    </div>
-                    <div>
-                        <strong>Position Annuelle:</strong> {summary.annualPosition || "-"}
-                    </div>
+            {/* Summary Section */}
+            <div className="flex gap-8 text-sm mb-4">
+                <div><span className="font-semibold">Moyenne Annuelle:</span> {annualAverage || "0.00"}</div>
+                <div><span className="font-semibold">Position Annuelle:</span> {summary.annualPosition || "-"}</div>
+            </div>
+
+            {/* Class Council's Decision */}
+            <div className="mb-4">
+                <div className="font-bold text-sm mb-2">DÉCISION DU CONSEIL DE CLASSE</div>
+                <div className="flex gap-8 text-xs">
+                    <div><span className="font-semibold">Promu en:</span> {summary.councilDecision?.promotedTo || "-"}</div>
+                    <div><span className="font-semibold">Redoubler la classe:</span> {summary.councilDecision?.repeatClass || "Non"}</div>
                 </div>
             </div>
 
-            {/* Décision du Conseil de Classe */}
-            <div style={{ border: '1px solid #000', padding: '5px', marginBottom: '10px' }}>
-                <div style={{ fontWeight: 'bold', textAlign: 'center', marginBottom: '5px' }}>DÉCISION DU CONSEIL DE CLASSE</div>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <div><strong>Promu en:</strong> {summary.councilDecision.promotedTo || "-"}</div>
-                    <div><strong>Redoubler la classe:</strong> {summary.councilDecision.repeatClass || "Non"}</div>
-                </div>
-            </div>
-
-            {/* Signatures en français */}
-            <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
-                <div style={{ flex: 1, border: '1px solid #000', padding: '5px' }}>
-                    <div style={{ fontWeight: 'bold', textAlign: 'center', marginBottom: '3px' }}>Chef d'Établissement</div>
-                    <div style={{ height: '40px', marginBottom: '5px' }}>
-                        {summary.headObservation || ""}
-                    </div>
-                    <div style={{ borderTop: '1px solid #000', textAlign: 'center', paddingTop: '3px' }}>
-                        {summary.headSignature || "Signature"}
-                    </div>
+            {/* Signatures */}
+            <div className="mb-4">
+                <div className="font-semibold text-xs mb-1">Observations et signature du chef d'établissement:</div>
+                <div className="border border-gray-800 min-h-[60px] p-2 text-xs mb-2">
+                    {summary.headObservation || ""}
                 </div>
                 
-                <div style={{ flex: 1, border: '1px solid #000', padding: '5px' }}>
-                    <div style={{ fontWeight: 'bold', textAlign: 'center', marginBottom: '3px' }}>Parent</div>
-                    <div style={{ height: '40px', marginBottom: '5px' }}></div>
-                    <div style={{ borderTop: '1px solid #000', textAlign: 'center', paddingTop: '3px' }}>
-                        {summary.parentSignature || "Signature"}
+                <div className="font-semibold text-xs mb-1">Parent et signature:</div>
+                <div className="border border-gray-800 min-h-[60px] p-2 text-xs mb-3">
+                    {summary.parentComment || ""}
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 mt-2">
+                    <div>
+                        <div className="font-semibold text-xs mb-1">Signature du chef</div>
+                        <div className="border-b border-gray-800 min-h-[25px]">
+                            {summary.headSignature || ""}
+                        </div>
+                    </div>
+                    <div>
+                        <div className="font-semibold text-xs mb-1">Signature du parent</div>
+                        <div className="border-b border-gray-800 min-h-[25px]">
+                            {summary.parentSignature || ""}
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div style={{ textAlign: 'right', fontSize: '9px', marginBottom: '10px' }}>
+            {/* Date */}
+            <div className="text-right text-xs mt-4">
                 Yaoundé, le ___________
             </div>
 
-            {/* Contact Info en français */}
-            <div style={{ textAlign: 'center', fontSize: '7px', marginTop: '10px', padding: '3px', backgroundColor: '#e6f2ff', border: '1px solid #99ccff' }}>
+            {/* Contact Info */}
+            <div className="text-center text-[8px] mt-6 p-2 bg-blue-50 border border-blue-200 rounded">
                 <div>Téléphone: (+237) 696-308-503 / WhatsApp: 651989899</div>
                 <div>Siège social: YAOUNDÉ - AKOK-NDOE-2 (Quartier Mbouda, face au mini marché)</div>
                 <div>Arrêté d'ouverture: N° 61/JL/23/A/MINEDUB/SG/DSEPB/SDRA/DR 05 JANVIER 2025</div>
@@ -154,22 +162,19 @@ const PrintAnnuel = () => {
             <style>{`
                 @media print {
                     @page {
-                        size: A4 portrait;
-                        margin: 0.5cm;
+                        size: A4;
+                        margin: 0.7cm;
                     }
                     body {
                         margin: 0;
                         padding: 0;
-                        font-size: 9px;
+                        background: white;
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
                     }
                     .print-container {
                         width: 100%;
-                    }
-                    table {
-                        page-break-inside: avoid;
-                    }
-                    button {
-                        display: none !important;
+                        padding: 0.2cm;
                     }
                 }
             `}</style>

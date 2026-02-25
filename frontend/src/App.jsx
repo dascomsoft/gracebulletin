@@ -29,6 +29,8 @@ import ReportPreview from './pages/ReportPreview';
 import PrintBulletin from './pages/PrintBulletin';
 import PrintAnnual from './pages/PrintAnnual';
 import PrintAnnuel from './pages/PrintAnnuel';
+import PrintBulletinFrancophone from './pages/PrintBulletinFrancophone';
+import PrintBulletinMaternelle from './pages/PrintBulletinMaternelle';
 import StudentsListGeneral from './pages/StudentsListGeneral';
 
 // NOUVELLES PAGES
@@ -114,8 +116,8 @@ function App() {
         <Route path="/bulletin-annuel" element={<BulletinAnnuel />} />
 
         {/* PRINTING ROUTES */}
-        <Route path="/print-bulletin-francophone" element={<PrintBulletin />} />
-        <Route path="/print-bulletin-maternelle" element={<PrintBulletin />} />
+        <Route path="/print-bulletin-francophone" element={<PrintBulletinFrancophone />} />
+        <Route path="/print-bulletin-maternelle" element={<PrintBulletinMaternelle />} />
         <Route path="/print-bulletin-nursery" element={<PrintBulletin />} />
         <Route path="/print-annual" element={<PrintAnnual />} />
         <Route path="/print-annuel" element={<PrintAnnuel />} />
