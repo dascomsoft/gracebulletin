@@ -3014,6 +3014,68 @@ if (!isDev) {
 }
 
 // ============ FENÊTRE ELECTRON ============
+// let mainWindow;
+
+// function createWindow() {
+//     mainWindow = new BrowserWindow({
+//         width: 1400,
+//         height: 900,
+//         minWidth: 1000,
+//         minHeight: 700,
+//         show: false,
+//         webPreferences: { nodeIntegration: false, contextIsolation: true },
+//         icon: path.join(FRONTEND_PUBLIC_PATH, 'icon.ico')
+//     });
+
+//     mainWindow.once('ready-to-show', () => { mainWindow.show(); mainWindow.focus(); });
+
+//     if (isDev) {
+//         mainWindow.loadURL('http://localhost:5173');
+//         mainWindow.webContents.openDevTools();
+//         console.log('🔄 Chargement depuis Vite (http://localhost:5173)');
+//     } else {
+//         let indexPath = '';
+//         const possiblePaths = [
+//             path.join(FRONTEND_DIST_PATH, 'index.html'),
+//             path.join(process.resourcesPath, 'app.asar', 'frontend', 'dist', 'index.html'),
+//             path.join(process.resourcesPath, 'frontend', 'dist', 'index.html'),
+//             path.join(path.dirname(app.getPath('exe')), 'resources', 'app.asar', 'frontend', 'dist', 'index.html'),
+//             path.join(path.dirname(app.getPath('exe')), 'resources', 'frontend', 'dist', 'index.html'),
+//             path.join(__dirname, '../../frontend/dist/index.html')
+//         ];
+        
+//         console.log('🔍 Recherche de index.html en production...');
+//         for (const testPath of possiblePaths) {
+//             console.log('📁 Test:', testPath);
+//             if (fs.existsSync(testPath)) {
+//                 indexPath = testPath;
+//                 console.log('✅ Trouvé à:', indexPath);
+//                 break;
+//             }
+//         }
+        
+//         if (indexPath && fs.existsSync(indexPath)) {
+//             console.log('📂 Chargement de:', indexPath);
+//             mainWindow.loadFile(indexPath).catch(err => {
+//                 console.error('❌ Erreur loadFile:', err);
+//                 mainWindow.loadURL('http://localhost:3000');
+//             });
+//         } else {
+//             console.error('❌ index.html non trouvé!');
+//             mainWindow.loadURL('http://localhost:3000');
+//         }
+//     }
+
+//     mainWindow.on('closed', () => { mainWindow = null; });
+// }
+
+
+
+
+
+
+
+// ============ FENÊTRE ELECTRON ============
 let mainWindow;
 
 function createWindow() {
@@ -3023,11 +3085,18 @@ function createWindow() {
         minWidth: 1000,
         minHeight: 700,
         show: false,
-        webPreferences: { nodeIntegration: false, contextIsolation: true },
+        webPreferences: { 
+            nodeIntegration: true,        // ← CHANGÉ: false → true
+            contextIsolation: false,       // ← CHANGÉ: true → false
+            enableRemoteModule: true       // ← AJOUTÉ
+        },
         icon: path.join(FRONTEND_PUBLIC_PATH, 'icon.ico')
     });
 
-    mainWindow.once('ready-to-show', () => { mainWindow.show(); mainWindow.focus(); });
+    mainWindow.once('ready-to-show', () => { 
+        mainWindow.show(); 
+        mainWindow.focus(); 
+    });
 
     if (isDev) {
         mainWindow.loadURL('http://localhost:5173');
@@ -3066,8 +3135,13 @@ function createWindow() {
         }
     }
 
-    mainWindow.on('closed', () => { mainWindow = null; });
+    mainWindow.on('closed', () => { 
+        mainWindow = null; 
+    });
 }
+
+
+
 
 // ============ DÉMARRAGE ============
 const server = appExpress.listen(PORT, '0.0.0.0', () => {
