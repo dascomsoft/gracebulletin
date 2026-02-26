@@ -2136,7 +2136,19 @@ import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 // IMPORT POUR ELECTRON
-const { ipcRenderer } = window.require ? window.require('electron') : { ipcRenderer: null };
+const { ipcRenderer } = (() => {
+    try {
+        if (window.require) {
+            return window.require('electron');
+        }
+    } catch (e) {}
+    return { ipcRenderer: null };
+})();
+
+
+
+
+
 
 const MONTH_OPTIONS = Array.from({ length: 10 }, (_, i) => `Month-${i + 1}`);
 const NOTE_OPTIONS = Array.from({ length: 20 }, (_, i) => i + 1);
@@ -2682,43 +2694,38 @@ const loadStudentBulletins = async (studentId) => {
   };
 
   // VERSION MODIFIÉE POUR ELECTRON
-  const handlePrint = () => {
-    console.log('🖨️ Preparing print...');
+  
+  
+ const handlePrint = () => {
+    console.log('🖨️ Nursery');
     
     const printData = {
-      meta: { ...meta, student_id: studentId },
-      studentPhoto,
-      periodHeaders,
-      data,
-      totals,
-      averages,
-      periodInfo,
-      overallAvg,
-      summary
+        meta: { ...meta, student_id: studentId },
+        studentPhoto,
+        periodHeaders,
+        data,
+        totals,
+        averages,
+        periodInfo,
+        overallAvg,
+        summary
     };
     
     localStorage.setItem('printBulletinData', JSON.stringify(printData));
     
-    // Utiliser Electron IPC si disponible, sinon fallback sur window.open
     if (ipcRenderer) {
-      console.log('🖨️ Using Electron IPC for printing');
-      ipcRenderer.send('print-bulletin', {
-        type: 'nursery',
-        data: printData
-      });
+        ipcRenderer.send('print-bulletin', { type: 'nursery', data: printData });
     } else {
-      // Fallback pour le navigateur
-      const printUrl = `${window.location.origin}/#/print-bulletin-nursery`;
-      console.log('🖨️ Opening:', printUrl);
-      window.open(printUrl, '_blank');
+        window.open(`${window.location.origin}/#/print-bulletin-nursery`, '_blank');
     }
-  };
+};
+
 
   const handlePrintOnly = () => {
-    console.log('🖨️ Print only...');
     handlePrint();
   };
 
+  
   const handleReset = () => {
     if (confirm("Are you sure you want to reset the form? All data will be lost.")) {
       localStorage.removeItem('bulletinNurseryData');

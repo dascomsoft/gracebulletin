@@ -1502,7 +1502,20 @@ import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 // IMPORT POUR ELECTRON
-const { ipcRenderer } = window.require ? window.require('electron') : { ipcRenderer: null };
+const { ipcRenderer } = (() => {
+    try {
+        if (window.require) {
+            return window.require('electron');
+        }
+    } catch (e) {}
+    return { ipcRenderer: null };
+})();
+
+
+
+
+
+
 
 const API_BASE_URL = 'http://localhost:3000';
 
@@ -1888,37 +1901,31 @@ const loadStudentBulletins = async (studentId) => {
     }
   };
 
+
   // VERSION MODIFIÉE POUR ELECTRON
-  const handlePrint = () => {
-    console.log('🖨️ Preparing print...');
+
+const handlePrint = () => {
+    console.log('🖨️ Annual');
     
     const printData = {
-      meta: { ...meta, student_id: studentId },
-      data,
-      summary,
-      totalResult,
-      annualAverage
+        meta: { ...meta, student_id: studentId },
+        data,
+        summary,
+        totalResult,
+        annualAverage
     };
     
     localStorage.setItem('printAnnualData', JSON.stringify(printData));
     
-    // Utiliser Electron IPC si disponible, sinon fallback sur window.open
     if (ipcRenderer) {
-      console.log('🖨️ Using Electron IPC for printing');
-      ipcRenderer.send('print-bulletin', {
-        type: 'annual',
-        data: printData
-      });
+        ipcRenderer.send('print-bulletin', { type: 'annual', data: printData });
     } else {
-      // Fallback pour le navigateur
-      const printUrl = `${window.location.origin}/#/print-annual`;
-      console.log('🖨️ Opening:', printUrl);
-      window.open(printUrl, '_blank');
+        window.open(`${window.location.origin}/#/print-annual`, '_blank');
     }
-  };
+};
+
 
   const handlePrintOnly = () => {
-    console.log('🖨️ Print only...');
     handlePrint();
   };
 
