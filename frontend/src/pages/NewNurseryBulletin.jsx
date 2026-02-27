@@ -51,18 +51,21 @@ const RESULT_OPTIONS = ["Passed", "Failed"];
 
 const API_BASE_URL = 'http://localhost:3000';
 
-export default function BulletinNurseryForm() {
+export default function NewNurseryBulletin() {
     const navigate = useNavigate();
     const location = useLocation();
     const { studentId: paramStudentId } = useParams();
 
-    console.log("🚀 NOUVEAU BULLETIN AVEC 22 MATIÈRES");
+    console.log("🚀 NOUVEAU BULLETIN AVEC 22 MATIÈRES ET PHOTO");
 
     // États
     const [saving, setSaving] = useState(false);
     const [bulletinId, setBulletinId] = useState(null);
     const [isDraftSaved, setIsDraftSaved] = useState(false);
     const [studentInfo, setStudentInfo] = useState(null);
+    
+    // NOUVEL ÉTAT POUR LA PHOTO
+    const [studentPhoto, setStudentPhoto] = useState(null);
 
     const [monthHeaders, setMonthHeaders] = useState({ 
         m1: MONTH_OPTIONS[0], 
@@ -170,6 +173,7 @@ export default function BulletinNurseryForm() {
                 if (bulletinData.meta) setMeta(prev => ({ ...prev, ...bulletinData.meta }));
                 if (bulletinData.subjectsData) setSubjectsData(bulletinData.subjectsData);
                 if (bulletinData.summary) setSummary(bulletinData.summary);
+                if (bulletinData.studentPhoto) setStudentPhoto(bulletinData.studentPhoto); // 👈 CHARGER LA PHOTO
                 
                 setBulletinId(currentBulletin.id);
                 console.log("✅ Bulletin chargé ID:", currentBulletin.id);
@@ -186,6 +190,24 @@ export default function BulletinNurseryForm() {
         return month >= 8 ? `${year}-${year + 1}` : `${year - 1}-${year}`;
     };
 
+    // FONCTIONS POUR LA PHOTO (copiées de l'ancien bulletin)
+    const handlePhotoUpload = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            if (file.size > 2 * 1024 * 1024) {
+                alert("Photo is too large. Please choose an image less than 2MB.");
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setStudentPhoto(e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    
+    const handleRemovePhoto = () => setStudentPhoto(null);
+
     const saveToDatabase = async (isDraft = true) => {
         try {
             setSaving(true);
@@ -200,7 +222,8 @@ export default function BulletinNurseryForm() {
                 monthHeaders,
                 meta: { ...meta, student_id: studentId, term: currentTrimester },
                 subjectsData,
-                summary
+                summary,
+                studentPhoto  // 👈 INCLURE LA PHOTO DANS LES DONNÉES
             };
 
             const payload = {
@@ -260,23 +283,23 @@ export default function BulletinNurseryForm() {
         }
     };
 
-    const handlePrint = () => {
-        const printData = {
-            meta: { ...meta, student_id: studentId },
-            monthHeaders,
-            subjectsData,
-            summary
-        };
-        
-        localStorage.setItem('printBulletinData', JSON.stringify(printData));
-        
-        if (ipcRenderer) {
-            ipcRenderer.send('print-bulletin', { type: 'nursery', data: printData });
-        } else {
-            window.open(`/#/print-bulletin-nursery`, '_blank');
-        }
+const handlePrint = () => {
+    const printData = {
+        meta: { ...meta, student_id: studentId },
+        monthHeaders,
+        subjectsData,
+        summary,
+        studentPhoto
     };
-
+    
+    localStorage.setItem('printBulletinData', JSON.stringify(printData));
+    
+    if (ipcRenderer) {
+        ipcRenderer.send('print-bulletin', { type: 'nursery', data: printData });
+    } else {
+        window.open(`/#/print-new-nursery-bulletin`, '_blank');
+    }
+};
     // Handlers
     const changeMonthHeader = (k, v) => setMonthHeaders(p => ({ ...p, [k]: v }));
     const changeMeta = (k, v) => setMeta(m => ({ ...m, [k]: v }));
@@ -316,6 +339,7 @@ export default function BulletinNurseryForm() {
                 teacherSignature: "", headmasterSignature: "", parentSignature: ""
             });
             
+            setStudentPhoto(null);  // 👈 RÉINITIALISER LA PHOTO
             setBulletinId(null);
             setIsDraftSaved(false);
         }
@@ -326,9 +350,9 @@ export default function BulletinNurseryForm() {
     return (
         <div className="min-h-screen bg-gray-50 p-6 flex flex-col items-center">
             {/* BANNIÈRE DE CONFIRMATION */}
-            <div className="w-full max-w-6xl mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded text-center font-bold">
-                ✅ NOUVEAU BULLETIN ACTIF - 22 MATIÈRES
-            </div>
+            {/* <div className="w-full max-w-6xl mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded text-center font-bold">
+                ✅ NOUVEAU BULLETIN AVEC PHOTO - 22 MATIÈRES
+            </div> */}
 
             {/* Header */}
             <div className="w-full max-w-6xl mb-2 border-b border-gray-300 pb-2">
@@ -372,75 +396,94 @@ export default function BulletinNurseryForm() {
 
             {/* Form container */}
             <div className="bg-white w-full max-w-6xl rounded-xl shadow-lg p-6">
-                {/* Student Information */}
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6 text-sm">
-                    <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1">NAME</label>
-                        <input
-                            className="border px-3 py-2 rounded w-full"
-                            value={meta.studentName}
-                            onChange={(e) => changeMeta("studentName", e.target.value)}
-                            disabled={!!studentInfo}
-                        />
+                {/* SECTION PHOTO + INFOS (comme dans l'ancien bulletin) */}
+                <div className="flex flex-col md:flex-row gap-6 mb-6 items-start">
+                    {/* Bloc photo */}
+                    <div className="flex-shrink-0 flex flex-col items-center">
+                        <div className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center mb-3 relative bg-gray-50">
+                            {studentPhoto ? (
+                                <>
+                                    <img
+                                        src={studentPhoto}
+                                        alt="Child"
+                                        className="w-full h-full object-cover rounded-lg"
+                                    />
+                                    <button
+                                        onClick={handleRemovePhoto}
+                                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+                                        type="button"
+                                    >
+                                        ×
+                                    </button>
+                                </>
+                            ) : (
+                                <div className="text-center text-gray-400">
+                                    <svg className="w-8 h-8 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    <span className="text-xs">No photo</span>
+                                </div>
+                            )}
+                        </div>
+
+                        <label className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors inline-flex items-center gap-2">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span>Add Photo</span>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handlePhotoUpload}
+                                className="hidden"
+                            />
+                        </label>
+                        <p className="text-xs text-gray-500 mt-2 text-center">
+                            Click to select photo
+                        </p>
                     </div>
 
-                    <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1">TEACHER NAME</label>
-                        <input
-                            className="border px-3 py-2 rounded w-full"
-                            value={meta.teacherName}
-                            onChange={(e) => changeMeta("teacherName", e.target.value)}
-                        />
-                    </div>
+                    {/* Bloc infos élève */}
+                    <div className="flex-1">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <input 
+                                className="border px-3 py-2 rounded" 
+                                placeholder="Child's full name" 
+                                value={meta.studentName} 
+                                onChange={(e) => changeMeta("studentName", e.target.value)} 
+                                disabled={!!studentInfo}
+                            />
+                            <select 
+                                className="border px-3 py-2 rounded" 
+                                value={meta.sex} 
+                                onChange={e => changeMeta("sex", e.target.value)}
+                                disabled={!!studentInfo}
+                            >
+                                <option value="">Sex</option>
+                                {SEX_OPTIONS.map(sex => <option key={sex}>{sex}</option>)}
+                            </select>
+                            <select 
+                                className="border px-3 py-2 rounded" 
+                                value={meta.className} 
+                                onChange={e => changeMeta("className", e.target.value)}
+                                disabled={!!studentInfo}
+                            >
+                                <option value="">Class</option>
+                                {CLASS_OPTIONS.map(cls => <option key={cls}>{cls}</option>)}
+                            </select>
 
-                    <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1">SEX</label>
-                        <select
-                            className="border px-3 py-2 rounded w-full"
-                            value={meta.sex}
-                            onChange={e => changeMeta("sex", e.target.value)}
-                            disabled={!!studentInfo}
-                        >
-                            <option value="">Select</option>
-                            {SEX_OPTIONS.map(sex => <option key={sex}>{sex}</option>)}
-                        </select>
-                    </div>
+                            <select className="border px-3 py-2 rounded" value={meta.term} onChange={e => changeMeta("term", e.target.value)}>
+                                <option value="">Term / Period</option>
+                                {TERM_OPTIONS.map(term => <option key={term}>{term}</option>)}
+                            </select>
 
-                    <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1">CLASS</label>
-                        <select
-                            className="border px-3 py-2 rounded w-full"
-                            value={meta.className}
-                            onChange={e => changeMeta("className", e.target.value)}
-                            disabled={!!studentInfo}
-                        >
-                            <option value="">Select</option>
-                            {CLASS_OPTIONS.map(cls => <option key={cls}>{cls}</option>)}
-                        </select>
-                    </div>
+                            <select className="border px-3 py-2 rounded" value={meta.academicYear} onChange={e => changeMeta("academicYear", e.target.value)}>
+                                <option value="">Academic Year</option>
+                                {academicYears.map(year => <option key={year}>{year}</option>)}
+                            </select>
 
-                    <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1">TERM</label>
-                        <select
-                            className="border px-3 py-2 rounded w-full"
-                            value={meta.term}
-                            onChange={e => changeMeta("term", e.target.value)}
-                        >
-                            <option value="">Select</option>
-                            {TERM_OPTIONS.map(term => <option key={term}>{term}</option>)}
-                        </select>
-                    </div>
-
-                    <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1">ACADEMIC YEAR</label>
-                        <select
-                            className="border px-3 py-2 rounded w-full"
-                            value={meta.academicYear}
-                            onChange={e => changeMeta("academicYear", e.target.value)}
-                        >
-                            <option value="">Select</option>
-                            {academicYears.map(year => <option key={year}>{year}</option>)}
-                        </select>
+                            <input className="border px-3 py-2 rounded" placeholder="Teacher" value={meta.teacherName} onChange={e => changeMeta("teacherName", e.target.value)} />
+                        </div>
                     </div>
                 </div>
 
@@ -449,7 +492,7 @@ export default function BulletinNurseryForm() {
                     <table className="w-full text-xs border-collapse border border-gray-400">
                         <thead>
                             <tr className="bg-gray-200">
-                                <th className="border border-gray-400 p-2 text-center w-8">EVALUATION</th>
+                                <th className="border border-gray-400 p-2 text-center w-100">EVALUATION</th>
                                 <th className="border border-gray-400 p-2 text-center" colSpan="3">MONTHLY REMARKS</th>
                                 <th className="border border-gray-400 p-2 text-center w-32" rowSpan="2">APPRECIATION</th>
                             </tr>
