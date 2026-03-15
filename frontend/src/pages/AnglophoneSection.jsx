@@ -32,6 +32,12 @@ export default function AnglophoneSection() {
           >
             Primary Classes
           </button>
+          {/* <button
+  onClick={() => navigate("/anglophone/primary/levels")}
+  className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 rounded-xl font-semibold shadow-md hover:scale-105 transition-transform"
+>
+  Primary Classes
+</button> */}
 
         </div>
 

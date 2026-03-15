@@ -199,6 +199,11 @@ class BulletinAPI {
         }
     }
 
+
+
+
+
+
     // ========== HANDLERS CLASSES ==========
     async getClasses(req, res) {
         try {
