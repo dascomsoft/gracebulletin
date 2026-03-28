@@ -20,7 +20,7 @@
 //     headSignature: '',
 //     parentSignature: ''
 //   });
-  
+
 //   const [showPreview, setShowPreview] = useState(false);
 
 //   const handleInputChange = (e) => {
@@ -55,9 +55,9 @@
 //     const term1 = parseFloat(formData.term1.result) || 0;
 //     const term2 = parseFloat(formData.term2.result) || 0;
 //     const term3 = parseFloat(formData.term3.result) || 0;
-    
+
 //     if (term1 === 0 && term2 === 0 && term3 === 0) return '';
-    
+
 //     return ((term1 + term2 + term3) / 3).toFixed(2);
 //   };
 
@@ -547,7 +547,7 @@
 //   const navigate = useNavigate();
 //   const location = useLocation();
 //   const { studentId: paramStudentId } = useParams();
-  
+
 //   console.log("🔍 DEBUG BulletinAnnuel:", {
 //     paramStudentId,
 //     locationState: location.state,
@@ -561,13 +561,13 @@
 //       console.log(`✅ ID depuis URL: ${id} (type: ${typeof id})`);
 //       return id;
 //     }
-    
+
 //     if (location.state?.studentId) {
 //       const id = parseInt(location.state.studentId);
 //       console.log(`✅ ID depuis state: ${id} (type: ${typeof id})`);
 //       return id;
 //     }
-    
+
 //     const saved = localStorage.getItem('bulletinAnnuelData');
 //     if (saved) {
 //       try {
@@ -581,7 +581,7 @@
 //         console.error('Erreur lecture localStorage:', e);
 //       }
 //     }
-    
+
 //     console.warn("⚠️ Aucun ID d'élève trouvé");
 //     return null;
 //   });
@@ -607,10 +607,10 @@
 //       console.log(`📡 Requête API élève pour ID: ${id}`);
 //       const url = `${API_BASE_URL}/api/student/${id}`;
 //       console.log(`📡 URL: ${url}`);
-      
+
 //       const response = await fetch(url);
 //       console.log(`📡 Réponse status: ${response.status}`);
-      
+
 //       if (response.ok) {
 //         const student = await response.json();
 //         console.log('✅ Info élève chargée:', student);
@@ -637,27 +637,27 @@
 //     try {
 //         console.log(`📡 Requête bulletins: http://localhost:3000/api/student/${studentId}/bulletins`);
 //         const response = await fetch(`http://localhost:3000/api/student/${studentId}/bulletins`);
-        
+
 //         if (!response.ok) {
 //             throw new Error(`Erreur HTTP: ${response.status}`);
 //         }
-        
+
 //         const bulletins = await response.json();
 //         console.log(`✅ ${bulletins.length} bulletins trouvés`);
-        
+
 //         if (bulletins.length > 0) {
 //             // Chercher un bulletin annuel (peut être 'annual' ou 'annuel')
 //             const annualBulletin = bulletins.find(b => 
 //                 b.bulletin_type === 'annual' || 
 //                 b.bulletin_type === 'annuel'
 //             );
-            
+
 //             if (annualBulletin) {
 //                 console.log('✅ Bulletin annuel existant trouvé:', annualBulletin);
-                
+
 //                 // Traiter data_json intelligemment
 //                 let bulletinData = annualBulletin.data_json;
-                
+
 //                 // Si c'est une chaîne, on parse
 //                 if (typeof bulletinData === 'string') {
 //                     try {
@@ -670,20 +670,20 @@
 //                 } else {
 //                     console.log('📦 data_json déjà parsé (était un objet)');
 //                 }
-                
+
 //                 // Mettre à jour tous les états avec les données chargées
 //                 if (bulletinData.meta) {
 //                     setMeta(prev => ({ ...prev, ...bulletinData.meta }));
 //                 }
-                
+
 //                 if (bulletinData.data) {
 //                     setData(bulletinData.data);
 //                 }
-                
+
 //                 if (bulletinData.summary) {
 //                     setSummary(bulletinData.summary);
 //                 }
-                
+
 //                 setBulletinId(annualBulletin.id);
 //                 console.log('✅ Bulletin annuel chargé avec succès, ID:', annualBulletin.id);
 //             } else {
@@ -754,9 +754,9 @@
 //   const saveToDatabase = async (isDraft = true) => {
 //     try {
 //       setSaving(true);
-      
+
 //       console.log(`🔍 Vérification studentId: ${studentId} (type: ${typeof studentId})`);
-      
+
 //       if (!studentId) {
 //         console.error("❌ ERREUR CRITIQUE: studentId est null/undefined");
 //         alert("❌ ERREUR : Aucun élève sélectionné.\n\nVeuillez retourner à la liste des élèves et cliquer sur 'Créer Bulletin Annuel'.");
@@ -792,7 +792,7 @@
 //       };
 
 //       console.log('📤 Payload envoyé à l\'API:', payload);
-      
+
 //       let url, method;
 //       if (bulletinId) {
 //         url = `${API_BASE_URL}/api/bulletin/${bulletinId}`;
@@ -858,9 +858,9 @@
 //     const term1 = parseFloat(data.term1.result) || 0;
 //     const term2 = parseFloat(data.term2.result) || 0;
 //     const term3 = parseFloat(data.term3.result) || 0;
-    
+
 //     if (term1 === 0 && term2 === 0 && term3 === 0) return '';
-    
+
 //     return ((term1 + term2 + term3) / 3).toFixed(2);
 //   };
 
@@ -868,7 +868,7 @@
 //   const annualAverage = useMemo(() => calculateAnnualAverage(), [data]);
 
 //   const changeMeta = (k, v) => setMeta(m => ({ ...m, [k]: v }));
-  
+
 //   const handleTermChange = (term, field, value) => {
 //     setData(prev => ({
 //       ...prev,
@@ -909,7 +909,7 @@
 
 //   const handlePrint = () => {
 //     console.log('🖨️ Préparation impression...');
-    
+
 //     const printData = {
 //       meta: { ...meta, student_id: studentId },
 //       data,
@@ -917,9 +917,9 @@
 //       totalResult,
 //       annualAverage
 //     };
-    
+
 //     localStorage.setItem('printAnnuelData', JSON.stringify(printData));
-    
+
 //     const printUrl = `${window.location.origin}/#/print-annuel`;
 //     console.log('🖨️ Ouverture:', printUrl);
 //     window.open(printUrl, '_blank');
@@ -1021,7 +1021,7 @@
 //         </div>
 //       );
 //     }
-    
+
 //     if (bulletinId) {
 //       return (
 //         <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
@@ -1358,14 +1358,14 @@
 //               >
 //                 🖨️ Imprimer
 //               </button>
-              
+
 //               <button
 //                 onClick={handleReset}
 //                 className="w-full xs:w-auto px-4 py-2 border border-red-300 text-red-600 rounded text-sm hover:bg-red-50 transition-colors"
 //               >
 //                 Réinitialiser
 //               </button>
-              
+
 //               <button
 //                 onClick={handleSaveDraft}
 //                 disabled={saving || !studentId}
@@ -1373,7 +1373,7 @@
 //               >
 //                 {saving ? 'Sauvegarde...' : 'Sauvegarder Brouillon'}
 //               </button>
-              
+
 //               <button
 //                 onClick={handleFinalize}
 //                 disabled={saving || !studentId}
@@ -1503,12 +1503,12 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 // IMPORT POUR ELECTRON
 const { ipcRenderer } = (() => {
-    try {
-        if (window.require) {
-            return window.require('electron');
-        }
-    } catch (e) {}
-    return { ipcRenderer: null };
+  try {
+    if (window.require) {
+      return window.require('electron');
+    }
+  } catch (e) { }
+  return { ipcRenderer: null };
 })();
 
 
@@ -1519,8 +1519,8 @@ const { ipcRenderer } = (() => {
 const API_BASE_URL = 'http://localhost:3000';
 
 const CLASS_OPTIONS = [
-  'Petite section', 'Moyenne section', 'Grande section', 
-  'SIL', 'CP', 'CE1', 
+  'Petite section', 'Moyenne section', 'Grande section',
+  'SIL', 'CP', 'CE1',
   'CE2', 'CM1', 'CM2'
 ];
 
@@ -1534,7 +1534,7 @@ export default function BulletinAnnuel() {
   const navigate = useNavigate();
   const location = useLocation();
   const { studentId: paramStudentId } = useParams();
-  
+
   console.log("🔍 DEBUG BulletinAnnuel:", {
     paramStudentId,
     locationState: location.state,
@@ -1548,13 +1548,13 @@ export default function BulletinAnnuel() {
       console.log(`✅ ID depuis URL: ${id} (type: ${typeof id})`);
       return id;
     }
-    
+
     if (location.state?.studentId) {
       const id = parseInt(location.state.studentId);
       console.log(`✅ ID depuis state: ${id} (type: ${typeof id})`);
       return id;
     }
-    
+
     const saved = localStorage.getItem('bulletinAnnuelData');
     if (saved) {
       try {
@@ -1568,7 +1568,7 @@ export default function BulletinAnnuel() {
         console.error('Erreur lecture localStorage:', e);
       }
     }
-    
+
     console.warn("⚠️ Aucun ID d'élève trouvé");
     return null;
   });
@@ -1594,10 +1594,10 @@ export default function BulletinAnnuel() {
       console.log(`📡 Requête API élève pour ID: ${id}`);
       const url = `${API_BASE_URL}/api/student/${id}`;
       console.log(`📡 URL: ${url}`);
-      
+
       const response = await fetch(url);
       console.log(`📡 Réponse status: ${response.status}`);
-      
+
       if (response.ok) {
         const student = await response.json();
         console.log('✅ Info élève chargée:', student);
@@ -1620,69 +1620,69 @@ export default function BulletinAnnuel() {
 
 
 
-const loadStudentBulletins = async (studentId) => {
+  const loadStudentBulletins = async (studentId) => {
     try {
-        console.log(`📡 Requête bulletins: http://localhost:3000/api/student/${studentId}/bulletins`);
-        const response = await fetch(`http://localhost:3000/api/student/${studentId}/bulletins`);
-        
-        if (!response.ok) {
-            throw new Error(`Erreur HTTP: ${response.status}`);
-        }
-        
-        const bulletins = await response.json();
-        console.log(`✅ ${bulletins.length} bulletins trouvés`);
-        
-        if (bulletins.length > 0) {
-            // Chercher un bulletin annuel (peut être 'annual' ou 'annuel')
-            const annualBulletin = bulletins.find(b => 
-                b.bulletin_type === 'annual' || 
-                b.bulletin_type === 'annuel'
-            );
-            
-            if (annualBulletin) {
-                console.log('✅ Bulletin annuel existant trouvé:', annualBulletin);
-                
-                // Traiter data_json intelligemment
-                let bulletinData = annualBulletin.data_json;
-                
-                // Si c'est une chaîne, on parse
-                if (typeof bulletinData === 'string') {
-                    try {
-                        bulletinData = JSON.parse(bulletinData);
-                        console.log('📦 data_json parsé (était une chaîne)');
-                    } catch (e) {
-                        console.warn('⚠️ Erreur parsing JSON:', e);
-                        bulletinData = {};
-                    }
-                } else {
-                    console.log('📦 data_json déjà parsé (était un objet)');
-                }
-                
-                // Mettre à jour tous les états avec les données chargées
-                if (bulletinData.meta) {
-                    setMeta(prev => ({ ...prev, ...bulletinData.meta }));
-                }
-                
-                if (bulletinData.data) {
-                    setData(bulletinData.data);
-                }
-                
-                if (bulletinData.summary) {
-                    setSummary(bulletinData.summary);
-                }
-                
-                setBulletinId(annualBulletin.id);
-                console.log('✅ Bulletin annuel chargé avec succès, ID:', annualBulletin.id);
-            } else {
-                console.log('ℹ️ Aucun bulletin annuel existant');
+      console.log(`📡 Requête bulletins: http://localhost:3000/api/student/${studentId}/bulletins`);
+      const response = await fetch(`http://localhost:3000/api/student/${studentId}/bulletins`);
+
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP: ${response.status}`);
+      }
+
+      const bulletins = await response.json();
+      console.log(`✅ ${bulletins.length} bulletins trouvés`);
+
+      if (bulletins.length > 0) {
+        // Chercher un bulletin annuel (peut être 'annual' ou 'annuel')
+        const annualBulletin = bulletins.find(b =>
+          b.bulletin_type === 'annual' ||
+          b.bulletin_type === 'annuel'
+        );
+
+        if (annualBulletin) {
+          console.log('✅ Bulletin annuel existant trouvé:', annualBulletin);
+
+          // Traiter data_json intelligemment
+          let bulletinData = annualBulletin.data_json;
+
+          // Si c'est une chaîne, on parse
+          if (typeof bulletinData === 'string') {
+            try {
+              bulletinData = JSON.parse(bulletinData);
+              console.log('📦 data_json parsé (était une chaîne)');
+            } catch (e) {
+              console.warn('⚠️ Erreur parsing JSON:', e);
+              bulletinData = {};
             }
+          } else {
+            console.log('📦 data_json déjà parsé (était un objet)');
+          }
+
+          // Mettre à jour tous les états avec les données chargées
+          if (bulletinData.meta) {
+            setMeta(prev => ({ ...prev, ...bulletinData.meta }));
+          }
+
+          if (bulletinData.data) {
+            setData(bulletinData.data);
+          }
+
+          if (bulletinData.summary) {
+            setSummary(bulletinData.summary);
+          }
+
+          setBulletinId(annualBulletin.id);
+          console.log('✅ Bulletin annuel chargé avec succès, ID:', annualBulletin.id);
         } else {
-            console.log('ℹ️ Aucun bulletin existant');
+          console.log('ℹ️ Aucun bulletin annuel existant');
         }
+      } else {
+        console.log('ℹ️ Aucun bulletin existant');
+      }
     } catch (error) {
-        console.error('❌ Erreur chargement bulletins:', error);
+      console.error('❌ Erreur chargement bulletins:', error);
     }
-};
+  };
 
   function getCurrentAcademicYear() {
     const now = new Date();
@@ -1741,9 +1741,9 @@ const loadStudentBulletins = async (studentId) => {
   const saveToDatabase = async (isDraft = true) => {
     try {
       setSaving(true);
-      
+
       console.log(`🔍 Vérification studentId: ${studentId} (type: ${typeof studentId})`);
-      
+
       if (!studentId) {
         console.error("❌ ERREUR CRITIQUE: studentId est null/undefined");
         alert("❌ ERREUR : Aucun élève sélectionné.\n\nVeuillez retourner à la liste des élèves et cliquer sur 'Créer Bulletin Annuel'.");
@@ -1779,7 +1779,7 @@ const loadStudentBulletins = async (studentId) => {
       };
 
       console.log('📤 Payload envoyé à l\'API:', payload);
-      
+
       let url, method;
       if (bulletinId) {
         url = `${API_BASE_URL}/api/bulletin/${bulletinId}`;
@@ -1794,7 +1794,7 @@ const loadStudentBulletins = async (studentId) => {
       console.log(`📤 Envoi ${method} à: ${url}`);
       const response = await fetch(url, {
         method,
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
@@ -1845,9 +1845,9 @@ const loadStudentBulletins = async (studentId) => {
     const term1 = parseFloat(data.term1.result) || 0;
     const term2 = parseFloat(data.term2.result) || 0;
     const term3 = parseFloat(data.term3.result) || 0;
-    
+
     if (term1 === 0 && term2 === 0 && term3 === 0) return '';
-    
+
     return ((term1 + term2 + term3) / 3).toFixed(2);
   };
 
@@ -1855,7 +1855,7 @@ const loadStudentBulletins = async (studentId) => {
   const annualAverage = useMemo(() => calculateAnnualAverage(), [data]);
 
   const changeMeta = (k, v) => setMeta(m => ({ ...m, [k]: v }));
-  
+
   const handleTermChange = (term, field, value) => {
     setData(prev => ({
       ...prev,
@@ -1894,27 +1894,14 @@ const loadStudentBulletins = async (studentId) => {
     }
   };
 
-  // VERSION MODIFIÉE POUR ELECTRON
-const handlePrint = () => {
-    console.log('🖨️ Annuel');
-    
-    const printData = {
-        meta: { ...meta, student_id: studentId },
-        data,
-        summary,
-        totalResult,
-        annualAverage
-    };
-    
-    localStorage.setItem('printAnnuelData', JSON.stringify(printData));
-    
-    if (ipcRenderer) {
-        ipcRenderer.send('print-bulletin', { type: 'annuel', data: printData });
-    } else {
-        window.open(`${window.location.origin}/#/print-annuel`, '_blank');
-    }
-};
 
+  const handlePrint = () => {
+    if (ipcRenderer) {
+      ipcRenderer.send('print-annuel');
+    } else {
+      window.print();
+    }
+  };
 
   const handlePrintOnly = () => {
     handlePrint();
@@ -1958,18 +1945,18 @@ const handlePrint = () => {
         <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
           <div className="flex items-center gap-2">
             <span className="text-blue-600">👤</span>
-            <span className="text-sm text-blue-700">
-              Élève: <strong>{studentInfo.nom_complet || studentInfo.full_name}</strong> 
+            <span className="text-lg text-blue-700">
+              Élève: <strong>{studentInfo.nom_complet || studentInfo.full_name}</strong>
               {studentInfo.class_name && ` - Classe: ${studentInfo.class_name}`}
               {studentInfo.sex && ` - Sexe: ${studentInfo.sex}`}
               {` - Bulletin Annuel`}
             </span>
           </div>
-          {studentId && (
+          {/* {studentId && (
             <div className="mt-2 text-xs text-gray-600">
               ID: <code className="bg-gray-100 px-2 py-1 rounded">{studentId}</code>
             </div>
-          )}
+          )} */}
         </div>
       );
     } else if (!studentId) {
@@ -2011,7 +1998,7 @@ const handlePrint = () => {
         </div>
       );
     }
-    
+
     if (bulletinId) {
       return (
         <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
@@ -2065,69 +2052,14 @@ const handlePrint = () => {
         </div>
 
         {renderStudentInfo()}
-        {renderSaveStatus()}
+        {/* {renderSaveStatus()} */}
 
         {/* Form - EN FRANÇAIS */}
         <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Nom:</label>
-              <input
-                type="text"
-                value={meta.studentName}
-                onChange={(e) => changeMeta("studentName", e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
-                placeholder="Entrez le nom de l'élève"
-                disabled={!!studentInfo}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Année Scolaire:</label>
-              <select
-                value={meta.schoolYear}
-                onChange={(e) => changeMeta("schoolYear", e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
-              >
-                {schoolYears.map(year => (
-                  <option key={year} value={year}>{year}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Classe:</label>
-              <select
-                value={meta.className}
-                onChange={(e) => changeMeta("className", e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
-                disabled={!!studentInfo}
-              >
-                <option value="">Sélectionnez une classe</option>
-                {CLASS_OPTIONS.map(cls => (
-                  <option key={cls} value={cls}>{cls}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Sexe:</label>
-              <select
-                value={meta.sex}
-                onChange={(e) => changeMeta("sex", e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
-                disabled={!!studentInfo}
-              >
-                <option value="">Sélectionnez le sexe</option>
-                <option>Masculin</option>
-                <option>Féminin</option>
-              </select>
-            </div>
-          </div>
 
           {/* Table des Résultats - EN FRANÇAIS */}
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-gray-300 text-sm">
+            <table className="w-full border-collapse border border-gray-300 text-xl">
               <thead>
                 <tr className="bg-gray-100">
                   <th className="border border-gray-300 px-2 py-1">Trimestres</th>
@@ -2226,9 +2158,9 @@ const handlePrint = () => {
             </table>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Moyenne Annuelle:</label>
+          <div className="text-lg grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="text-lg">
+              <label className="block text-lg  text-gray-700 mb-1">Moyenne Annuelle:</label>
               <input
                 type="text"
                 value={annualAverage || "0.00"}
@@ -2237,12 +2169,12 @@ const handlePrint = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Position Annuelle:</label>
+              <label className="block text-lg  text-gray-700 mb-1">Position Annuelle:</label>
               <input
                 type="text"
                 value={summary.annualPosition}
                 onChange={(e) => handleSummaryChange('annualPosition', e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-lg"
                 placeholder="ex: 5ème/30"
               />
             </div>
@@ -2253,11 +2185,11 @@ const handlePrint = () => {
             <h3 className="font-bold text-sm mb-2">DÉCISION DU CONSEIL DE CLASSE</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Promu en:</label>
+                <label className="block text-lg  text-gray-700 mb-1">Promu en:</label>
                 <select
                   value={summary.councilDecision.promotedTo}
                   onChange={(e) => handleCouncilDecisionChange('promotedTo', e.target.value)}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-lg"
                 >
                   {CLASS_OPTIONS.map(cls => (
                     <option key={cls} value={cls}>{cls}</option>
@@ -2265,11 +2197,11 @@ const handlePrint = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Redoubler la classe:</label>
+                <label className="block text-lg font-medium text-gray-700 mb-1">Redoubler la classe:</label>
                 <select
                   value={summary.councilDecision.repeatClass}
                   onChange={(e) => handleCouncilDecisionChange('repeatClass', e.target.value)}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-lg"
                 >
                   <option value="Non">Non</option>
                   <option value="Oui">Oui</option>
@@ -2281,55 +2213,96 @@ const handlePrint = () => {
           {/* Signatures - EN FRANÇAIS */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Observations et signature du chef d'établissement:</label>
+              <label className="block text-lg font-medium text-gray-700 mb-1">Observations et signature du chef d'établissement:</label>
               <textarea
                 value={summary.headObservation}
                 onChange={(e) => handleSummaryChange('headObservation', e.target.value)}
                 rows="2"
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-lg"
                 placeholder="Observations du chef d'établissement..."
               ></textarea>
               <input
                 type="text"
                 value={summary.headSignature}
                 onChange={(e) => handleSummaryChange('headSignature', e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm mt-2"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-lg mt-2"
                 placeholder="Signature du chef"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Parent et signature:</label>
+              <label className="block text-lg font-medium text-gray-700 mb-1">Parent et signature:</label>
               <textarea
                 rows="2"
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-lg"
                 placeholder="Commentaires du parent..."
               ></textarea>
               <input
                 type="text"
                 value={summary.parentSignature}
                 onChange={(e) => handleSummaryChange('parentSignature', e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm mt-2"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-lg mt-2"
                 placeholder="Signature du parent"
               />
             </div>
           </div>
 
           <div className="text-right">
-            <p className="text-sm">Yaoundé, le ___________</p>
+            <p className="text-lg">Yaoundé, le ___________</p>
           </div>
 
-          {/* Footer - EN FRANÇAIS */}
-          <div className="text-center text-[8px] print:text-[7px] bg-blue-50 border border-blue-200 rounded p-0.5 mt-10 print:mt-10">
-            <div className="receipt-footer">
-              <div>
-                <p>Téléphone: (+237) 696-308-503 / WhatsApp: 651989899</p>
-                <p>Siège social: YAOUNDÉ - AKOK-NDOE-2 (Quartier Mbouda, face au mini marché)</p>
-              </div>
-              <div>
-                <p>Arrêté d'ouverture: N° 61/JL/23/A/MINEDUB/SG/DSEPB/SDRA/DR 05 JANVIER 2025</p>
-              </div>
-            </div>
-          </div>
+
+          <style>{`
+    @media print {
+        @page {
+            size: A4;
+            margin: 0.5cm;
+        }
+
+        body {
+            zoom: 0.70;
+        }
+
+        td, th {
+            padding: 3px !important;
+            line-height: 1.1 !important;
+        }
+
+        .p-4 {
+            padding: 6px !important;
+        }
+
+        button {
+            display: none !important;
+        }
+
+        .receipt-footer {
+            display: none !important;
+        }
+
+        /* ✅ AJOUTER CE BLOC POUR CACHER LES FLÈCHES DES SELECTS */
+        select {
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            font-size: inherit !important;
+            color: black !important;
+        }
+        
+        select::-ms-expand {
+            display: none !important;
+        }
+    }
+`}</style>
+
+
+
+
+
+
 
           {/* Boutons d'Action - EN FRANÇAIS */}
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-3 mt-6">
@@ -2348,14 +2321,14 @@ const handlePrint = () => {
               >
                 🖨️ Imprimer
               </button>
-              
+
               <button
                 onClick={handleReset}
                 className="w-full xs:w-auto px-4 py-2 border border-red-300 text-red-600 rounded text-sm hover:bg-red-50 transition-colors"
               >
                 Réinitialiser
               </button>
-              
+
               <button
                 onClick={handleSaveDraft}
                 disabled={saving || !studentId}
@@ -2363,7 +2336,7 @@ const handlePrint = () => {
               >
                 {saving ? 'Sauvegarde...' : 'Sauvegarder Brouillon'}
               </button>
-              
+
               <button
                 onClick={handleFinalize}
                 disabled={saving || !studentId}

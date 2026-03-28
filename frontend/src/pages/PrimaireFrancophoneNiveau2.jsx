@@ -635,30 +635,15 @@ export default function PrimaireFrancophone() {
         }
     };
 
-    // VERSION MODIFIÉE POUR ELECTRON
     const handlePrint = () => {
-        console.log('🖨️ Francophone');
-
-        const printData = {
-            meta: { ...meta, student_id: studentId },
-            studentPhoto,
-            periodHeaders,
-            data,
-            totals,
-            averages,
-            periodInfo,
-            overallAvg,
-            summary
-        };
-
-        localStorage.setItem('printBulletinData', JSON.stringify(printData));
-
-        if (ipcRenderer) {
-            ipcRenderer.send('print-bulletin', { type: 'francophone', data: printData });
-        } else {
-            window.open(`${window.location.origin}/#/print-bulletin-francophone`, '_blank');
-        }
-    };
+    console.log('🖨️ Impression');
+    
+    if (ipcRenderer) {
+        ipcRenderer.send('print-bulletin');
+    } else {
+        window.print();
+    }
+};
 
 
 
@@ -798,119 +783,84 @@ export default function PrimaireFrancophone() {
             </div>
 
             <div className="bg-white w-full max-w-6xl rounded-xl shadow-lg p-6">
-                {renderStudentInfo()}
-                {renderSaveStatus()}
+                
 
-                <div className="flex flex-col md:flex-row gap-6 mb-6 items-start">
-                    <div className="flex-shrink-0 flex flex-col items-center">
-                        <div className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center mb-3 relative bg-gray-50">
-                            {studentPhoto ? (
-                                <>
-                                    <img
-                                        src={studentPhoto}
-                                        alt="Student"
-                                        className="w-full h-full object-cover rounded-lg"
-                                    />
-                                    <button
-                                        onClick={handleRemovePhoto}
-                                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
-                                        type="button"
-                                    >
-                                        ×
-                                    </button>
-                                </>
-                            ) : (
-                                <div className="text-center text-gray-400">
-                                    <svg className="w-8 h-8 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                    <span className="text-xs">Aucune photo</span>
-                                </div>
-                            )}
+        
+              <div className="flex flex-col md:flex-row gap-6  items-start">
+                    <div className="flex flex-row items-center gap-4 mb-1">
+                        {/* Photo */}
+                        <div className="flex-shrink-0">
+                            <div className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50 relative">
+                                {studentPhoto ? (
+                                    <>
+                                        <img
+                                            src={studentPhoto}
+                                            alt="Student"
+                                            className="w-full h-full object-cover rounded-lg"
+                                        />
+                                        <button
+                                            onClick={handleRemovePhoto}
+                                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+                                            type="button"
+                                        >
+                                            ×
+                                        </button>
+                                    </>
+                                ) : (
+                                    <div className="text-center text-gray-400">
+                                        <svg className="w-6 h-6 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        <span className="text-xs">No photo</span>
+                                    </div>
+                                )}
+                            </div>
+                            {/* Bouton Add Photo - seulement à l'écran */}
+                            <label className="cursor-pointer bg-blue-600 text-white px-2 py-1 rounded text-xs hover:bg-blue-700 transition-colors inline-flex items-center gap-1 mt-1 print:hidden">
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span>Add Photo</span>
+                                <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
+                            </label>
                         </div>
 
-                        <label className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors inline-flex items-center gap-2">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                            <span>Ajouter Photo</span>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handlePhotoUpload}
-                                className="hidden"
-                            />
-                        </label>
-                        <p className="text-xs text-gray-500 mt-2 text-center">
-                            Cliquez pour sélectionner une photo
-                        </p>
-                    </div>
-
-                    <div className="flex-1">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                            <input
-                                className="border px-3 py-2 rounded"
-                                placeholder="Nom complet"
-                                value={meta.studentName}
-                                onChange={(e) => changeMeta("studentName", e.target.value)}
-                                disabled={!!studentInfo}
-                            />
-                            <select
-                                className="border px-3 py-2 rounded"
-                                value={meta.className}
-                                onChange={e => changeMeta("className", e.target.value)}
-                                disabled={!!studentInfo}
-                            >
-                                <option value="">Classe</option>
-                                <option>SIL</option><option>CP</option><option>CE1</option><option>CE2</option><option>CM1</option><option>CM2</option>
-                                <option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option><option>Class 6</option>
-                            </select>
-
-                            <select className="border px-3 py-2 rounded" value={meta.level} onChange={e => changeMeta("level", e.target.value)}>
-                                <option value="">Niveau</option>
-                                <option>Niveau 1</option><option>Niveau 2</option><option>Niveau 3</option><option>Niveau 4</option><option>Niveau 5</option><option>Niveau 6</option>
-                            </select>
-
-                            <select className="border px-3 py-2 rounded" value={meta.term} onChange={e => changeMeta("term", e.target.value)}>
-                                <option value="">Trimestre</option>
-                                <option>Trimestre 1</option><option>Trimestre 2</option><option>Trimestre 3</option>
-                                <option>Term 1</option><option>Term 2</option><option>Term 3</option>
-                            </select>
-
-                            <select className="border px-3 py-2 rounded" value={meta.year} onChange={e => changeMeta("year", e.target.value)}>
-                                <option value="">Année scolaire</option>
-                                {Array.from({ length: 27 }, (_, i) => 2024 + i).map(y => <option key={y}>{y}-{y + 1}</option>)}
-                            </select>
-
-                            <input className="border px-3 py-2 rounded md:col-span-3" placeholder="Enseignant" value={meta.teacher} onChange={e => changeMeta("teacher", e.target.value)} />
+                        {/* Info élève sur UNE LIGNE */}
+                        <div className="flex-1">
+                            <div className="text-lg text-blue-700">
+                                <strong>Élève:</strong> {studentInfo?.nom_complet || studentInfo?.full_name || "-"}
+                                {studentInfo?.class_name && <span> - <strong>Classe:</strong> {studentInfo.class_name}</span>}
+                                <span> - <strong>Trimestre:</strong> {currentTrimester}</span>
+                                {meta.year && <span> - <strong>Année:</strong> {meta.year}</span>}
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div className="overflow-x-auto">
-                    <table className="w-full text-xs border-collapse">
+                    <table className="w-full text-xl border-collapse">
                         <thead>
                             <tr className="bg-gray-100">
-                                <th className="border p-2 w-80">Compétences</th>
-                                <th className="border p-2 w-96">Description</th>
-                                <th className="border p-2 text-center w-20">Évaluation</th>
-                                <th className="border p-2 text-center w-14">SCL</th>
-                                <th className="border p-2 text-center w-24">
-                                    <select className="text-xs" value={periodHeaders.h1} onChange={(e) => changeHeader("h1", e.target.value)}>
+                                <th className="border p-2 w-90 text-base">Compétences</th>
+                                <th className="border p-2 w-100">Description</th>
+                                <th className="border p-2 text-center w-20 text-base">Évaluation</th>
+                                <th className="border p-2 text-center w-14 text-base">SCL</th>
+                                <th className="border p-2 text-center w-24 text-base">
+                                    <select className="text-sm" value={periodHeaders.h1} onChange={(e) => changeHeader("h1", e.target.value)}>
                                         {MONTH_OPTIONS.map(m => <option key={m}>{m}</option>)}
                                     </select>
                                 </th>
                                 <th className="border p-2 text-center w-24">
-                                    <select className="text-xs" value={periodHeaders.h2} onChange={(e) => changeHeader("h2", e.target.value)}>
+                                    <select className="text-sm" value={periodHeaders.h2} onChange={(e) => changeHeader("h2", e.target.value)}>
                                         {MONTH_OPTIONS.map(m => <option key={m}>{m}</option>)}
                                     </select>
                                 </th>
                                 <th className="border p-2 text-center w-24">
-                                    <select className="text-xs" value={periodHeaders.h3} onChange={(e) => changeHeader("h3", e.target.value)}>
+                                    <select className="text-sm" value={periodHeaders.h3} onChange={(e) => changeHeader("h3", e.target.value)}>
                                         {MONTH_OPTIONS.map(m => <option key={m}>{m}</option>)}
                                     </select>
                                 </th>
-                                <th className="border p-2 text-center w-28">Appréciation</th>
+                                <th className="border p-2 text-center w-100 text-sm">Appréciation</th>
                             </tr>
                         </thead>
 
@@ -927,12 +877,12 @@ export default function PrimaireFrancophone() {
                                                 <tr key={ev + i} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                                                     {i === 0 && (
                                                         <td className="border p-2 align-top font-semibold" rowSpan={skill.evaluations.length}>
-                                                            <div className="text-sm">{skill.title}</div>
+                                                            <div className="">{skill.title}</div>
                                                         </td>
                                                     )}
                                                     {i === 0 && (
                                                         <td className="border p-2 align-top" rowSpan={skill.evaluations.length}>
-                                                            <div className="text-xs text-gray-600">{skill.description}</div>
+                                                            <div className=" text-gray-600">{skill.description}</div>
                                                         </td>
                                                     )}
 
@@ -942,7 +892,7 @@ export default function PrimaireFrancophone() {
                                                     {/* Période 1 */}
                                                     <td className="border p-1 text-center">
                                                         <select
-                                                            className="w-full text-xs p-1"
+                                                            className="w-full  p-1"
                                                             value={evalData?.m1 || ""}
                                                             onChange={(e) => changeNote(skill.key, ev, "m1", e.target.value)}
                                                         >
@@ -954,7 +904,7 @@ export default function PrimaireFrancophone() {
                                                     {/* Période 2 */}
                                                     <td className="border p-1 text-center">
                                                         <select
-                                                            className="w-full text-xs p-1"
+                                                            className="w-full  p-1"
                                                             value={evalData?.m2 || ""}
                                                             onChange={(e) => changeNote(skill.key, ev, "m2", e.target.value)}
                                                         >
@@ -966,7 +916,7 @@ export default function PrimaireFrancophone() {
                                                     {/* Période 3 */}
                                                     <td className="border p-1 text-center">
                                                         <select
-                                                            className="w-full text-xs p-1"
+                                                            className="w-full  p-1"
                                                             value={evalData?.m3 || ""}
                                                             onChange={(e) => changeNote(skill.key, ev, "m3", e.target.value)}
                                                         >
@@ -978,7 +928,7 @@ export default function PrimaireFrancophone() {
                                                     {i === 0 && (
                                                         <td className="border p-2 align-top" rowSpan={skill.evaluations.length}>
                                                             <select
-                                                                className="w-full text-sm p-1"
+                                                                className="w-full p-1"
                                                                 value={state?.appreciation || ""}
                                                                 onChange={(e) => changeGroupApp(skill.key, e.target.value)}
                                                             >
@@ -1000,8 +950,8 @@ export default function PrimaireFrancophone() {
                     </table>
                 </div>
 
-                <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div className="border rounded p-4 text-xs">
+                <div className="mt-1 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="border rounded p-4 text-base">
                         <div className="font-semibold mb-2">Légende des Appréciations</div>
                         <ul className="list-disc ml-5">
                             <li><strong>Acquis</strong> — L'élève a maîtrisé la compétence.</li>
@@ -1011,28 +961,28 @@ export default function PrimaireFrancophone() {
                         </ul>
                     </div>
 
-                    <div className="border rounded p-4 text-sm">
+                    <div className="border rounded p-4 text-lg">
                         <div className="font-semibold mb-2">Périodes</div>
 
-                        <div className="grid grid-cols-3 gap-2 text-xs mb-3">
+                        <div className="grid grid-cols-3 gap-2 text-base mb-3">
                             <div>
-                                <select className="w-full border px-2 py-1 rounded text-sm" value={periodHeaders.h1} onChange={e => changeHeader("h1", e.target.value)}>
+                                <select className="w-full border px-2 py-1 rounded text-base" value={periodHeaders.h1} onChange={e => changeHeader("h1", e.target.value)}>
                                     {MONTH_OPTIONS.map(m => <option key={m}>{m}</option>)}
                                 </select>
                             </div>
                             <div>
-                                <select className="w-full border px-2 py-1 rounded text-sm" value={periodHeaders.h2} onChange={e => changeHeader("h2", e.target.value)}>
+                                <select className="w-full border px-2 py-1 rounded text-base" value={periodHeaders.h2} onChange={e => changeHeader("h2", e.target.value)}>
                                     {MONTH_OPTIONS.map(m => <option key={m}>{m}</option>)}
                                 </select>
                             </div>
                             <div>
-                                <select className="w-full border px-2 py-1 rounded text-sm" value={periodHeaders.h3} onChange={e => changeHeader("h3", e.target.value)}>
+                                <select className="w-full border px-2 py-1 rounded text-base" value={periodHeaders.h3} onChange={e => changeHeader("h3", e.target.value)}>
                                     {MONTH_OPTIONS.map(m => <option key={m}>{m}</option>)}
                                 </select>
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-3 gap-2 text-xs items-center mb-2">
+                        <div className="grid grid-cols-3 gap-2 text-lg items-center mb-2">
                             <div className="text-center">
                                 <div className="text-gray-600">Totaux</div>
                                 <div className="font-semibold mt-1">{totals.t1}</div>
@@ -1047,7 +997,7 @@ export default function PrimaireFrancophone() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-3 gap-2 text-xs items-center mb-2">
+                        <div className="grid grid-cols-3 gap-2 text-lg items-center mb-2">
                             <div className="text-center">
                                 <div className="text-gray-600">Moyenne (/20)</div>
                                 <div className="font-semibold mt-1">{averages.a1}</div>
@@ -1088,7 +1038,7 @@ export default function PrimaireFrancophone() {
                     </div>
                 </div>
 
-                <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="mt-1 grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="border-2 border-gray-300 rounded-lg p-4 bg-white shadow-sm">
                         <div className="font-bold text-base mb-3 text-center text-gray-800">Résumé</div>
                         <div className="space-y-3">
@@ -1149,17 +1099,59 @@ export default function PrimaireFrancophone() {
                     </div>
                 </div>
 
-                <div className="text-center text-[8px] print:text-[7px] bg-blue-50 border border-blue-200 rounded p-0.5 mt-10 print:mt-10">
-                    <div className="receipt-footer">
-                        <div>
-                            <p>Téléphone: (+237) 696-308-503 / WhatsApp: 651989899</p>
-                            <p>Siège social: YAOUNDÉ - AKOK-NDOE-2 (Quartier Mbouda, face au mini marché)</p>
-                        </div>
-                        <div>
-                            <p>Arrêté d'ouverture: N° 61/JL/23/A/MINEDUB/SG/DSEPB/SDRA/DR 05 JANVIER 2025</p>
-                        </div>
-                    </div>
-                </div>
+
+                         <style>{`
+    @media print {
+        @page {
+            size: A4;
+            margin: 0.5cm;
+        }
+
+        body {
+            zoom: 0.43;
+        }
+
+        td, th {
+            padding: 3px !important;
+            line-height: 1.1 !important;
+        }
+
+        .p-4 {
+            padding: 6px !important;
+        }
+
+        button {
+            display: none !important;
+        }
+
+        .receipt-footer {
+            display: none !important;
+        }
+
+        /* ✅ AJOUTER CE BLOC POUR CACHER LES FLÈCHES DES SELECTS */
+        select {
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            font-size: inherit !important;
+            color: black !important;
+        }
+        
+        select::-ms-expand {
+            display: none !important;
+        }
+    }
+`}</style>
+
+
+
+
+
+
 
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-3 mt-6">
                     <button

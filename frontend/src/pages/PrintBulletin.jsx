@@ -11,34 +11,44 @@ const PrintBulletin = () => {
     const [bulletinType, setBulletinType] = useState('anglophone'); // Type par défaut
 
     useEffect(() => {
-        // Détecter le type depuis l'URL
-        const path = window.location.pathname;
+    // Récupérer les données depuis localStorage
+    const data = localStorage.getItem('printBulletinData');
+    
+    if (!data) {
+        document.body.innerHTML = '<h1>Aucune donnée à imprimer</h1>';
+        return;
+    }
+
+    try {
+        const parsedData = JSON.parse(data);
+        console.log('📦 Données reçues:', parsedData);
         
-        if (path.includes('francophone')) {
-            setBulletinType('francophone');
-        } else if (path.includes('maternelle')) {
-            setBulletinType('maternelle');
-        } else if (path.includes('nursery')) {
-            setBulletinType('nursery');
-        } else {
-            setBulletinType('anglophone');
+        setBulletinData(parsedData);
+        
+        // ✅ Utiliser le bulletinType des données (AJOUTÉ DANS LE FORMULAIRE)
+        if (parsedData.bulletinType) {
+            setBulletinType(parsedData.bulletinType);
+            console.log('📌 Type détecté:', parsedData.bulletinType);
         }
-
-        // Récupérer les données depuis localStorage
-        const data = localStorage.getItem('printBulletinData');
-        if (data) {
-            setBulletinData(JSON.parse(data));
-        } else {
-            document.body.innerHTML = '<h1>Aucune donnée à imprimer</h1>';
-        }
-
+        
         // Imprimer automatiquement
         setTimeout(() => {
             window.print();
             // Fermer après impression
             setTimeout(() => window.close(), 1000);
         }, 500);
-    }, []);
+        
+    } catch (error) {
+        console.error('❌ Erreur parsing:', error);
+        document.body.innerHTML = '<h1>Erreur de chargement des données</h1>';
+    }
+}, []);
+
+
+
+
+
+
 
     if (!bulletinData) {
         return <div>Chargement...</div>;

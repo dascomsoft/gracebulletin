@@ -7,7 +7,7 @@ const { ipcRenderer } = (() => {
         if (window.require) {
             return window.require('electron');
         }
-    } catch (e) {}
+    } catch (e) { }
     return { ipcRenderer: null };
 })();
 
@@ -63,14 +63,14 @@ export default function NewNurseryBulletin() {
     const [bulletinId, setBulletinId] = useState(null);
     const [isDraftSaved, setIsDraftSaved] = useState(false);
     const [studentInfo, setStudentInfo] = useState(null);
-    
+
     // NOUVEL ÉTAT POUR LA PHOTO
     const [studentPhoto, setStudentPhoto] = useState(null);
 
-    const [monthHeaders, setMonthHeaders] = useState({ 
-        m1: MONTH_OPTIONS[0], 
-        m2: MONTH_OPTIONS[1], 
-        m3: MONTH_OPTIONS[2] 
+    const [monthHeaders, setMonthHeaders] = useState({
+        m1: MONTH_OPTIONS[0],
+        m2: MONTH_OPTIONS[1],
+        m3: MONTH_OPTIONS[2]
     });
 
     const [meta, setMeta] = useState({
@@ -159,22 +159,22 @@ export default function NewNurseryBulletin() {
         try {
             const response = await fetch(`${API_BASE_URL}/api/student/${studentId}/bulletins`);
             if (!response.ok) return;
-            
+
             const bulletins = await response.json();
             const currentBulletin = bulletins.find(b => b.trimester === currentTrimester);
-            
+
             if (currentBulletin) {
                 let bulletinData = currentBulletin.data_json;
                 if (typeof bulletinData === 'string') {
                     bulletinData = JSON.parse(bulletinData);
                 }
-                
+
                 if (bulletinData.monthHeaders) setMonthHeaders(bulletinData.monthHeaders);
                 if (bulletinData.meta) setMeta(prev => ({ ...prev, ...bulletinData.meta }));
                 if (bulletinData.subjectsData) setSubjectsData(bulletinData.subjectsData);
                 if (bulletinData.summary) setSummary(bulletinData.summary);
                 if (bulletinData.studentPhoto) setStudentPhoto(bulletinData.studentPhoto); // 👈 CHARGER LA PHOTO
-                
+
                 setBulletinId(currentBulletin.id);
                 console.log("✅ Bulletin chargé ID:", currentBulletin.id);
             }
@@ -205,13 +205,13 @@ export default function NewNurseryBulletin() {
             reader.readAsDataURL(file);
         }
     };
-    
+
     const handleRemovePhoto = () => setStudentPhoto(null);
 
     const saveToDatabase = async (isDraft = true) => {
         try {
             setSaving(true);
-            
+
             if (!studentId) {
                 alert("❌ No student selected.");
                 setSaving(false);
@@ -283,23 +283,20 @@ export default function NewNurseryBulletin() {
         }
     };
 
-const handlePrint = () => {
-    const printData = {
-        meta: { ...meta, student_id: studentId },
-        monthHeaders,
-        subjectsData,
-        summary,
-        studentPhoto
+    const handlePrint = () => {
+        console.log('🖨️ Impression');
+
+        if (ipcRenderer) {
+            ipcRenderer.send('print-bulletin');
+        } else {
+            window.print();
+        }
     };
-    
-    localStorage.setItem('printBulletinData', JSON.stringify(printData));
-    
-    if (ipcRenderer) {
-        ipcRenderer.send('print-bulletin', { type: 'nursery', data: printData });
-    } else {
-        window.open(`/#/print-new-nursery-bulletin`, '_blank');
-    }
-};
+
+
+
+
+
     // Handlers
     const changeMonthHeader = (k, v) => setMonthHeaders(p => ({ ...p, [k]: v }));
     const changeMeta = (k, v) => setMeta(m => ({ ...m, [k]: v }));
@@ -327,18 +324,18 @@ const handlePrint = () => {
                 academicYear: "",
                 student_id: studentId
             });
-            
+
             const resetSubjects = {};
             SUBJECTS.forEach(subject => {
                 resetSubjects[subject] = { remarks1: "", remarks2: "", remarks3: "", appreciation: "" };
             });
             setSubjectsData(resetSubjects);
-            
+
             setSummary({
                 result: "", position: "", appreciation: "",
                 teacherSignature: "", headmasterSignature: "", parentSignature: ""
             });
-            
+
             setStudentPhoto(null);  // 👈 RÉINITIALISER LA PHOTO
             setBulletinId(null);
             setIsDraftSaved(false);
@@ -382,114 +379,77 @@ const handlePrint = () => {
                 </div>
             </div>
 
-            {/* Student Info Banner */}
-            {studentInfo && (
-                <div className="w-full max-w-6xl mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                    <div className="flex items-center gap-2">
-                        <span className="text-blue-600">👤</span>
-                        <span className="text-sm text-blue-700">
-                            Child: <strong>{studentInfo.nom_complet}</strong> - Class: {studentInfo.class_name} - Term: {currentTrimester}
-                        </span>
-                    </div>
-                </div>
-            )}
+      
 
             {/* Form container */}
             <div className="bg-white w-full max-w-6xl rounded-xl shadow-lg p-6">
-                {/* SECTION PHOTO + INFOS (comme dans l'ancien bulletin) */}
-                <div className="flex flex-col md:flex-row gap-6 mb-6 items-start">
-                    {/* Bloc photo */}
-                    <div className="flex-shrink-0 flex flex-col items-center">
-                        <div className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center mb-3 relative bg-gray-50">
-                            {studentPhoto ? (
-                                <>
-                                    <img
-                                        src={studentPhoto}
-                                        alt="Child"
-                                        className="w-full h-full object-cover rounded-lg"
-                                    />
-                                    <button
-                                        onClick={handleRemovePhoto}
-                                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
-                                        type="button"
-                                    >
-                                        ×
-                                    </button>
-                                </>
-                            ) : (
-                                <div className="text-center text-gray-400">
-                                    <svg className="w-8 h-8 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                    <span className="text-xs">No photo</span>
-                                </div>
-                            )}
+
+                <div className="flex flex-col md:flex-row gap-6  items-start">
+
+                    <div className="flex flex-row items-center gap-4 mb-1">
+                        {/* Photo */}
+                        <div className="flex-shrink-0">
+                            <div className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50 relative">
+                                {studentPhoto ? (
+                                    <>
+                                        <img
+                                            src={studentPhoto}
+                                            alt="Student"
+                                            className="w-full h-full object-cover rounded-lg"
+                                        />
+                                        <button
+                                            onClick={handleRemovePhoto}
+                                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+                                            type="button"
+                                        >
+                                            ×
+                                        </button>
+                                    </>
+                                ) : (
+                                    <div className="text-center text-gray-400">
+                                        <svg className="w-6 h-6 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        <span className="text-xs">No photo</span>
+                                    </div>
+                                )}
+                            </div>
+                            {/* Bouton Add Photo - seulement à l'écran */}
+                            <label className="cursor-pointer bg-blue-600 text-white px-2 py-1 rounded text-xs hover:bg-blue-700 transition-colors inline-flex items-center gap-1 mt-1 print:hidden">
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span>Add Photo</span>
+                                <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
+                            </label>
                         </div>
 
-                        <label className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors inline-flex items-center gap-2">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                            <span>Add Photo</span>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handlePhotoUpload}
-                                className="hidden"
-                            />
-                        </label>
-                        <p className="text-xs text-gray-500 mt-2 text-center">
-                            Click to select photo
-                        </p>
-                    </div>
-
-                    {/* Bloc infos élève */}
-                    <div className="flex-1">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                            <input 
-                                className="border px-3 py-2 rounded" 
-                                placeholder="Child's full name" 
-                                value={meta.studentName} 
-                                onChange={(e) => changeMeta("studentName", e.target.value)} 
-                                disabled={!!studentInfo}
-                            />
-                            <select 
-                                className="border px-3 py-2 rounded" 
-                                value={meta.sex} 
-                                onChange={e => changeMeta("sex", e.target.value)}
-                                disabled={!!studentInfo}
-                            >
-                                <option value="">Sex</option>
-                                {SEX_OPTIONS.map(sex => <option key={sex}>{sex}</option>)}
-                            </select>
-                            <select 
-                                className="border px-3 py-2 rounded" 
-                                value={meta.className} 
-                                onChange={e => changeMeta("className", e.target.value)}
-                                disabled={!!studentInfo}
-                            >
-                                <option value="">Class</option>
-                                {CLASS_OPTIONS.map(cls => <option key={cls}>{cls}</option>)}
-                            </select>
-
-                            <select className="border px-3 py-2 rounded" value={meta.term} onChange={e => changeMeta("term", e.target.value)}>
-                                <option value="">Term / Period</option>
-                                {TERM_OPTIONS.map(term => <option key={term}>{term}</option>)}
-                            </select>
-
-                            <select className="border px-3 py-2 rounded" value={meta.academicYear} onChange={e => changeMeta("academicYear", e.target.value)}>
-                                <option value="">Academic Year</option>
-                                {academicYears.map(year => <option key={year}>{year}</option>)}
-                            </select>
-
-                            <input className="border px-3 py-2 rounded" placeholder="Teacher" value={meta.teacherName} onChange={e => changeMeta("teacherName", e.target.value)} />
+                        {/* Info élève sur UNE LIGNE */}
+                        <div className="flex-1">
+                            <div className="text-lg text-blue-700">
+                                <strong>Élève:</strong> {studentInfo?.nom_complet || studentInfo?.full_name || "-"}
+                                {studentInfo?.class_name && <span> - <strong>Classe:</strong> {studentInfo.class_name}</span>}
+                                <span> - <strong>Trimestre:</strong> {currentTrimester}</span>
+                                {meta.year && <span> - <strong>Année:</strong> {meta.year}</span>}
+                            </div>
                         </div>
                     </div>
                 </div>
 
+
+
+
+
+
+
+
+
+
+
+
                 {/* Main Table */}
                 <div className="overflow-x-auto mb-6">
-                    <table className="w-full text-xs border-collapse border border-gray-400">
+                    <table className="w-full text-xl border-collapse border border-gray-400">
                         <thead>
                             <tr className="bg-gray-200">
                                 <th className="border border-gray-400 p-2 text-center w-100">EVALUATION</th>
@@ -520,10 +480,10 @@ const handlePrint = () => {
                             {SUBJECTS.map((subject, index) => (
                                 <tr key={subject} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                                     <td className="border border-gray-400 p-2 font-medium">{subject}</td>
-                                    {[1,2,3].map(month => (
+                                    {[1, 2, 3].map(month => (
                                         <td key={month} className="border border-gray-400 p-1 text-center">
                                             <select
-                                                className="w-full text-xs p-1 border-none outline-none bg-transparent"
+                                                className="w-full p-1 border-none outline-none bg-transparent"
                                                 value={subjectsData[subject]?.[`remarks${month}`] || ""}
                                                 onChange={(e) => changeSubjectData(subject, `remarks${month}`, e.target.value)}
                                             >
@@ -536,7 +496,7 @@ const handlePrint = () => {
                                     ))}
                                     <td className="border border-gray-400 p-1 text-center">
                                         <select
-                                            className="w-full text-xs p-1 border-none outline-none bg-transparent"
+                                            className="w-full  p-1 border-none outline-none bg-transparent"
                                             value={subjectsData[subject]?.appreciation || ""}
                                             onChange={(e) => changeSubjectData(subject, "appreciation", e.target.value)}
                                         >
@@ -553,7 +513,7 @@ const handlePrint = () => {
                 </div>
 
                 {/* Bottom Section */}
-                <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6 text-lg">
                     {/* Legend */}
                     <div className="border rounded p-4 text-xs">
                         <div className="font-semibold mb-2">Appreciation Legend</div>
@@ -563,25 +523,25 @@ const handlePrint = () => {
                     </div>
 
                     {/* Summary */}
-                    <div className="border-2 border-gray-400 rounded p-4">
-                        <div className="font-bold text-base mb-3 text-center">Summary of Work</div>
+                    <div className="border-2 border-gray-400 rounded p-4 text-lg">
+                        <div className="font-bold mb-3 text-center">Summary of Work</div>
                         <div className="space-y-4">
                             <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                    <div className="text-xs font-medium mb-1">Result</div>
+                                    <div className="font-medium mb-1">Result</div>
                                     <select className="w-full border px-2 py-1 rounded text-sm" value={summary.result} onChange={(e) => changeSummary("result", e.target.value)}>
                                         <option value="">- Select -</option>
                                         {RESULT_OPTIONS.map(r => <option key={r}>{r}</option>)}
                                     </select>
                                 </div>
                                 <div>
-                                    <div className="text-xs font-medium mb-1">Position</div>
+                                    <div className=" font-medium mb-1">Position</div>
                                     <input className="w-full border px-2 py-1 rounded text-sm" value={summary.position} onChange={(e) => changeSummary("position", e.target.value)} placeholder="Position" />
                                 </div>
                             </div>
                             <div>
-                                <div className="text-xs font-medium mb-1">Appreciation</div>
-                                <select className="w-full border px-2 py-1 rounded text-sm" value={summary.appreciation} onChange={(e) => changeSummary("appreciation", e.target.value)}>
+                                <div className="font-medium mb-1">Appreciation</div>
+                                <select className="w-full border px-2 py-1 rounded " value={summary.appreciation} onChange={(e) => changeSummary("appreciation", e.target.value)}>
                                     <option value="">- Select -</option>
                                     {REMARKS_OPTIONS.map(r => <option key={r}>{r}</option>)}
                                 </select>
@@ -605,10 +565,70 @@ const handlePrint = () => {
                 </div>
 
                 {/* School Info */}
-                <div className="mt-8 text-center text-sm bg-blue-50 border border-blue-200 rounded-lg p-4">
+                {/* <div className="mt-8 text-center text-sm bg-blue-50 border border-blue-200 rounded-lg p-4">
                     <div className="font-bold text-blue-800 mb-2">School Information</div>
                     <div><strong>Phone:</strong> +237 696 308 503 | <strong>Head Office:</strong> Yaounde - Nkolbisson</div>
-                </div>
+                </div> */}
+
+
+
+
+
+
+
+                <style>{`
+    @media print {
+        @page {
+            size: A4;
+            margin: 0.5cm;
+        }
+
+        body {
+            zoom: 0.55;
+        }
+
+        td, th {
+            padding: 3px !important;
+            line-height: 1.1 !important;
+        }
+
+        .p-4 {
+            padding: 6px !important;
+        }
+
+        button {
+            display: none !important;
+        }
+
+        .receipt-footer {
+            display: none !important;
+        }
+
+        /* ✅ AJOUTER CE BLOC POUR CACHER LES FLÈCHES DES SELECTS */
+        select {
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            font-size: inherit !important;
+            color: black !important;
+        }
+        
+        select::-ms-expand {
+            display: none !important;
+        }
+    }
+`}</style>
+
+
+
+
+
+
+
 
                 {/* Actions */}
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6">

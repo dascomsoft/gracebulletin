@@ -455,25 +455,17 @@ export default function BulletinMaternelle() {
         }
     };
 
-    const handlePrint = () => {
-        console.log('🖨️ Maternelle');
-        
-        const printData = {
-            meta: { ...meta, student_id: studentId },
-            entetesPeriodes,
-            donnees,
-            resume,
-            photoEleve
-        };
-        
-        localStorage.setItem('printBulletinData', JSON.stringify(printData));
-        
-        if (ipcRenderer) {
-            ipcRenderer.send('print-bulletin', { type: 'maternelle', data: printData });
-        } else {
-            window.open(`${window.location.origin}/#/print-bulletin-maternelle`, '_blank');
-        }
-    };
+const handlePrint = () => {
+    console.log('🖨️ Impression');
+    
+    if (ipcRenderer) {
+        ipcRenderer.send('print-bulletin');
+    } else {
+        window.print();
+    }
+};
+
+
 
     const handlePrintOnly = () => {
         handlePrint();
@@ -641,155 +633,95 @@ export default function BulletinMaternelle() {
                 </div>
             </div>
 
+
+            
+
             {/* Conteneur du formulaire */}
             <div className="bg-white w-full max-w-6xl rounded-xl shadow-lg p-6">
-                {renderStudentInfo()}
-                {renderSaveStatus()}
 
-                {/* Section Photo + Informations */}
-                <div className="flex flex-col md:flex-row gap-6 mb-6">
-                    {/* Zone Photo */}
-                    <div className="flex flex-col items-center md:w-1/4">
-                        <div className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50 mb-3 overflow-hidden">
-                            {photoEleve ? (
-                                <img 
-                                    src={photoEleve} 
-                                    alt="Photo de l'élève" 
-                                    className="w-full h-full object-cover rounded-lg"
-                                />
-                            ) : (
-                                <div className="text-gray-400 text-center text-xs p-2">
-                                    <svg className="w-8 h-8 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                    Photo de l'élève
-                                </div>
-                            )}
-                        </div>
-                        
-                        <div className="flex flex-col gap-2 w-full">
-                            <button
-                                type="button"
-                                onClick={handleAjouterPhoto}
-                                className="px-3 py-2 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition flex items-center justify-center gap-1"
-                            >
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                                </svg>
-                                Ajouter une photo
-                            </button>
-                            
-                            {photoEleve && (
-                                <button
-                                    type="button"
-                                    onClick={handleSupprimerPhoto}
-                                    className="px-3 py-2 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition flex items-center justify-center gap-1"
-                                >
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                    Supprimer
-                                </button>
-                            )}
-                        </div>
-                        
-                        <p className="text-xs text-gray-500 text-center mt-2">
-                            Format recommandé : 3x4 cm
-                        </p>
-                    </div>
 
-                    {/* Champs d'information */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 flex-1">
-                        <input
-                            className="border px-3 py-2 rounded"
-                            placeholder="Nom complet"
-                            value={meta.nomEleve}
-                            onChange={(e) => changerMeta("nomEleve", e.target.value)}
-                            disabled={!!studentInfo}
-                        />
-                        <input
-                            className="border px-3 py-2 rounded"
-                            placeholder="Numéro Matricule"
-                            value={meta.matricule}
-                            onChange={(e) => changerMeta("matricule", e.target.value)}
-                        />
-                        <select
-                            className="border px-3 py-2 rounded"
-                            value={meta.sexe}
-                            onChange={e => changerMeta("sexe", e.target.value)}
-                            disabled={!!studentInfo}
-                        >
-                            <option value="">Sexe</option>
-                            <option>Masculin</option>
-                            <option>Féminin</option>
-                        </select>
 
-                        <select
-                            className="border px-3 py-2 rounded"
-                            value={meta.classe}
-                            onChange={e => changerMeta("classe", e.target.value)}
-                            disabled={!!studentInfo}
-                        >
-                            <option value="">Classe</option>
-                            {CLASS_OPTIONS.map(classe => (
-                                <option key={classe} value={classe}>{classe}</option>
-                            ))}
-                        </select>
 
-                        <select
-                            className="border px-3 py-2 rounded"
-                            value={meta.trimestre}
-                            onChange={e => changerMeta("trimestre", e.target.value)}
-                        >
-                            <option value="">Trimestre</option>
-                            {TRIMESTRE_OPTIONS.map(trimestre => (
-                                <option key={trimestre} value={trimestre}>{trimestre}</option>
-                            ))}
-                        </select>
 
-                        <select
-                            className="border px-3 py-2 rounded"
-                            value={meta.anneeScolaire}
-                            onChange={e => changerMeta("anneeScolaire", e.target.value)}
-                        >
-                            <option value="">Année Scolaire</option>
-                            {anneesScolaires.map(annee => (
-                                <option key={annee} value={annee}>{annee}</option>
-                            ))}
-                        </select>
 
-                        <input
-                            className="border px-3 py-2 rounded md:col-span-2"
-                            placeholder="Enseignant"
-                            value={meta.enseignant}
-                            onChange={e => changerMeta("enseignant", e.target.value)}
-                        />
-                    </div>
+
+
+            {/* Section Photo + Informations - Version simplifiée */}
+<div className="flex flex-row items-center gap-4 mb-4">
+    {/* Zone Photo */}
+    <div className="flex-shrink-0">
+        <div className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50 relative">
+            {photoEleve ? (
+                <>
+                    <img 
+                        src={photoEleve} 
+                        alt="Photo de l'élève" 
+                        className="w-full h-full object-cover rounded-lg"
+                    />
+                    <button
+                        onClick={handleSupprimerPhoto}
+                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+                        type="button"
+                    >
+                        ×
+                    </button>
+                </>
+            ) : (
+                <div className="text-center text-gray-400">
+                    <svg className="w-6 h-6 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span className="text-xs">No photo</span>
                 </div>
+            )}
+        </div>
+        {/* Bouton Ajouter Photo - seulement à l'écran */}
+        <button
+            type="button"
+            onClick={handleAjouterPhoto}
+            className="mt-1 px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition flex items-center justify-center gap-1 print:hidden"
+        >
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+            </svg>
+            <span>Add Photo</span>
+        </button>
+    </div>
+
+    {/* Info élève sur UNE LIGNE */}
+    <div className="flex-1">
+        <div className="text-lg text-blue-700">
+            <strong>Élève:</strong> {meta.nomEleve || studentInfo?.nom_complet || studentInfo?.full_name || "-"}
+            {meta.classe && <span> - <strong>Classe:</strong> {meta.classe}</span>}
+            <span> - <strong>Trimestre:</strong> {meta.trimestre || currentTrimester}</span>
+            {meta.anneeScolaire && <span> - <strong>Année:</strong> {meta.anneeScolaire}</span>}
+        </div>
+    </div>
+</div>
 
                 {/* Début du tableau */}
                 <div className="overflow-x-auto">
-                    <table className="w-full text-xs border-collapse">
+                    <table className="w-full text-xl border-collapse">
                         <thead>
                             <tr className="bg-gray-100">
                                 <th className="border p-2 w-48">Domaines</th>
                                 <th className="border p-2 w-96">Activités</th>
-                                <th className="border p-2 text-center w-24">
+                                <th className="border p-2 text-center w-40">
                                     <select className="text-xs" value={entetesPeriodes.h1} onChange={(e) => changerEntete("h1", e.target.value)}>
                                         {PERIODE_OPTIONS.map(m => <option key={m}>{m}</option>)}
                                     </select>
                                 </th>
-                                <th className="border p-2 text-center w-24">
+                                <th className="border p-2 text-center w-40">
                                     <select className="text-xs" value={entetesPeriodes.h2} onChange={(e) => changerEntete("h2", e.target.value)}>
                                         {PERIODE_OPTIONS.map(m => <option key={m}>{m}</option>)}
                                     </select>
                                 </th>
-                                <th className="border p-2 text-center w-24">
+                                <th className="border p-2 text-center w-40">
                                     <select className="text-xs" value={entetesPeriodes.h3} onChange={(e) => changerEntete("h3", e.target.value)}>
                                         {PERIODE_OPTIONS.map(m => <option key={m}>{m}</option>)}
                                     </select>
                                 </th>
-                                <th className="border p-2 text-center w-32">Appreciation</th>
+                                <th className="border p-2 text-center w-35">Appreciation</th>
                             </tr>
                         </thead>
 
@@ -799,16 +731,16 @@ export default function BulletinMaternelle() {
                                 return (
                                     <tr key={domaine.key} className="bg-white">
                                         <td className="border p-2 font-semibold">
-                                            <div className="text-sm">{domaine.title}</div>
+                                            <div className="">{domaine.title}</div>
                                         </td>
                                         <td className="border p-2">
-                                            <div className="text-xs text-gray-600">{domaine.activities}</div>
+                                            <div className=" text-gray-600">{domaine.activities}</div>
                                         </td>
 
                                         {/* Évaluations pour chaque période */}
                                         <td className="border p-1 text-center">
                                             <select
-                                                className="w-full text-xs p-1"
+                                                className="w-full  p-1"
                                                 value={state.periode1 || ""}
                                                 onChange={(e) => changerEvaluation(domaine.key, "periode1", e.target.value)}
                                             >
@@ -819,7 +751,7 @@ export default function BulletinMaternelle() {
 
                                         <td className="border p-1 text-center">
                                             <select
-                                                className="w-full text-xs p-1"
+                                                className="w-full  p-1"
                                                 value={state.periode2 || ""}
                                                 onChange={(e) => changerEvaluation(domaine.key, "periode2", e.target.value)}
                                             >
@@ -830,7 +762,7 @@ export default function BulletinMaternelle() {
 
                                         <td className="border p-1 text-center">
                                             <select
-                                                className="w-full text-xs p-1"
+                                                className="w-full  p-1"
                                                 value={state.periode3 || ""}
                                                 onChange={(e) => changerEvaluation(domaine.key, "periode3", e.target.value)}
                                             >
@@ -841,7 +773,7 @@ export default function BulletinMaternelle() {
 
                                         <td className="border p-1 text-center">
                                             <select
-                                                className="w-full text-xs p-1"
+                                                className="w-full  p-1"
                                                 value={state.expression || ""}
                                                 onChange={(e) => changerExpression(domaine.key, e.target.value)}
                                             >
@@ -857,7 +789,7 @@ export default function BulletinMaternelle() {
                 </div>
 
                 {/* Légende des Appréciations */}
-                <div className="mt-6 border rounded p-4 text-xs">
+                <div className="mt-6 border rounded p-4 text-lg">
                     <div className="font-semibold mb-2">Légende des Appréciations</div>
                     <ul className="list-disc ml-5">
                         <li><strong>Acquis</strong> — L'élève maîtrise la compétence</li>
@@ -872,9 +804,9 @@ export default function BulletinMaternelle() {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <div className="text-xs font-medium mb-1">Appréciation</div>
+                            <div className="text-lg font-medium mb-1">Appréciation</div>
                             <select
-                                className="w-full border border-gray-300 px-2 py-1 rounded text-sm"
+                                className="w-full border border-gray-300 px-2 py-1 rounded text-lg"
                                 value={resume.appreciation}
                                 onChange={(e) => changerResume("appreciation", e.target.value)}
                             >
@@ -884,9 +816,9 @@ export default function BulletinMaternelle() {
                         </div>
 
                         <div>
-                            <div className="text-xs font-medium mb-1">Rang</div>
+                            <div className="text-lg font-medium mb-1">Rang</div>
                             <input
-                                className="w-full border border-gray-300 px-2 py-1 rounded text-sm"
+                                className="w-full border border-gray-300 px-2 py-1 rounded text-lg"
                                 value={resume.rang}
                                 onChange={(e) => changerResume("rang", e.target.value)}
                                 placeholder="Ex: 5ème"
@@ -894,9 +826,9 @@ export default function BulletinMaternelle() {
                         </div>
 
                         <div>
-                            <div className="text-xs font-medium mb-1">Décision</div>
+                            <div className="text-lg font-medium mb-1">Décision</div>
                             <select
-                                className="w-full border border-gray-300 px-2 py-1 rounded text-sm"
+                                className="w-full border border-gray-300 px-2 py-1 rounded text-lg"
                                 value={resume.decision}
                                 onChange={(e) => changerResume("decision", e.target.value)}
                             >
@@ -922,18 +854,60 @@ export default function BulletinMaternelle() {
                     </div>
                 </div>
 
-                {/* Information de Contact */}
-                <div className="text-center text-[8px] mt-9 print:text-[7px] bg-blue-50 border border-blue-200 rounded p-0.5 print:mt-9 mb-2 print:mb-0 print:mx-4">
-                    <div className="receipt-footer">
-                        <div>
-                            <p>Téléphone: (+237) 696-308-503 / WhatsApp: 651989899</p>
-                            <p>Siège social: YAOUNDÉ - AKOK-NDOE-2 (Quartier Mbouda, face au mini marché)</p>
-                        </div>
-                        <div>
-                            <p>Arrêté d'ouverture: N° 61/JL/23/A/MINEDUB/SG/DSEPB/SDRA/DR 05 JANVIER 2025</p>
-                        </div>
-                    </div>
-                </div>
+             
+                         <style>{`
+    @media print {
+        @page {
+            size: A4;
+            margin: 0.5cm;
+        }
+
+        body {
+            zoom: 0.60;
+        }
+
+        td, th {
+            padding: 3px !important;
+            line-height: 1.1 !important;
+        }
+
+        .p-4 {
+            padding: 6px !important;
+        }
+
+        button {
+            display: none !important;
+        }
+
+        .receipt-footer {
+            display: none !important;
+        }
+
+        /* ✅ AJOUTER CE BLOC POUR CACHER LES FLÈCHES DES SELECTS */
+        select {
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            font-size: inherit !important;
+            color: black !important;
+        }
+        
+        select::-ms-expand {
+            display: none !important;
+        }
+    }
+`}</style>
+
+
+
+
+
+
+
 
                 {/* Actions avec la logique du premier bulletin */}
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-3 mt-6">

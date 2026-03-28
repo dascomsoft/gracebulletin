@@ -260,22 +260,19 @@ export default function BulletinNurseryForm() {
         }
     };
 
+
+
     const handlePrint = () => {
-        const printData = {
-            meta: { ...meta, student_id: studentId },
-            monthHeaders,
-            subjectsData,
-            summary
-        };
-        
-        localStorage.setItem('printBulletinData', JSON.stringify(printData));
-        
-        if (ipcRenderer) {
-            ipcRenderer.send('print-bulletin', { type: 'nursery', data: printData });
-        } else {
-            window.open(`/#/print-bulletin-nursery`, '_blank');
-        }
-    };
+    console.log('🖨️ Impression');
+    
+    if (ipcRenderer) {
+        ipcRenderer.send('print-bulletin');
+    } else {
+        window.print();
+    }
+};
+
+
 
     // Handlers
     const changeMonthHeader = (k, v) => setMonthHeaders(p => ({ ...p, [k]: v }));
@@ -561,11 +558,6 @@ export default function BulletinNurseryForm() {
                     </div>
                 </div>
 
-                {/* School Info */}
-                <div className="mt-8 text-center text-sm bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <div className="font-bold text-blue-800 mb-2">School Information</div>
-                    <div><strong>Phone:</strong> +237 696 308 503 | <strong>Head Office:</strong> Yaounde - Nkolbisson</div>
-                </div>
 
                 {/* Actions */}
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6">

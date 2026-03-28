@@ -404,28 +404,14 @@ const loadStudentBulletins = async (studentId) => {
   };
 
 
-  // VERSION MODIFIÉE POUR ELECTRON
-
+// Dans AnnualReport.jsx (bulletin annuel anglais)
 const handlePrint = () => {
-    console.log('🖨️ Annual');
-    
-    const printData = {
-        meta: { ...meta, student_id: studentId },
-        data,
-        summary,
-        totalResult,
-        annualAverage
-    };
-    
-    localStorage.setItem('printAnnualData', JSON.stringify(printData));
-    
     if (ipcRenderer) {
-        ipcRenderer.send('print-bulletin', { type: 'annual', data: printData });
+        ipcRenderer.send('print-annual');
     } else {
-        window.open(`${window.location.origin}/#/print-annual`, '_blank');
+        window.print();
     }
 };
-
 
   const handlePrintOnly = () => {
     handlePrint();
@@ -469,18 +455,14 @@ const handlePrint = () => {
         <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
           <div className="flex items-center gap-2">
             <span className="text-blue-600">👤</span>
-            <span className="text-sm text-blue-700">
+            <span className="text-lg text-blue-700">
               Student: <strong>{studentInfo.nom_complet || studentInfo.full_name}</strong> 
               {studentInfo.class_name && ` - Class: ${studentInfo.class_name}`}
               {studentInfo.sex && ` - Sex: ${studentInfo.sex}`}
               {` - Annual Report`}
             </span>
           </div>
-          {studentId && (
-            <div className="mt-2 text-xs text-gray-600">
-              ID: <code className="bg-gray-100 px-2 py-1 rounded">{studentId}</code>
-            </div>
-          )}
+    
         </div>
       );
     } else if (!studentId) {
@@ -579,69 +561,15 @@ const handlePrint = () => {
         </div>
 
         {renderStudentInfo()}
-        {renderSaveStatus()}
+        {/* {renderSaveStatus()} */}
 
         {/* Form */}
         <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Name:</label>
-              <input
-                type="text"
-                value={meta.studentName}
-                onChange={(e) => changeMeta("studentName", e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
-                placeholder="Enter student name"
-                disabled={!!studentInfo}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">School Year:</label>
-              <select
-                value={meta.schoolYear}
-                onChange={(e) => changeMeta("schoolYear", e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
-              >
-                {schoolYears.map(year => (
-                  <option key={year} value={year}>{year}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Class:</label>
-              <select
-                value={meta.className}
-                onChange={(e) => changeMeta("className", e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
-                disabled={!!studentInfo}
-              >
-                <option value="">Select Class</option>
-                {CLASS_OPTIONS.map(cls => (
-                  <option key={cls} value={cls}>{cls}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Sex:</label>
-              <select
-                value={meta.sex}
-                onChange={(e) => changeMeta("sex", e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
-                disabled={!!studentInfo}
-              >
-                <option value="">Select Sex</option>
-                <option>Boy</option>
-                <option>Girl</option>
-              </select>
-            </div>
-          </div>
+        
 
           {/* Results Table */}
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-gray-300 text-sm">
+            <table className="w-full border-collapse border border-gray-300 text-xl">
               <thead>
                 <tr className="bg-gray-100">
                   <th className="border border-gray-300 px-2 py-1">Terms</th>
@@ -729,7 +657,7 @@ const handlePrint = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td className="border border-gray-300 px-2 py-1 font-medium">TOTAL</td>
+                  <td className="border border-gray-300 px-2 py-1 text-lg">TOTAL</td>
                   <td className="border border-gray-300 px-2 py-1 text-center font-semibold">
                     {totalResult || "0.00"}
                   </td>
@@ -742,21 +670,21 @@ const handlePrint = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Annual Average:</label>
+              <label className="block text-lg text-gray-700 mb-1">Annual Average:</label>
               <input
                 type="text"
                 value={annualAverage || "0.00"}
                 readOnly
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm bg-gray-100 font-semibold"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-lg bg-gray-100 font-semibold"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Annual Position:</label>
+              <label className="block text-lg font-medium text-gray-700 mb-1">Annual Position:</label>
               <input
                 type="text"
                 value={summary.annualPosition}
                 onChange={(e) => handleSummaryChange('annualPosition', e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-lg"
                 placeholder="e.g., 5th/30"
               />
             </div>
@@ -764,14 +692,14 @@ const handlePrint = () => {
 
           {/* Class Council's Decision */}
           <div className="border border-gray-300 rounded-md p-4">
-            <h3 className="font-bold text-sm mb-2">CLASS COUNCIL'S DECISION</h3>
+            <h3 className="font-bold text-lg mb-2">CLASS COUNCIL'S DECISION</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Promoted to:</label>
+                <label className="block text-lg text-gray-700 mb-1">Promoted to:</label>
                 <select
                   value={summary.councilDecision.promotedTo}
                   onChange={(e) => handleCouncilDecisionChange('promotedTo', e.target.value)}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-lg"
                 >
                   {CLASS_OPTIONS.map(cls => (
                     <option key={cls} value={cls}>{cls}</option>
@@ -779,11 +707,11 @@ const handlePrint = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">To repeat class:</label>
+                <label className="block text-lg text-gray-700 mb-1">To repeat class:</label>
                 <select
                   value={summary.councilDecision.repeatClass}
                   onChange={(e) => handleCouncilDecisionChange('repeatClass', e.target.value)}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-lg"
                 >
                   <option value="No">No</option>
                   <option value="Yes">Yes</option>
@@ -795,55 +723,97 @@ const handlePrint = () => {
           {/* Signatures */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Head of the institution's observation and signature:</label>
+              <label className="block text-lg  text-gray-700 mb-1">Head of the institution's observation and signature:</label>
               <textarea
                 value={summary.headObservation}
                 onChange={(e) => handleSummaryChange('headObservation', e.target.value)}
                 rows="2"
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-lg"
                 placeholder="Enter head's observations..."
               ></textarea>
               <input
                 type="text"
                 value={summary.headSignature}
                 onChange={(e) => handleSummaryChange('headSignature', e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm mt-2"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-lg mt-2"
                 placeholder="Head's signature"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Parent and signature:</label>
+              <label className="block text-lg  text-gray-700 mb-1">Parent and signature:</label>
               <textarea
                 rows="2"
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-lg"
                 placeholder="Parent's comments..."
               ></textarea>
               <input
                 type="text"
                 value={summary.parentSignature}
                 onChange={(e) => handleSummaryChange('parentSignature', e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm mt-2"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-lg mt-2"
                 placeholder="Parent's signature"
               />
             </div>
           </div>
 
           <div className="text-right">
-            <p className="text-sm">Yaoundé, the ___________</p>
+            <p className="text-lg">Yaoundé, the ___________</p>
           </div>
 
-          {/* Footer */}
-          <div className="text-center text-[8px] print:text-[7px] bg-blue-50 border border-blue-200 rounded p-0.5 mt-10 print:mt-10">
-            <div className="receipt-footer">
-              <div>
-                <p>Telephone: (+237) 696-308-503 / WhatsApp: 651989899</p>
-                <p>Headquarters: YAOUNDÉ - AKOK-NDOE-2 (Mbouda neighborhood, opposite the mini market)</p>
-              </div>
-              <div>
-                <p>Opening authorization: N° 61/JL/23/A/MINEDUB/SG/DSEPB/SDRA/DR 05 JANUARY 2025</p>
-              </div>
-            </div>
-          </div>
+       
+
+           
+          <style>{`
+    @media print {
+        @page {
+            size: A4;
+            margin: 0.5cm;
+        }
+
+        body {
+            zoom: 0.70;
+        }
+
+        td, th {
+            padding: 3px !important;
+            line-height: 1.1 !important;
+        }
+
+        .p-4 {
+            padding: 6px !important;
+        }
+
+        button {
+            display: none !important;
+        }
+
+        .receipt-footer {
+            display: none !important;
+        }
+
+        /* ✅ AJOUTER CE BLOC POUR CACHER LES FLÈCHES DES SELECTS */
+        select {
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            font-size: inherit !important;
+            color: black !important;
+        }
+        
+        select::-ms-expand {
+            display: none !important;
+        }
+    }
+`}</style>
+
+
+
+
+
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-3 mt-6">
