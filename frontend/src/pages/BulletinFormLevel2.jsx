@@ -793,7 +793,7 @@ export default function BulletinForm() {
                 {/* {renderStudentInfo()}
                 {renderSaveStatus()} */}
 
-                 <div className="flex flex-col md:flex-row gap-6  items-start">
+                <div className="flex flex-col md:flex-row gap-6  items-start">
                     <div className="flex flex-row items-center gap-4 mb-1">
                         {/* Photo */}
                         <div className="flex-shrink-0">
@@ -971,7 +971,7 @@ export default function BulletinForm() {
                     <div className="border rounded p-4 text-lg">
                         <div className="font-semibold mb-2">Periods</div>
 
-                        <div className="grid grid-cols-3 gap-2 text-lg mb-3">
+                        <div className="grid grid-cols-3 gap-2 text-lg mb-3 print:hidden">
                             <div>
                                 <select className="w-full border px-2 py-1 rounded text-sm" value={periodHeaders.h1} onChange={e => changeHeader("h1", e.target.value)}>
                                     {MONTH_OPTIONS.map(m => <option key={m}>{m}</option>)}
@@ -1114,7 +1114,7 @@ export default function BulletinForm() {
 
 
 
-<style>{`
+                <style>{`
     @media print {
         @page {
             size: A4;
@@ -1164,15 +1164,6 @@ export default function BulletinForm() {
 
 
 
-
-
-
-
-
-
-
-
-            
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-3 mt-6">
                     <button
                         onClick={() => navigate(-1)}

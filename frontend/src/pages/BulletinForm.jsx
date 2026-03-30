@@ -1508,7 +1508,7 @@ const { ipcRenderer } = (() => {
 })();
 
 // ✅ Changé : Month -> Séquence pour plus de clarté
-const SEQUENCE_OPTIONS = Array.from({ length: 10 }, (_, i) => `Séquence ${i + 1}`);
+const SEQUENCE_OPTIONS = Array.from({ length: 10 }, (_, i) => `Month ${i + 1}`);
 const NOTE_OPTIONS = Array.from({ length: 50 }, (_, i) => i + 1);
 const APPRECIATIONS = ["Not acquired", "In the process of acquire", "Expert", "Acquired"];
 const MONTH_APPRECIATIONS = ["A", "NS", "A+"];
@@ -2455,17 +2455,17 @@ export default function BulletinForm() {
 
                         <div className="grid grid-cols-3 gap-2 text-lg items-center mb-2">
                             <div className="text-center">
-                                <div className="text-gray-600">Total {periodHeaders.h1}</div>
+                                <div className="text-gray-600">Total</div>
                                 <div className="font-semibold mt-1">{totals.t1}</div>
                                 {/* <div className="text-lg text-gray-400">Total annuel: {TOTAL_ANNUEL} pts</div> */}
                             </div>
                             <div className="text-center">
-                                <div className="text-gray-600">Total {periodHeaders.h2}</div>
+                                <div className="text-gray-600">Total</div>
                                 <div className="font-semibold mt-1">{totals.t2}</div>
                                 {/* <div className="text-lg text-gray-400">Total annuel: {TOTAL_ANNUEL} pts</div> */}
                             </div>
                             <div className="text-center">
-                                <div className="text-gray-600">Total {periodHeaders.h3}</div>
+                                <div className="text-gray-600">Total</div>
                                 <div className="font-semibold mt-1">{totals.t3}</div>
                                 {/* <div className="text-lg text-gray-400">Total annuel: {TOTAL_ANNUEL} pts</div> */}
                             </div>
@@ -2572,81 +2572,6 @@ export default function BulletinForm() {
                         <div className="font-bold text-base mb-3 text-center text-gray-800">Parent's Visa</div>
                     </div>
                 </div>
-
-
-
-
-                {/* ✅ STYLES D'IMPRESSION OPTIMISÉS */}
-{/* 
-                <style>{`
-                    
-  @media print {
-    @page {
-        size: A4;
-        margin: 0.5cm;
-    }
-
-    body {
-        zoom: 0.45;
-    }
-
-    // table {
-    //     font-size: 12px !important;
-    // }
-
-    td, th {
-        padding: 3px !important;
-        line-height: 1.1 !important;
-    }
-
-    // td:nth-child(2) {
-    //     max-width: 150px;
-    //     overflow: hidden;
-    //     text-overflow: ellipsis;
-    //     white-space: nowrap;
-    // }
-
-    // td:first-child {
-    //     font-size: 12px !important;
-    // }
-
-    // .mt-6, .mt-8, .mt-10 {
-    //     margin-top: 5px !important;
-    // }
-
-    .p-4 {
-        padding: 6px !important;
-    }
-
-    button {
-        display: none !important;
-    }
-
-    .receipt-footer {
-        display: none !important;
-    }
-
-
-         select {
-            appearance: none !important;
-            -webkit-appearance: none !important;
-            -moz-appearance: none !important;
-            background: none !important;
-            border: none !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            font-size: inherit !important;
-            color: black !important;
-        }
-        
-        select::-ms-expand {
-            display: none !important;
-        }
-}
-                        
-                      
-                `}</style> */}
-
 
 
 <style>{`

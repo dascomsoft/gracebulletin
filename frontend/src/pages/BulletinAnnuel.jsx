@@ -2024,7 +2024,7 @@ export default function BulletinAnnuel() {
     <div className="min-h-screen bg-gray-100 p-4">
       <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
         {/* Header - EN FRANÇAIS */}
-        <div className="flex flex-col items-center text-gray-600 text-xs print:text-xs md:flex-row md:justify-between md:items-start border-b pb-4 mb-4">
+        <div className="flex flex-col items-center text-gray-600 text-xs print:text-base md:flex-row md:justify-between md:items-start border-b pb-4 mb-4">
           <div className="text-left mb-2 md:mb-0 md:w-1/3">
             <div className="font-bold text-[11px] sm:text-xs md:text-sm">RÉPUBLIQUE DU CAMEROUN</div>
             <div className="text-[9px] sm:text-[10px] md:text-xs">Paix-Travail-Patrie</div>
